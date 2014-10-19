@@ -1,0 +1,47 @@
+Screen:
+
+What is screen (Linux Screen)?
+----------
+Screen is best described as a terminal multiplexer. Using it, you can run any number of console-based applications--interactive command shells, curses-based applications, text editors, etc.--within a single terminal. 
+
+ The desire to do this is what gets most people hooked on screen. I used to start a half-dozen terminal emulators when I logged into my machine: I wanted one to read my email, one to edit my code, one to compile my code, one for my newsreader, one for a shell into my web host, and so on. Now I start one terminal eumulator, and run screen in it. Problem solved. 
+
+The other main cool feature of screen is its ability to decouple the terminal emulator from the running programs. This means that you can use screen to keep programs running after you accidentally close the terminal emulator, or even after you log out, and later resume right where you were. It means that the idea of a "session" in which you are running a number of console programs is a free-floating entity that you can bind to any terminal anywhere, or no terminal at all if you want. 
+
+So it is pretty nice.
+----------
+Why called screen?
+
+Because you will have several windows (screens) that you need to switch back and forth
+----------
+
+****************
+Start:
+
+$ screen
+
+Now you are inside a window within screen
+****************
+Help
+
+Ctrl-a then '?'
+****************
+Create window: Ctrl-a then 'c' // window is just a screen
+Switch screen: Ctrl-a then 'n' for next;
+       	       Ctrl-a then 'p' for previous
+	       Ctrl-a then 'num' for a screen with index 0-9
+Detaching from Screen: Ctrl-a then 'd'; 
+    All screen windows are still there and you can reattach them; If your network connection fails, screen will automatically detach your session
+
+Re-attach to screen: $ screen -r
+    If you have multiple screens, you will need to do 
+       screen -r xxxx (the name of the screen)
+    Every program running under screen runs in a window, and every window is identified by a unique number. 
+
+Create logs for screen: Ctrl-a H
+    Screen will keep appending data to the file through multiple sessions. This is very useful for capturing what you have donw, especially if you are making a lot of changes.
+
+Lock the screen session: Ctrl-a x
+Stop the Screen: type exit. This will not save the screen for later
+     	 	 Or you can do Ctrl-a 'k'
+****************

@@ -1,0 +1,141 @@
+Write a bash file that can run:
+
+put #!bin/bash at the top of the file, so that you can do ./xx.sh to run
+--------------------
+
+/boot: Linux kernel and boot loader files are kept; the kernel is a file called vmlinux
+
+/etc: configuration files for the system
+
+/bin, /usr/bin: most of the programs for the system
+
+/sbin, /usr/sbin: contain programs for system administration
+
+/usr: things that support user application
+      /usr/src: Source code files
+      /usr/share/man: The man pages
+
+/usr/local: used for the installation of software and other files for use on the local machine; 
+
+/var: contains files that change as the system is running, including /var/log
+
+/lib: shared libraries
+...
+--------------------
+
+IO Redirection
+
+Standard Output
+ls > file_list.txt // overwrite
+ls >> file_list.txt // append
+
+Pipes
+
+direct the output of one command as the input of another.
+
+ls -l | less
+
+Why is this good? because ls -l is long. And Display it somewhere else is good
+
+Filters:
+
+sort: Write sorted concatenation of all FILE(s) to standard output
+      -b: ignore leading blanks
+      -d: consider only blanks and alphanumeric characters
+      -f: ignore case -- fold lower case to upper case
+      -r: reverse
+      -n compare according to string numerical value
+uniq: Remove duplicated lines from a sorted file
+      Discard  all but one of successive identical lines from INPUT (or standard input), writing to OUTPUT (or standard output).
+      -c: prefix lines by the number of occurences
+      -d: only print duplicate lines
+      -s: avoid comparing the first N characters
+grep: Print lines matching a pattern;
+      grep <what><where>
+      -A NUM: print NUM lines of trailing context after matching lines
+      -i: ignore case
+      -m NUM: stop reading a file after NUM matching lines
+      -n: Prefix each line of output with the line number
+      -v: select non-matching lines
+fmt: Reformat each paragraph in FILE, writing to standard output
+     fmt <FILE>
+     -w: maximum line width (default 75 cols)
+     -u: spacing, one space between words, two after sentences.
+    
+------------------------------
+Permissions:
+
+To see file permissions, do ls -l
+
+-rw-rw-r-- 1 qaz2wsx3 qaz2wsx3 2186 Oct 17 15:30 bashLearning
+
+From this, we can know that the file 'bashLearning' is owned by user 'qaz2wsx3'
+- User 'qaz2wsx3' has the right to read and write this file
+- The file is owned by the group "qaz2wsx3" (the second one)
+- Members of the group "qaz2wsx3" can also read and write this file
+- Everybody can read this file
+
+The full --- thing is:
+-rwxrw-r--: fileType,Read/Write/Execute(owner), Read/Write/Execute(group), Read/Write/Execute(other users)
+
+chmod: 
+
+rwx rwx rwx = 111 111 111
+rw- rw- rw- = 110 110 110
+rwx --- --- = 111 000 000
+
+and so on...
+
+rwx = 111 in binary = 7
+rw- = 110 in binary = 6
+r-x = 101 in binary = 5
+r-- = 100 in binary = 4
+
+So you can do sth like chmod 600 some_file
+
+su
+chown - change ownership
+      e.g.
+      $ su
+      $ ...
+      $ chown ownerName fileName
+      $ exit
+      // exit su mode
+chgrp - change group ownership
+----------------
+
+find:
+
+find where-to-look criteria what-to-do
+
+e.g.
+find / -name foo
+this will search the whole system for any files named foo and display their pathnames. -name is the criteria
+change / to . to search in the current directory
+
+find . -name foo\*bar
+This will search from the current directory down for foo*bar (that is, any filename that begins with foo and ends with bar)
+
+---
+copy file:
+
+Copy single file main.c to destination directory bak:
+$ cp main.c bak 
+
+Copy 2 files main.c and def.h to destination absolute path directory /home/usr/rapid/ :
+$ cp main.c def.h /home/usr/rapid/
+
+Copy all files and directories in dev recursively to subdirectory bak:
+$ cp -R dev bak
+
+Interactive prompt before file overwrite:
+$ cp -i test.c bak
+cp: overwrite 'bak/test.c'? y
+
+Update all files in current directory - copy only newer files to destination directory bak:
+$ cp -u * bak
+
+!!!Find and copy
+find / -name *baa* -exec "cp {} /home/baa/"
+
+xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input. Commands like grep and awk can accept the standard input as a parameter, or argument by using a pipe. However, others like cp and echo disregard the standard input stream and rely solely on the arguments found after the command. Additionally, under the Linux kernel before version 2.6.23, arbitrarily long lists of parameters could not be passed to a command,[1] so xargs breaks the list of arguments into sublists small enough to be acceptable.

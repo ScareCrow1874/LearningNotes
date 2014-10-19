@@ -1,0 +1,47 @@
+Emacs Learning:
+
+M key: Alt
+C key: Control
+
+1. Using emacs as file manager:
+
+M-x dired: invokes Dired, the file manager mode.
+Then, C-x C-q switches to Editable Dired mode
+
+2. Use emacs as supreme editor
+
+(1)The most basic buffer movement commands move point (the cursor) by rows (lines) or columns (characters):
+C-f	Forward one character
+C-n	Next line
+	
+C-b	Back one character
+C-p	Previous line
+(arrows can use instead of these)
+
+(2) These are more useful ones:
+C-a	Beginning of line
+M-f	Forward one word
+M-a	Previous sentence
+M-v	Previous screen
+M-<	Beginning of buffer
+	
+C-e	End of line
+M-b	Back one word
+M-e	Next sentence
+C-v	Next screen
+M->	End of buffer
+
+You can try these as well:
+C-u 3 C-p	Back 3 lines
+C-u 10 C-f	Forward 10 characters
+M-1 M-0 C-f	Forward 10 characters
+C-u C-n	Forward 4 lines
+C-u C-u C-n	Forward 16 lines
+C-u C-u C-u C-n	Forward 64 lines
+
+M-g g	Jump to specified line
+
+Searching for text:
+
+C-s	Incremental search forward
+C-r	Incremental search backward
