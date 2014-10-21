@@ -1,0 +1,40 @@
+Files: 
+#include <iostream> 
+#include <fstream> 
+
+int main() { 
+ofstream file; 
+file.open("XXX.txt"); // if it does not exist, it creates one! 
+
+if (file.is_open()) { // if the stream is associated with a 
+// file 
+cout << "file is open!" << endl;	
+
+file << "hey! I am in the file! \n"; // output stream is 
+// file 
+
+file.close(); 
+} 
+} 
+
+Write a file: 
+while loop: 
+
+// assume there is a file output stream (ofstream) called "file" 
+int id; 
+string name; 
+while (cin >> id >> name) { 
+file << id << " " << name << endl; 
+} 
+// press ctrl + z to stop entering! 
+
+Read a file: 
+
+ifstream theFile("XXX.txt"); 
+
+int id; 
+string name; 
+
+while (theFile >> id >> name) { // c++ knows when to end; 
+cout << id << ", " << name << endl; 
+} 

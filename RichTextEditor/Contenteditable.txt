@@ -1,0 +1,17 @@
+The contenteditable Attribute
+
+
+You can make an element editable by adding the contenteditable attribute in your markup. This attribute has three possible values: true, false, and inherit. Specifying inherit will make the element editable if it’s immediate parent is editable.
+<div id="editor" contenteditable="true">
+  ...
+</div>
+As well as the contenteditable HTML attribute it is also possible to make an element editable using JavaScript. This involves two element properties:
+
+
+isContentEditable – This property will return true if the element is editable and false if it is not.
+
+contentEditable – This property can be used to set the editable status of an element. Supported values are the same as those used for the contenteditable attribute: true, false, and inherit.
+
+var editor = document.getElementById('editor');
+editor.isContentEditable;
+editor.contentEditable = true;

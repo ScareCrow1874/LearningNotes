@@ -1,0 +1,9 @@
+$(document).ready(function() {
+   $('.fancy').hover(
+    function() {
+     $(this).stop().animate({backgroundColor:"#FF9933", color:"#FF0066"}, 100);
+    },
+    function() {
+     $(this).stop().animate({backgroundColor:"#00CCFF", color:"#000"}, 100);
+    });
+  });

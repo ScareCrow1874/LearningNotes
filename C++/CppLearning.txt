@@ -1,0 +1,377 @@
+cin: 
+int a; 
+string n; 
+double b; 
+cin >> a >> n >> b; 
+
+NOTE: '>>' characters skip spaces 
+
+If you enter "1 dsa 23.4 \n", then a = 1, n = "dsa", b = 23.4 
+
+default parameter: 
+void add(int a = 1, int b = 2, int c = 3) --> only put default values in the top protoxxx; 
+
+int main() { 
+add(1, 32) --> a = 1, b = 32, c = 3	
+} 
+
+sizeof(xx): 
+size of bytes; 
+int - 4; 
+double - 8; 
+memory - 8; 
+array - depends on the elements 
+Why use it? 
+sizeof(array) / sizeof(array[0]) --> gives the length 
+
+Resolution Operator: "::" 
+global var a 
+local var a 
+::a --> global a; 
+:: --> means this? 
+A::a --> means a belongs to A 
+
+Array 
+int array[capacity] = {32,23...}; 
+int array[capacity] 
+
+Address Operator: "&" 
+int v = 23; 
+&v --> the memory address of v 
+
+Pointer Operator: "*" 
+int *vpointer; //c++ knows vpointer is a pointer 
+vpointer = &v // pointer keeps track of the memory address 
+
+Functions arguments - pass by value vs. pass by address 
+1. pass by value: 
+int main() { 
+int a = 23; 
+passByValue(a); 
+passByReference(&a); //pass the address 
+} 
+void passByValue(int x) --> the value of a is copied and passed 
+--> modifying the copy will not change the original 
+void passByReference(int *x) --> the address is passed 
+--> modifying the address will change the original 
+--> in this function, all vars of x must be in the form "*x" 
+Pointers Math: 
+int a[4] = {2, 32, 4, 12}; 
+int *a0 = &a[0]; 
+int *a1 = &a[1]; 
+int *a2 = &a[2]; 
+int *a3 = &a[3]; 
+
+cout << a0 << "is the address of a0" << endl 
+cout << a1 << "is the address of a1" << endl 
+cout << a2 << "is the address of a2" << endl 
+cout << a3 << "is the address of a3" << endl 
+
+a0++; //the pointer points to the next element! 
+a1--; 
+
+cout << a0 << "is the address of a0" << endl 
+cout << a1 << "is the address of a1" << endl 
+
+Poitners Object 
+Arrow Member Selection Operator; 
+Whenever you want to use a pointer to access the stuff inside an object, you need to use "->", which is called Arrow Mmeber Selection Operator; 
+Object obj; 
+Object *objPointer = &obj; 
+objPointer->method1(); // don't do *objPointer->method1() 
+
+Deconstructor: 
+// when the obj is deleted/ at the end of the program 
+In header file: 
+~Obj(); 
+In cpp file: // only one deconstructor! no parameters! 
+Obj::~Obj() { 
+
+} 
+
+Member Initializer: 
+1)If you want to set a constant value to the value of the argument, for example: 
+const int a; 
+const int b; 
+Obj::Obj(int n) { 
+//I want a to be equal to n; 
+} 
+You will need to use the "Member Initializer" to initialize the constant; 
+
+Obj::Obj(int n) 
+: a(n), 
+b(n) 
+{ 
+... 
+} 
+2)If you have private fields, probably you should use the Member Initializer as well (similar to fields in java) 
+In header file: 
+private: 
+string name; 
+string hobby; 
+
+In cpp file: 
+Obj::Obj(string n, string h) 
+: name(n), 
+hobby(h) 
+{ 
+... 
+} 
+
+Constant Object: 
+Constant object can only run constant functions; 
+In header file: 
+public: 
+void printShiz() const; --> constant function 
+In cpp file (main): 
+int main() { 
+const Object constObject;	
+} 
+
+Composition 
+A class having another class object as variable/field 
+
+'friend' key word: 
+Make a function friend of a class; The function is created outside of a class. The function has access of everything in the class: 
+
+class Hey { 
+public: 
+Hey() {var = 0;} 
+private: 
+int var; 
+
+friend void func(Hey &hey); //hey, func is my friend 
+}; 
+
+void func(Hey &hey) 
+{ 
+hey.var = 32; // can get access to its private fields. 
+} 
+
+// A class has to give away its friendship, but a function cannot // take away the friendship; 
+
+'this' key word: 
+'this' stores the address of the current object; 
+this->var 
+(*this).var // the same thing; (*pointer : dereference, getting // access to what is pointed to) 
+
+Operator Overloading: 
+Redefining the function of the operator ('+', '-', '*', '/') 
+
+In header file: 
+class Obj { 
+public: 
+int num; 
+Obj(); 
+Obj(int); 
+Obj operator+(Obj) // using overloading operator;  
+// operator+(Obj) is the name of the // funciton; return type is Obj 
+private:	
+} 
+
+In cpp file: 
+
+Obj::Obj() 
+{} 
+
+Obj::Obj(int a) 
+{ 
+num = 1; 
+} 
+
+Obj Obj::operator+(Obj other) 
+{ 
+Obj result; 
+result.num = num + other.num; 
+return result; 
+} 
+
+Inheritance: 
+If a class called Daughter is inherited from class Mother: 
+class Mother 
+{ 
+stuff 
+} 
+
+class Daughter: public Mother // 'class Derived: public Base' 
+{ 
+inherited stuff 
+} 
+
+Protected Member: 
+The derived class inherits everything from public and protected, but no private 
+
+Derived Class Constructor 
+The Derived class does not inherit the Base class's constructor; 
+However, the program will first invoke the Base class's constructor, and then invoke the Derived class's constructor. That is to say, the program first sets up everything of the Base class, and then set up the derived class. 
+It chains: 
+call: base constructor 
+call: derived constructor 
+call: derived deconstructor 
+call: base deconstructor 
+
+Polymorphism/Virtual Functions 
+
+virtual function -> the funciton will be used polymorphically. 
+For example: // here it is regular virtue...; You have the option 
+// to overwriting it. 
+class Employee { 
+public: 
+virtual int salary(); 
+} 
+
+class Secretary { 
+public: 
+int salary() { 
+return 1000;	
+} 
+} 
+
+class Lawyer { 
+public: 
+int salary() { 
+return 2000;	
+} 
+} 
+
+
+int main() { 
+Secretary s; 
+Lawyer l; 
+//because both Secretary and Lawyer is inherited from Employee, 
+//so you can have an Employee pointer pointing to the address 
+//of either Secretary or Lawyer; 
+Employee *em1 = &s; 
+Employee *em2 = &l; 
+
+//because the function "salary" is virtual, 
+//when you call em1->salary(), the program will call the 
+//function of what it is pointing to; 
+em1->salary(); //should return 1000; 
+em2->salary(); //should return 2000; 
+} 
+
+Pure virtual function; 
+class Employee { 
+public: 
+virtual int salary() = 0; // pure virtual function. 
+// Must be overwritten! 
+} 
+
+Abstract class is just a class with pure virtual function(s) in it. 
+
+Static variable: 
+
+Static variables are those variables that all objects of the class share. If one object changes the value of a static variable, other objects will also access the changed variable. 
+
+Exception: 
+Handle Error; 
+
+try { 
+int n = 50; 
+int b = 0; 
+if (b = 0) { 
+throw 99; 
+} else { 
+int c = n / b; 
+} 
+} catch(int x) { 
+cout << "ERROR NUMBER : " << x << endl; 
+} 
+
+String class: 
+
+convert std::string to const char*, the "C string": 
+const char* cstring = string1.c_str(); 
+
+get line of data: 
+string x; 
+getline(cin, x); // wait until we typed enter; 
+
+assign: 
+s1.assign("stshahaha"); 
+
+charAt: 
+s1.at(0); 
+
+substring: 
+int begin = 2 // begin index; 
+int count = 5 // number of characters 
+s1.substr(begin, count); 
+
+swap: 
+string s1 = "hey"; 
+string s2 = "bye"; 
+
+s1.swap(s2); 
+// now s1 = "bye", s2 = "hey" 
+
+find: 
+string s1 = "hahahasdfasfha"; 
+int n = s1.find("ha"); 
+// only finds the first occurence of the "ha", and returns the 
+// first char index of the founded one; 
+
+rfind: // reverse find; 
+It works right to left; 
+// only finds the last occurence of the "ha", and returns the 
+// first char index of the founded one; 
+
+erase: 
+erases all from specified index; 
+s1.erase(5); 
+
+replace: 
+takes something out and replace something there 
+s1.replace(startIndex, endIndex, "replace"); 
+
+insert: 
+inserts a substring into the string at the index, but not 
+taking anything; 
+s1.insert(index, "insert"); 
+
+std::map: 
+Java's map same concept 
+#include <map> 
+//define type: 
+typedef std::map<std::string, int> MyMap; 
+
+//create instance of map: 
+MyMap map; 
+
+//use 'insert' and 'make_pair' to add an element (put) 
+//the std::map inserts a key-value pair 
+map.insert(std::make_pair("e-", 11)); 
+
+//we can also use subscript notation to insert 
+map["pi+"] = 211; 
+
+//search for a key using "find" 
+MyMap::iterator p = map.find("ha"); 
+
+// if key isn't found, iterator will point to end 
+if (p != map.end()) { 
+// Dereferencing iterator returns a std::pair! (make_pair) 
+string name = (*p).first; //key 
+int value = (*p).second; //value 
+} 
+
+In programming flow: Stack and Heap 
+http://youtu.be/450maTzSIvA 
+Stack of methods; 
+In the methods, there may be objects; 
+Heap of objects; 
+In the object, there may be methods (behaviors) 
+
+Suppose we have a class called 'People', it is initialized: 
+People::People(const char* name, int age) 
+
+In c++, if we create an object of the class 'People' in this way: 
+People kaiyu("Kaiyu", 19); 
+Then the object 'kaiyu' is created in the Stack, because it is part of some method. 
+If we create an object of the class 'People' in this way: 
+People *kaiyu = new People("Kaiyu", 19); 
+Then the object itself is created in a Heap. A reference to that object in the heap (the pointer) is created in the stack; 
+
+Once the method finishes execution, the method vanishes on the Stack of programming flow. And if there is no other pointers pointing to that object kaiyu, the kaiyu will be eligible for garbage collection 
+

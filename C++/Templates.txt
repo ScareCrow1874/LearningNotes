@@ -1,0 +1,126 @@
+Function Template 
+Instead of building functions that return int/double/... 
+We can use the template to make generic type of data. For example: 
+
+template <typename Generic> 
+Generic addCrap(Generic a, Generic b) { 
+return a + b;	
+} 
+// the return type could be anything 
+To instantiate this function explicitly: 
+template<typename T> T addCrap(T, T); 
+// Implicite instantiation is to put the function above the main 
+// method. 
+
+
+//multiple generic types 
+template <typename FIRST, typename SECOND> 
+FIRST smaller(FIRST a, SECOND b	) { 
+return (a < b ? a : b); 
+} 
+
+Class Template 
+Similar to Java's Object<T>. For example: 
+
+template <class T> // class template 
+class Kaiyu { 
+T first, second; 
+public: 
+Kaiyu(T a, T b) { 
+first = a; 
+second = b; 
+} 
+T bigger(); 
+}; 
+
+template <class T> // function template; 
+T Bucky<T>::bigger() { 
+return (first > second ? first : second); 
+} 
+
+int main() { 
+Kaiyu<double> kaiyu(23, 24); 
+cout << kaiyu.bigger(); 
+} 
+---
+From Cplusplus.com 
+Class templates 
+
+Just like we can create function templates, we can also create class templates, allowing classes to have members that use template parameters as types. For example: 
+
+template <class T> 
+class mypair { 
+T values [2]; 
+public: 
+mypair (T first, T second) 
+{ 
+values[0]=first; values[1]=second; 
+} 
+}; 
+
+The class that we have just defined serves to store two elements of any valid type. For example, if we wanted to declare an object of this class to store two integer values of type int with the values 115 and 36 we would write: 
+
+mypair<int> myobject (115, 36); 
+
+This same class could also be used to create an object to store any other type, such as: 
+mypair<double> myfloats (3.0, 2.18); 
+
+Template Specialization 
+If you want the class behave differently with some specific type(s) of data, you can use template specialization; 
+You have a different implementation when a specific type is passed 
+
+For the Kaiyu class, if I want it to behave differently if T is a character class, 
+template<> //empty inside 
+class Kaiyu<char> 
+public: 
+Kaiyu(char a, char b) [ 
+...	
+} 
+}; 
+
+今天研究template，有一定收获，解决几个大问题
+1）如何像java那样用generic type?
+在c++里面，只需要用class template 就可以做到这一点。template <class T>就可以，写在class 声明的前一行。
+2）如何正确地在header和source文件里都使用这个type？
+在header里只需要在class之前的一行写template，而在sourcefile，每一个方法都要这么写：
+template <class T>
+Class<T>::Class() // or other methods...
+{
+    ...
+}
+
+但是尽管这样，在使用的时候还是会出现问题，因为linker的原因，在网上的解释是这样：
+Reason
+
+When the compiler encounters a declaration of a TestTemp object of some specific type, e.g., int, it must have access to the template implementation source. Otherwise, it will have no idea how to construct the TestTemp member functions. And, if you have put the implementation in a source (TestTemp.cpp) file and made it a separate part of the project, the compiler will not be able to find it when it is trying to compile the client source file. And, #includeing the header file (TestTemp.h) will not be sufficient at that time. That only tells the compiler how to allocate for the object data and how to build the calls to the member functions, not how to build the member functions. And again, the compiler won't complain. It will assume that these functions are provided elsewhere, and leave it to the linker to find them. So, when it's time to link, you will get "unresolved references" to any of the class member functions that are not defined "inline" in the class definition.
+
+解决方法有两个，第一个是在cpp文件里写一个“废物”方法，instantiate一个这个template object。举个例子
+// TestTemp.cpp
+#include "TestTemp.h"
+ 
+template <class T>
+TestTemp<T>::TestTemp()
+{
+}
+ 
+template <class T>
+void TestTemp<T>::SetValue( T obj_i )
+{
+}
+ 
+template <class T>
+T TestTemp<T>::Getalue()
+{
+    return m_Obj;
+}
+
+// No need to call this TemporaryFunction() function,
+// it's just to avoid link error.
+void TemporaryFunction ()
+{
+    TestTemp<int> TempObj;
+}
+在最后加这个方法，就可以解决问题。
+
+第二个方法，在调用这个class 的文件里，include .cpp文件，也可以解决问题
+

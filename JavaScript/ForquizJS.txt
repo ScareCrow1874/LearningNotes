@@ -1,0 +1,41 @@
+genDoc=loadXMLDoc("gamedata.xml");
+quizDoc=loadXMLDoc("quizgame.xml");
+
+g=genDoc.getElementsByTagName("name");
+prb=quizDoc.getElementsByTagName("problem");
+
+function getquestion(problemIndex) {
+ p=quizDoc.getElementsByTagName("problem"); // all problems
+ question=p[problemIndex].getElementsByTagName("question");
+ return question;
+}
+
+function getchoices(problemIndex) {
+ p=quizDoc.getElementsByTagName("problem"); // all problems
+ choices=p[problemIndex].getElementsByTagName("choice");
+ return choices;
+}
+
+function showstuff(problemIndex) {
+ for (i=0;i<prb.length;i++) {
+  document.write("<div class='one_problem'>");
+  question=getquestion(i);
+  document.write("<div class='question'>" + question[problemIndex].childNodes[0].nodeValue + "</div>");
+  choices=getchoices(i);
+  document.write("<div class='answers'><form>");
+  for (j=0;j<choices.length;j++) {
+   document.write("<div class='one_answer'><input type='radio' name=choice value='choices[j].childNodes[0].nodeValue'>"
+    + choices[j].childNodes[0].nodeValue + "</div>");
+  }
+  document.write("</form></div></div>");
+ }
+}
+
+function showtitle(problemIndex) {
+ document.write(g[problemIndex].childNodes[0].nodeValue);
+}
+
+function showcomment(problemIndex) {
+ c=genDoc.getElementsByTagName("comment");
+ document.write(c[problemIndex].childNodes[0].nodeValue);
+}

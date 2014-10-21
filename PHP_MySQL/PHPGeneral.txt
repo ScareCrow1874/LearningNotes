@@ -1,0 +1,2135 @@
+PHP Learning
+
+Basic Structure:
+ <?php PHP Learning
+
+Basic Structure:
+ <?php
+ //no tab
+ ?>
+
+Variables
+ $varname = ...
+
+Array
+ $names = array("Lamb", "Tracy, "Brook", "Steve');
+  2D:
+   $location = array(
+       array(2, 3, 5),
+       array(3, 6, 2),
+       array(2, 5, 9)
+      );
+
+Multiline On HTML
+ <?php
+  $author = "Tom";
+
+  echo <<< _END
+  Hello every one.
+  My name is $author.
+  I wrote a lot of stupid books.
+  But I am a clever man.
+  _END;
+ ?>
+
+Define Constants:
+ define("ROOT_LOCATION", "127.0.0.01/");
+ $directory = ROOT_LOCATION
+
+Substring
+ <?php
+  $number = 12345 * 67890;
+  echo substr($number, 3, 1);
+ ?>
+
+isset(...) Determine if a variable is set and is not NULL.
+
+-------------------------------
+MAGIC Constants
+
+Description
+
+__LINE__
+ 
+
+The current line number of the file.
+
+__FILE__
+ 
+
+The full path and filename of the file. If used inside an include, the name of the included file is returned. In versions of PHP since 4.0.2, __FILE__ always contains an absolute path with symbolic links resolved, whereas in older versions it might contain a relative path under some circumstances.
+
+__DIR__
+ 
+
+The directory of the file. If used inside an include, the directory of the included file is returned. This is equivalent to dirname(__FILE__). This directory name does not have a trailing slash unless it is the root directory. (Added in PHP 5.3.0.)
+
+__FUNCTION__
+ 
+
+The function name. (Added in PHP 4.3.0.) As of PHP 5, returns the function name as it was declared (case-sensitive). In PHP 4, its value is always lowercase.
+
+__CLASS__
+ 
+
+The class name. (Added in PHP 4.3.0.) As of PHP 5, returns the class name as it was declared (case-sensitive). In PHP 4, its value is always lowercased.
+
+__METHOD__
+ 
+
+The class method name. (Added in PHP 5.0.0.) The method name is returned as it was declared (case-sensitive).
+
+__NAMESPACE__
+ 
+
+The name of the current namespace (case-sensitive). This constant is defined at compile time. (Added in PHP 5.3.0.)
+
+
+-----------------------------------
+print command
+
+By and large, the echo command will be a tad faster than print in general text output, because, not being a function, it doesn’t set a return value.
+
+On the other hand, because it isn’t a function, echo cannot be used as part of a more complex expression, whereas print can.
+Example:
+ 
+ $b ? print "TRUE" : print "FALSE";
+
+Functions:
+ Example:
+
+ <?php
+  function longdate($timestamp)
+  {
+   return date("l F jS Y", $timestamp);
+  }
+ ?>
+ This function takes a Unix timestamp (an integer number representing a date and time based on the number of seconds since 00:00 AM on January 1, 1970) as its input and then calls the PHP date function with the correct format string to return a date in the format Wednesday August 1st 2012.
+
+Global Variable:
+ global $is_logged_in;
+
+Static Variable:
+ A kind of variable that keeps its value even though the function finishes executing. However, other parts of the program cannot access this variable because of the scope issue.
+
+ Example:
+
+ <?php
+ function hey()
+ {
+  static $count = 0;
+ 
+  //The next time the function is called, because $count has already been declared, the first line of the function is skipped. Then the previously incremented value of $count is displayed before the variable is again incremented.
+
+  echo $count;
+  $count++;
+
+  // you cannot assign the result of an expression in their definitions;
+  // cannot do static $a = 1 + 2;
+ }
+ ?>
+
+Superglobal Variables:
+
+$GLOBALS
+ 
+
+All variables that are currently defined in the global scope of the script. The variable names are the keys of the array.
+
+$_SERVER
+ 
+
+Information such as headers, paths, and script locations. The entries in this array are created by the web server and there is no guarantee that every web server will provide any or all of these.
+
+$_GET
+ 
+
+Variables passed to the current script via the HTTP GET method.
+
+$_POST
+ 
+
+Variables passed to the current script via the HTTP POST method.
+
+$_FILES
+ 
+
+Items uploaded to the current script via the HTTP POST method.
+
+$_COOKIE
+ 
+
+Variables passed to the current script via HTTP cookies.
+
+$_SESSION
+ 
+
+Session variables available to the current script.
+
+$_REQUEST
+ 
+
+Contents of information passed from the browser; by default, $_GET, $_POST and $_COOKIE.
+
+$_ENV
+ 
+
+Variables passed to the current script via the environment method.
+
+ Example:
+
+ $came_from = $_SERVER['HTTP_REFERER'];
+
+ For security reason, it is better to do
+
+ $came_from = htmlentities($_SERVER['HTTP_REFERER']);
+
+ in order to convert all characters into HTML entities. e.g '>' --> '&gt'
+
+----------------------------------
+Boolean Expression Output
+
+ echo "a: [" . (5 == 6) . "]<br/>";
+
+ Results a: [], but if
+
+ echo "a: [" . (5 < 6) . "]<br/>";
+
+ would output a: [1]. FALSE is some string with no length
+
+Multiple Assignment Expression:
+ <?php
+ $level = $score = $time = 0;
+ ?>
+
+ This multiple assignment is possible only if the rightmost part of the expression is evaluated first and then processing continues in a right-to-left direction.
+
+Elseif:
+ "elseif" is one single keyword
+
+Switch:
+ switch ($var):
+  case "A":
+   echo "...A";
+   break
+
+  // etc...
+
+  default: echo "NO...";
+  break;
+ endswitch;
+
+While and do-while loops:
+ while (condition)
+ {
+  ... // may not execute
+ }
+
+ do {
+  ... // execute at least once
+ } while (condition);
+
+For loop:
+ for ($i = 0; $i < 10; ++$i) [$i++ for different reason]
+ {
+  ... execute 10 times
+ }
+
+ More complex:
+ for ($i = 1, $j = 1 ; $i + $j < 10 ; $i++ , $j++)
+ {
+     // ...
+ }
+
+The "continue" Statement:
+
+The continue statement is a little like a break statement, except that it instructs PHP to stop processing the current loop and to move right to its next iteration. So, instead of breaking out of the whole loop, only the current iteration is exited.
+
+ Example:
+ <?php
+ $j = 10;
+
+ while ($j > −10)
+ {
+   $j--;
+   if ($j == 0) continue; // skip the echo code when j = 0
+   echo (10 / $j) . "<br />";
+ }
+ ?>
+
+-----------------------------
+PHP functions and objects
+
+some functions:
+ phpinfo();
+ strrev("sdfs"); // Reverse string
+ str_repeat("Hip ", 2); //Repeat string
+ strtoupper("ga"); // string to uppercase
+ abs(5-8); // absolute value
+ ucfirst("fdf"); // make the first letter uppercase
+
+Passing by reference "&"
+ pass not by value but by reference
+
+Returning values in gloabal variables
+ <?php
+ $a1 = "WILLIAM";
+ $a2 = "henry";
+ $a3 = "gatES";
+
+ echo $a1 . " " . $a2 . " " . $a3 . "<br />";
+ fix_names();
+ echo $a1 . " " . $a2 . " " . $a3;
+
+ function fix_names()
+ {
+     global $a1; $a1 = ucfirst(strtolower($a1));
+     global $a2; $a2 = ucfirst(strtolower($a2));
+     global $a3; $a3 = ucfirst(strtolower($a3));
+ }
+ ?>
+
+ Once declared, these variables remain global and available to the rest of your program, including its functions.
+
+Include files
+ <?php
+ include "other.php";
+ ?>
+
+ to prevent loading library twice, do
+ <?php
+ include_once "theLibrary.php";
+ ?>
+
+ A potential problem with include and include_once is that PHP will only attempt to include the requested file. Program execution continues even if the file is not found.
+
+ When it is absolutely essential to include a file, require it
+ <?php
+ require_once "library.php";
+ ?>
+
+Version Compatibility
+ PHP is in an ongoing process of development, and there are multiple versions. If you need to check whether a particular function is available to your code, you can use the function_exists function, which checks all predefined and user-created functions.
+
+ <?php
+ if (function_exists("array_combine"))
+ {
+     echo "Function exists";
+ }
+ else
+ {
+     echo "Function does not exist - better write our own";
+ }
+ ?>
+
+------------------------------
+Objects
+
+Declare a Class
+ <?php
+ $object = new User;
+ $object2 = new User('name', 'password');
+ print_r($object); // display information in "human readable" form
+
+ class User
+ {
+  public $name, $password; // fields
+
+  function save_user()
+  {
+   echo "Hey Save User";
+  }
+ }
+ ?>
+
+ In the case of the new object $object, print_r prints the following:
+
+ User Object
+ (
+     [name] =>
+     [password] =>
+ )
+ 
+ a browser compresses all the whitespace, so the output in a browser is slightly harder to read:
+
+ User Object ( [name] => [password] => )
+
+Interact with an object:
+ <?php
+ class Cellphone
+ {
+  public $brand, $price;
+
+  //constructor
+  function Cellphone($b, $p)
+  {
+   $this->brand = $b;
+   $this->price = $p;
+  }
+  function sayhi()
+  {
+   echo "hi! ";
+  }
+ }
+ ?>
+
+ <?php
+ $iPhone = new Cellphone('iPhone', '999');
+ print_r($iPhone); echo "<br/>";
+
+ $iPhone->sayhi();
+ $iPhone->brand = "Samsung";
+ print_r($iPhone); echo "<br/>";
+ ?>
+
+Valid and Invalid property declarations:
+ <?php
+ class Test
+ {
+     public $name = "Paul Smith"; // Valid
+     public $age = 42; // Valid
+     public $time = time(); // Invalid - calls a function
+     public $score = $level * 2; // Invalid - uses an expression
+ }
+ ?>
+
+Example 5-18. Creating and accessing a static method
+
+ <?php
+ User::pwd_string(); // call static function
+
+ class User
+ {
+     static function pwd_string()
+     {
+         echo "Please enter your password";
+     }
+ }
+ ?>
+
+ If you are using PHP 5, you can also define a method as static, which means that it is called on a class and not on an object. A static method has no access to any object properties and is created and accessed as in Example 5-18.
+
+Declare constants
+
+In the same way that you can create a global constant with the define function, you can define constants inside classes. The generally accepted practice is to use uppercase letters to make them stand out, as in Example 5-21.
+
+ <?php
+ Translate::lookup();
+
+ class Translate
+ {
+     const ENGLISH = 0;
+     const SPANISH = 1;
+     const FRENCH = 2;
+     const GERMAN = 3;
+     // ...
+
+     static function lookup()
+     {
+
+     // Constants can be referenced directly, using the self keyword and double colon operator
+         echo self::SPANISH;
+     }
+ }
+ ?>
+
+Static Property
+
+Defining a class with a static property
+
+ <?php
+ $temp = new Test();
+ echo "Test A: " . Test::$static_property . "<br />";
+ echo "Test B: " . $temp->get_sp() . "<br />";
+ echo "Test C: " . $temp->static_property . "<br />";
+
+ class Test
+ {
+     static $static_property = "I'm static";
+
+     function get_sp()
+     {
+         return self::$static_property;
+     }
+ }
+ ?>
+
+ When you run this code, it returns the following output:
+
+ Test A: I'm static
+ Test B: I'm static
+
+ Notice: Undefined property: Test::$static_property
+ Test C:
+
+Inheritance
+'extends' key word
+
+Overriding a method and using the parent operator
+
+ <?php
+ $object = new Son;
+ $object->test();
+ $object->test2();
+
+ class Dad
+ {
+     function test()
+     {
+         echo "[Class Dad] I am your Father<br />";
+     }
+ }
+
+ class Son extends Dad
+ {
+     function test()
+     {
+         echo "[Class Son] I am Luke<br />";
+     }
+
+     function test2()
+     {
+         parent::test(); // parent:: is the parent opeator
+     }
+ }
+ ?>
+
+Subclass constructors
+
+When you extend a class and declare your own constructor, you should be aware that PHP will not automatically call the constructor method of the parent class. To be certain that all initialization code is executed, subclasses should always call the parent constructors, as in Example 5-26.
+Example 5-26. Calling the parent class constructor
+
+ <?php
+ $object = new Tiger();
+ echo "Tigers have...<br>";
+ echo "Fur: " . $object->fur . "<br />";
+ echo "Stripes: " . $object->stripes;
+
+ class Wildcat
+ {
+     public $fur; // Wildcats have fur
+
+     function __construct()
+     {
+         $this->fur = "TRUE";
+     }
+ }
+
+ class Tiger extends Wildcat
+ {
+     public $stripes; // Tigers have stripes
+
+     function __construct()
+     {
+         parent::__construct(); // Call parent constructor first
+         $this->stripes = "TRUE";
+     }
+ }
+ ?>
+
+Final methods
+
+In cases in which you wish to prevent a subclass from overriding a superclass method, you can use the final keyword. Example 5-27 shows how.
+Example 5-27. Creating a final method
+
+<?php
+class User
+{
+    final function copyright()
+    {
+        echo "This class was written by Joe Smith";
+    }
+}
+?>
+
+-------------------------------
+PHP Arrays
+
+Numerically indexed Arrays
+ <?php
+ $paper[] = "Copier";
+ $paper[] = "Inkjet";
+ $paper[] = "Laser";
+ $paper[] = "Photo"; // you don't even need to explicitly specify the index when adding new items, although you can
+
+ print_r($paper);
+ ?>
+
+Output:
+Array
+(
+     [0] => Copier
+     [1] => Inkjet
+     [2] => Laser
+     [3] => Photo
+)
+
+Associative Arrays
+Using them, you can reference the items in an array by name rather than by number.
+
+Example 6-4. Adding items to an associative array and retrieving them
+
+ <?php
+ $paper['copier'] = "Copier & Multipurpose";
+ $paper['inkjet'] = "Inkjet Printer";
+ $paper['laser'] = "Laser Printer";
+ $paper['photo'] = "Photographic Paper";
+
+ echo $paper['laser'];
+ ?>
+
+Assignment Using the array Keyword
+ <?php
+ $p1 = array("Copier", "Inkjet", "Laser", "Photo");
+
+ echo "p1 element: " . $p1[2] . "<br>";
+
+ // this is like a map
+ $p2 = array('copier' => "Copier & Multipurpose", // look at the '=>'
+             'inkjet' => "Inkjet Printer",
+             'laser' => "Laser Printer",
+             'photo' => "Photographic Paper");
+
+ echo "p2 element: " . $p2['inkjet'] . "<br>";
+ ?>
+
+The foreach...as Loop
+
+Example 6-6. Walking through a numeric array using foreach...as
+COOL
+ <?php
+ $paper = array("Copier", "Inkjet", "Laser", "Photo");
+ $j = 0;
+
+ foreach ($paper as $item)
+ {
+     echo "$j: $item<br>";
+     ++$j;
+ }
+ ?>
+
+As an alternative syntax to foreach...as, you can use the list function in conjunction with the each function, as in Example 6-8.
+Example 6-8. Walking through an associative array using each and list
+
+ <?php
+ $paper = array('copier' => "Copier & Multipurpose",
+                'inkjet' => "Inkjet Printer",
+                'laser' => "Laser Printer",
+                'photo' => "Photographic Paper");
+
+ while (list($item, $description) = each($paper))
+     echo "$item: $description<br>";
+ ?>
+
+In this example, a while loop is set up and will continue looping until the each function returns a value of FALSE. The each function acts like foreach: it returns an array containing a key and value pair from the array $paper and then moves its built-in pointer to the next pair in that array. When there are no more pairs to return, each returns FALSE.
+
+Multidimensional Array
+Creating a multidimensional associative array
+
+<?php
+$products = array(
+    'paper' => array(
+        'copier' => "Copier & Multipurpose",
+        'inkjet' => "Inkjet Printer",
+        'laser' => "Laser Printer",
+        'photo' => "Photographic Paper"),
+
+    'pens' => array(
+        'ball' => "Ball Point",
+        'hilite' => "Highlighters",
+        'marker' => "Markers"),
+
+    'misc' => array(
+        'tape' => "Sticky Tape",
+        'glue' => "Adhesives",
+        'clips' => "Paperclips") );
+
+echo "<pre>";
+foreach ($products as $section => $items)
+    foreach ($items as $key => $value)
+        echo "$section:\t$key\t($value)<br>";
+echo "</pre>";
+?>
+
+Array Functions!
+
+is_array()
+
+ echo (is_array($fred)) ? "Is an array" : "Is not an array";
+
+ Note that if $fred has not yet been assigned a value, an “Undefined variable” message will be generated.
+
+count()
+ To count all the elements in the top level of an array
+
+ echo count($fred);
+
+ Should you wish to know how many elements there are altogether in a multidimensional array, you can use a statement such as:
+
+ echo count($fred, 1);
+
+sort() / rsort()
+ 
+ sort($fred);
+ 
+ sort will act directly on the supplied array rather than returning a new array of sorted elements. Instead it returns TRUE on success and FALSE on error
+
+ main two flags:
+ sort($fred, SORT_NUMERIC);
+ sort($fred, SORT_STRING);
+
+shuffle()
+ shuffle($cards);
+
+ returns TRUE on success or FALSE on error.
+
+explode()
+ This is a very useful function with which you can take a string containing several items separated by a single character (or string of characters) and then place each of these items into an array.
+
+ <?php
+ $temp = explode(' ', "This is a sentence with seven words");
+ print_r($temp);
+ ?>
+
+ Output:
+ Array
+ (
+     [0] => This
+     [1] => is
+     [2] => a
+     [3] => sentence
+     [4] => with
+     [5] => seven
+     [6] => words
+ )
+
+
+
+extract()
+ Extract the variables sent by GET or POST method in an global variable array (either $_GET or $_POST))
+
+ so for example, if the user submits a form containing information: $name = "Tony" by the GET method, then extract($_GET) will result in the $_GET array where you can do $_GET['name'], and it will be Tony;
+
+ Be careful with this approach, though, because if any extracted variables conflict with ones that you have already defined, your existing values WILL BE OVERWRITTEN. To avoid this possibility, you can use one of the many additional parameters available to this function, like this:
+
+ extract($_GET, EXTR_PREFIX_ALL, 'fromget');
+
+ In this case, all the new variables will begin with the given prefix string followed by an underscore, so $q will become $fromget_q.
+
+ The second method is strongly recommended.
+
+
+
+compact()
+ There are also times when you want to use compact, the inverse of extract, to create an array from variables and their values.
+
+ <?php
+ $fname = "Elizabeth";
+ $sname = "Windsor";
+ $address = "Buckingham Palace";
+ $city = "London";
+ $country = "United Kingdom";
+
+ $contact = compact('fname', 'sname', 'address', 'city', 'country');
+ print_r($contact);
+ ?>
+
+ The result of running Example 6-14 is:
+
+ Array
+ (
+     [fname] => Elizabeth
+     [sname] => Windsor
+     [address] => Buckingham Palace
+     [city] => London
+     [country] => United Kingdom
+ )
+
+ Note how compact requires the variable names to be supplied in quotes and not as variables preceded with a $ symbol. This is because compact is looking for an array of variable names.
+
+reset()
+ reset an array so that next time the foreach loop will start at the beginning
+
+end()
+ move PHP's internal array pointer to the end of the array (final element)
+
+---------------------------------
+printf() precision handling
+
+e.g.
+ printf("The result is: $%.2f", 123.42 / 12);
+ // pay attention to the dollar sign! It's JUST A DOLLAR SIGN
+
+---------------------------------
+File Handling
+
+Check if a file exists: file_exists() method
+
+ if (file_exists("testfile.txt")) echo "File exists";
+
+Create a file
+
+ exmaple:
+ <?php // testfile.php
+ $fh = fopen("testfile.txt", 'w') or die("Failed to create file");
+ $text = <<<_END
+ Line 1
+ Line 2
+ Line 3
+
+ _END;
+ fwrite($fh, $text) or die("Could not write to file");
+ fclose($fh);
+ echo "File 'testfile.txt' written successfully";
+ ?>
+
+ This simple example shows the sequence that all file handling takes:
+
+    1.Always start by opening the file. This is done through a call to fopen.
+
+    2.Then you can call other functions; here we write to the file (fwrite), but you can also read from an existing file (fread or fgets) and do other things.
+
+    3.Finish by closing the file (fclose). Although the program does this for you when it ends, you should clean up yourself by closing the file when you’re finished.
+
+Table 7-5. The supported fopen modes
+
+Mode
+ 
+Action
+ 
+Description
+
+'r'
+ 
+Read from file start
+ 
+Open for reading only; place the file pointer at the beginning of the file. Return FALSE if the file doesn’t already exist.
+------------------------
+'r+'
+
+Read from file start and allow writing
+
+Open for reading and writing; place the file pointer at the beginning of the file. Return FALSE if the file doesn’t already exist.
+------------------------
+'w'
+
+Write from file start and truncate file
+
+Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file doesn’t exist, attempt to create it.
+------------------------
+'w+'
+
+Write from file start, truncate file and allow reading
+
+Open for reading and writing; place the file pointer at the beginning of the file and truncate the file to zero length. If the file doesn’t exist, attempt to create it.
+------------------------
+'a'
+
+Append to file end
+
+Open for writing only; place the file pointer at the end of the file. If the file doesn’t exist, attempt to create it.
+------------------------
+'a+'
+
+Append to file end and allow reading
+
+Open for reading and writing; place the file pointer at the end of the file. If the file doesn’t exist, attempt to create it.
+------------------------
+-------------------------------------
+Reading from Files
+
+ The easiest way to read from a text file is to grab a whole line through fgets (think of the final s as standing for “string”), as in Example 7-5.
+ Example 7-5. Reading a file with fgets
+
+ <?php
+ $fh = fopen("testfile.txt", 'r') or
+     die("File does not exist or you lack permission to open it");
+ $line = fgets($fh);
+ fclose($fh);
+ echo $line;
+ ?>
+
+ If you created the file as shown in Example 7-4, you’ll get the first line:
+
+ Line 1
+
+ Or you can retrieve multiple lines or portions of lines through the fread function.
+
+Copy file
+
+ <?php // copyfile.php
+ copy('testfile.txt', 'testfile2.txt') or die("Could not copy file");
+ echo "File successfully copied to 'testfile2.txt'";
+ ?>
+
+Rename a file
+ <?php // movefile.php
+ if (!rename('testfile2.txt', 'testfile2.new'))
+     echo "Could not rename file";
+ else echo "File successfully renamed to 'testfile2.new'";
+ ?>
+
+Delete a file
+ <?php // deletefile.php
+ if (!unlink('testfile2.new')) echo "Could not delete file";
+ else echo "File 'testfile2.new' successfully deleted";
+ ?>
+
+Updating Files
+ Often you will want to add more data to a saved file, which you can do in many ways. You can use one of the append write modes (see Table 7-5), or you can simply open a file for reading and writing with one of the other modes that supports writing, and move the file pointer to the correct place within the file that you wish to write to or read from.
+
+ file pointer is the position within a file at which the next file access will take place; It is not the same as the file handle (as stored in the variable $fh in Example 7-4), which contains details about the file being accessed.
+
+ Updating a file:
+
+ <?php // update.php
+ $fh = fopen("testfile.txt", 'r+') or die("Failed to open file");
+ $text = fgets($fh);
+ fseek($fh, 0, SEEK_END);
+ fwrite($fh, "$text") or die("Could not write to file");
+ fclose($fh);
+ echo "File 'testfile.txt' successfully updated";
+ ?>
+
+ What this program does is open testfile.txt for both reading and writing by setting the mode with 'r+', which puts the file pointer right at the start. It then uses the fgets function to read in a single line from the file (up to the first line feed). After that, the fseek function is called to move the file pointer right to the file end, at which point the line of text that was extracted from the start of the file (stored in $text) is then appended to file’s end and the file is closed. The resulting file now looks like this:
+
+ Line 1
+ Line 2
+ Line 3
+ Line 1
+
+ There are two other seek options available to the fseek function: SEEK_SET and SEEK_CUR
+ SEEK_SET: set the file pointer to the exact position given by the preceding parameter e.g. fseek($fh, 18, SEEK_SET);
+ SEEK_CUR: set the file pointer to the "current position plus specified offset" e.g. fseek($fh, 5, SEEK_CUR);
+
+Summerize:
+|fopen
+|fread
+|fwrite
+|fgets
+|fseek
+|fclose
+|flock
+|file_get_contents
+|__________
+
+Locking Files for Multiple Accesses
+
+Web programs are often called by many users at the same time. If more than one person tries to write to a file simultaneously, it can become corrupted. And if one person writes to it while another is reading from it, the file is all right but the person reading it can get odd results. The solution is to use the flock function
+
+ Updating a file with file locking
+
+ <?php
+ $fh = fopen("testfile.txt", 'r+') or die("Failed to open file");
+ $text = fgets($fh);
+
+ if (flock($fh, LOCK_EX))
+ {
+    fseek($fh, 0, SEEK_END);
+    fwrite($fh, "$text") or die("Could not write to file"); 
+    flock($fh, LOCK_UN);
+ }
+ fclose($fh);
+ echo "File 'testfile.txt' successfully updated";
+ ?>
+
+ There is a trick to file locking to preserve the best possible response time for your website visitors: perform it directly before you make a change to a file, and then unlock it immediately afterward.
+
+ The first call to flock sets an exclusive file lock on the file referred to by $fh using the LOCK_EX parameter:
+
+ flock($fh, LOCK_EX);
+
+ From this point onward, no other processes can write to (or even read from) the file until the lock is released by using the LOCK_UN parameter, like this:
+
+ flock($fh, LOCK_UN);
+
+Upload Files
+
+ Image uploader upload.php
+
+ <?php // upload.php
+ echo <<<_END
+ <html><head><title>PHP Form Upload</title></head><body>
+ <form method='post' action='upload.php' enctype='multipart/form-data'>
+ Select File: <input type='file' name='filename' size='10' />
+ <input type='submit' value='Upload' />
+ </form>
+ _END;
+
+ if ($_FILES)
+ {
+     $name = $_FILES['filename']['name'];
+     move_uploaded_file($_FILES['filename']['tmp_name'], $name);
+     echo "Uploaded image '$name'<br /><img src='$name' />";
+ }
+
+ echo "</body></html>";
+ ?>
+ //enctype='multipart/form-data' is something important
+
+ Let’s examine this program a section at a time. The first line of the multiline echo statement starts an HTML document, displays the title, and then starts the document’s body.
+
+ Next we come to the form that selects the POST method of form submission, sets the target for posted data to the program upload.php (the program itself), and tells the web browser that the data posted should be encoded using the content type of multipart/form-data.
+
+ With the form set up, the next lines display the prompt “Select File:” and then request two inputs. The first input being asked for is a file, which is done by using an input type of file and a name of filename, and the input field has a width of 10 characters.
+
+ The second requested input is just a Submit button that is given the label “Upload” (replacing the default button text of “Submit Query”). And then the form is closed.
+
+ This short program shows a common technique in web programming in which a single program is called twice: once when the user first visits a page, and again when the user presses the Submit button.
+
+ The PHP code to receive the uploaded data is fairly simple, because all uploaded files are placed into the associative system array $_FILES. Therefore a quick check to see whether $_FILES has anything in it is sufficient to determine whether the user has uploaded a file. This is done with the statement if ($_FILES).
+
+ The first time the user visits the page, before uploading a file, $_FILES is empty, so the program skips this block of code. When the user uploads a file, the program runs again and discovers an element in the $_FILES array.
+
+ Warning !!!
+
+ If you run this program and receive warning messages such as “Permission denied” for the move_uploaded_file function call, then you may not have the correct permissions set for the folder in which the program is running.
+
+Using $_FILES
+ Five things are stored in the $_FILES array when a file is uploaded, as shown by Table 7-6 (where file is the file upload field name supplied by the submitting form). The contents of the $_FILES array:
+
+  Array Element
+   
+  Contents
+
+  $_FILES['file']['name']
+   
+
+  The name of the uploaded file (e.g., smiley.jpg)
+
+  $_FILES['file']['type']
+   
+
+  The content type of the file (e.g., image/jpeg)
+
+  $_FILES['file']['size']
+   
+
+  The file’s size in bytes
+
+  $_FILES['file']['tmp_name']
+   
+
+  The name of the temporary file stored on the server 
+
+  $_FILES['file']['error']
+   
+
+  The error code resulting from the file upload
+
+Validation
+
+Hopefully it now goes without saying (although I’ll do so anyway) that form-data validation is of the utmost importance, due to the possibility of users attempting to hack into your server.
+
+In addition to maliciously formed input data, some of the things you also have to check are whether a file was actually received and, if so, whether the right type of data was sent.
+ A more secure version of upload.php
+
+ <?php // upload2.php
+ echo <<<_END
+ <html><head><title>PHP Form Upload</title></head><body>
+ <form method='post' action='upload2.php' enctype='multipart/form-data'>
+ Select a JPG, GIF, PNG or TIF File:
+ <input type='file' name='filename' size='10' />
+ <input type='submit' value='Upload' /></form>
+ _END;
+
+ if ($_FILES)
+ {
+     $name = $_FILES['filename']['name'];
+
+     switch($_FILES['filename']['type'])
+     {
+         case 'image/jpeg': $ext = 'jpg'; break;
+         case 'image/gif': $ext = 'gif'; break;
+         case 'image/png': $ext = 'png'; break;
+         case 'image/tiff': $ext = 'tif'; break;
+         default: $ext = ''; break;
+     }
+     if ($ext)
+     {
+         $n = "image.$ext";
+         move_uploaded_file($_FILES['filename']['tmp_name'], $n);
+         echo "Uploaded image '$name' as '$n':<br />"; 
+         echo "<img src='$n' />";
+     }
+     else echo "'$name' is not an accepted image file"; 
+ }
+ else echo "No image has been uploaded";
+
+ echo "</body></html>";
+ ?>
+
+ Note
+
+ Don’t worry about having to delete the temporary file that PHP creates during the upload process, because if the file has not been moved or renamed, it will be automatically removed when the program exits.
+
+ Warning
+
+ Sometimes you may encounter the media type of image/pjpeg, which indicates a progressive jpeg, but you can safely add this to your code as an alias of image/jpeg, like this:
+
+ case 'image/pjpeg':
+ case 'image/jpeg': $ext = 'jpg'; break;
+ //no tab
+ ?>
+
+Variables
+ $varname = ...
+
+Array
+ $names = array("Lamb", "Tracy, "Brook", "Steve');
+  2D:
+   $location = array(
+       array(2, 3, 5),
+       array(3, 6, 2),
+       array(2, 5, 9)
+      );
+
+Multiline On HTML
+ <?php
+  $author = "Tom";
+
+  echo <<< _END
+  Hello every one.
+  My name is $author.
+  I wrote a lot of stupid books.
+  But I am a clever man.
+  _END;
+ ?>
+
+Define Constants:
+ define("ROOT_LOCATION", "127.0.0.01/");
+ $directory = ROOT_LOCATION
+
+Substring
+ <?php
+  $number = 12345 * 67890;
+  echo substr($number, 3, 1);
+ ?>
+
+isset(...) Determine if a variable is set and is not NULL.
+
+-------------------------------
+MAGIC Constants
+
+Description
+
+__LINE__
+ 
+
+The current line number of the file.
+
+__FILE__
+ 
+
+The full path and filename of the file. If used inside an include, the name of the included file is returned. In versions of PHP since 4.0.2, __FILE__ always contains an absolute path with symbolic links resolved, whereas in older versions it might contain a relative path under some circumstances.
+
+__DIR__
+ 
+
+The directory of the file. If used inside an include, the directory of the included file is returned. This is equivalent to dirname(__FILE__). This directory name does not have a trailing slash unless it is the root directory. (Added in PHP 5.3.0.)
+
+__FUNCTION__
+ 
+
+The function name. (Added in PHP 4.3.0.) As of PHP 5, returns the function name as it was declared (case-sensitive). In PHP 4, its value is always lowercase.
+
+__CLASS__
+ 
+
+The class name. (Added in PHP 4.3.0.) As of PHP 5, returns the class name as it was declared (case-sensitive). In PHP 4, its value is always lowercased.
+
+__METHOD__
+ 
+
+The class method name. (Added in PHP 5.0.0.) The method name is returned as it was declared (case-sensitive).
+
+__NAMESPACE__
+ 
+
+The name of the current namespace (case-sensitive). This constant is defined at compile time. (Added in PHP 5.3.0.)
+
+
+-----------------------------------
+print command
+
+By and large, the echo command will be a tad faster than print in general text output, because, not being a function, it doesn’t set a return value.
+
+On the other hand, because it isn’t a function, echo cannot be used as part of a more complex expression, whereas print can.
+Example:
+ 
+ $b ? print "TRUE" : print "FALSE";
+
+Functions:
+ Example:
+
+ <?php
+  function longdate($timestamp)
+  {
+   return date("l F jS Y", $timestamp);
+  }
+ ?>
+ This function takes a Unix timestamp (an integer number representing a date and time based on the number of seconds since 00:00 AM on January 1, 1970) as its input and then calls the PHP date function with the correct format string to return a date in the format Wednesday August 1st 2012.
+
+Global Variable:
+ global $is_logged_in;
+
+Static Variable:
+ A kind of variable that keeps its value even though the function finishes executing. However, other parts of the program cannot access this variable because of the scope issue.
+
+ Example:
+
+ <?php
+ function hey()
+ {
+  static $count = 0;
+ 
+  //The next time the function is called, because $count has already been declared, the first line of the function is skipped. Then the previously incremented value of $count is displayed before the variable is again incremented.
+
+  echo $count;
+  $count++;
+
+  // you cannot assign the result of an expression in their definitions;
+  // cannot do static $a = 1 + 2;
+ }
+ ?>
+
+Superglobal Variables:
+
+$GLOBALS
+ 
+
+All variables that are currently defined in the global scope of the script. The variable names are the keys of the array.
+
+$_SERVER
+ 
+
+Information such as headers, paths, and script locations. The entries in this array are created by the web server and there is no guarantee that every web server will provide any or all of these.
+
+$_GET
+ 
+
+Variables passed to the current script via the HTTP GET method.
+
+$_POST
+ 
+
+Variables passed to the current script via the HTTP POST method.
+
+$_FILES
+ 
+
+Items uploaded to the current script via the HTTP POST method.
+
+$_COOKIE
+ 
+
+Variables passed to the current script via HTTP cookies.
+
+$_SESSION
+ 
+
+Session variables available to the current script.
+
+$_REQUEST
+ 
+
+Contents of information passed from the browser; by default, $_GET, $_POST and $_COOKIE.
+
+$_ENV
+ 
+
+Variables passed to the current script via the environment method.
+
+ Example:
+
+ $came_from = $_SERVER['HTTP_REFERER'];
+
+ For security reason, it is better to do
+
+ $came_from = htmlentities($_SERVER['HTTP_REFERER']);
+
+ in order to convert all characters into HTML entities. e.g '>' --> '&gt'
+
+----------------------------------
+Boolean Expression Output
+
+ echo "a: [" . (5 == 6) . "]<br/>";
+
+ Results a: [], but if
+
+ echo "a: [" . (5 < 6) . "]<br/>";
+
+ would output a: [1]. FALSE is some string with no length
+
+Multiple Assignment Expression:
+ <?php
+ $level = $score = $time = 0;
+ ?>
+
+ This multiple assignment is possible only if the rightmost part of the expression is evaluated first and then processing continues in a right-to-left direction.
+
+Elseif:
+ "elseif" is one single keyword
+
+Switch:
+ switch ($var):
+  case "A":
+   echo "...A";
+   break
+
+  // etc...
+
+  default: echo "NO...";
+  break;
+ endswitch;
+
+While and do-while loops:
+ while (condition)
+ {
+  ... // may not execute
+ }
+
+ do {
+  ... // execute at least once
+ } while (condition);
+
+For loop:
+ for ($i = 0; $i < 10; ++$i) [$i++ for different reason]
+ {
+  ... execute 10 times
+ }
+
+ More complex:
+ for ($i = 1, $j = 1 ; $i + $j < 10 ; $i++ , $j++)
+ {
+     // ...
+ }
+
+The "continue" Statement:
+
+The continue statement is a little like a break statement, except that it instructs PHP to stop processing the current loop and to move right to its next iteration. So, instead of breaking out of the whole loop, only the current iteration is exited.
+
+ Example:
+ <?php
+ $j = 10;
+
+ while ($j > −10)
+ {
+   $j--;
+   if ($j == 0) continue; // skip the echo code when j = 0
+   echo (10 / $j) . "<br />";
+ }
+ ?>
+
+-----------------------------
+PHP functions and objects
+
+some functions:
+ phpinfo();
+ strrev("sdfs"); // Reverse string
+ str_repeat("Hip ", 2); //Repeat string
+ strtoupper("ga"); // string to uppercase
+ abs(5-8); // absolute value
+ ucfirst("fdf"); // make the first letter uppercase
+
+Passing by reference "&"
+ pass not by value but by reference
+
+Returning values in gloabal variables
+ <?php
+ $a1 = "WILLIAM";
+ $a2 = "henry";
+ $a3 = "gatES";
+
+ echo $a1 . " " . $a2 . " " . $a3 . "<br />";
+ fix_names();
+ echo $a1 . " " . $a2 . " " . $a3;
+
+ function fix_names()
+ {
+     global $a1; $a1 = ucfirst(strtolower($a1));
+     global $a2; $a2 = ucfirst(strtolower($a2));
+     global $a3; $a3 = ucfirst(strtolower($a3));
+ }
+ ?>
+
+ Once declared, these variables remain global and available to the rest of your program, including its functions.
+
+Include files
+ <?php
+ include "other.php";
+ ?>
+
+ to prevent loading library twice, do
+ <?php
+ include_once "theLibrary.php";
+ ?>
+
+ A potential problem with include and include_once is that PHP will only attempt to include the requested file. Program execution continues even if the file is not found.
+
+ When it is absolutely essential to include a file, require it
+ <?php
+ require_once "library.php";
+ ?>
+
+Version Compatibility
+ PHP is in an ongoing process of development, and there are multiple versions. If you need to check whether a particular function is available to your code, you can use the function_exists function, which checks all predefined and user-created functions.
+
+ <?php
+ if (function_exists("array_combine"))
+ {
+     echo "Function exists";
+ }
+ else
+ {
+     echo "Function does not exist - better write our own";
+ }
+ ?>
+
+------------------------------
+Objects
+
+Declare a Class
+ <?php
+ $object = new User;
+ $object2 = new User('name', 'password');
+ print_r($object); // display information in "human readable" form
+
+ class User
+ {
+  public $name, $password; // fields
+
+  function save_user()
+  {
+   echo "Hey Save User";
+  }
+ }
+ ?>
+
+ In the case of the new object $object, print_r prints the following:
+
+ User Object
+ (
+     [name] =>
+     [password] =>
+ )
+ 
+ a browser compresses all the whitespace, so the output in a browser is slightly harder to read:
+
+ User Object ( [name] => [password] => )
+
+Interact with an object:
+ <?php
+ class Cellphone
+ {
+  public $brand, $price;
+
+  //constructor
+  function Cellphone($b, $p)
+  {
+   $this->brand = $b;
+   $this->price = $p;
+  }
+  function sayhi()
+  {
+   echo "hi! ";
+  }
+ }
+ ?>
+
+ <?php
+ $iPhone = new Cellphone('iPhone', '999');
+ print_r($iPhone); echo "<br/>";
+
+ $iPhone->sayhi();
+ $iPhone->brand = "Samsung";
+ print_r($iPhone); echo "<br/>";
+ ?>
+
+Valid and Invalid property declarations:
+ <?php
+ class Test
+ {
+     public $name = "Paul Smith"; // Valid
+     public $age = 42; // Valid
+     public $time = time(); // Invalid - calls a function
+     public $score = $level * 2; // Invalid - uses an expression
+ }
+ ?>
+
+Example 5-18. Creating and accessing a static method
+
+ <?php
+ User::pwd_string(); // call static function
+
+ class User
+ {
+     static function pwd_string()
+     {
+         echo "Please enter your password";
+     }
+ }
+ ?>
+
+ If you are using PHP 5, you can also define a method as static, which means that it is called on a class and not on an object. A static method has no access to any object properties and is created and accessed as in Example 5-18.
+
+Declare constants
+
+In the same way that you can create a global constant with the define function, you can define constants inside classes. The generally accepted practice is to use uppercase letters to make them stand out, as in Example 5-21.
+
+ <?php
+ Translate::lookup();
+
+ class Translate
+ {
+     const ENGLISH = 0;
+     const SPANISH = 1;
+     const FRENCH = 2;
+     const GERMAN = 3;
+     // ...
+
+     static function lookup()
+     {
+
+     // Constants can be referenced directly, using the self keyword and double colon operator
+         echo self::SPANISH;
+     }
+ }
+ ?>
+
+Static Property
+
+Defining a class with a static property
+
+ <?php
+ $temp = new Test();
+ echo "Test A: " . Test::$static_property . "<br />";
+ echo "Test B: " . $temp->get_sp() . "<br />";
+ echo "Test C: " . $temp->static_property . "<br />";
+
+ class Test
+ {
+     static $static_property = "I'm static";
+
+     function get_sp()
+     {
+         return self::$static_property;
+     }
+ }
+ ?>
+
+ When you run this code, it returns the following output:
+
+ Test A: I'm static
+ Test B: I'm static
+
+ Notice: Undefined property: Test::$static_property
+ Test C:
+
+Inheritance
+'extends' key word
+
+Overriding a method and using the parent operator
+
+ <?php
+ $object = new Son;
+ $object->test();
+ $object->test2();
+
+ class Dad
+ {
+     function test()
+     {
+         echo "[Class Dad] I am your Father<br />";
+     }
+ }
+
+ class Son extends Dad
+ {
+     function test()
+     {
+         echo "[Class Son] I am Luke<br />";
+     }
+
+     function test2()
+     {
+         parent::test(); // parent:: is the parent opeator
+     }
+ }
+ ?>
+
+Subclass constructors
+
+When you extend a class and declare your own constructor, you should be aware that PHP will not automatically call the constructor method of the parent class. To be certain that all initialization code is executed, subclasses should always call the parent constructors, as in Example 5-26.
+Example 5-26. Calling the parent class constructor
+
+ <?php
+ $object = new Tiger();
+ echo "Tigers have...<br>";
+ echo "Fur: " . $object->fur . "<br />";
+ echo "Stripes: " . $object->stripes;
+
+ class Wildcat
+ {
+     public $fur; // Wildcats have fur
+
+     function __construct()
+     {
+         $this->fur = "TRUE";
+     }
+ }
+
+ class Tiger extends Wildcat
+ {
+     public $stripes; // Tigers have stripes
+
+     function __construct()
+     {
+         parent::__construct(); // Call parent constructor first
+         $this->stripes = "TRUE";
+     }
+ }
+ ?>
+
+Final methods
+
+In cases in which you wish to prevent a subclass from overriding a superclass method, you can use the final keyword. Example 5-27 shows how.
+Example 5-27. Creating a final method
+
+<?php
+class User
+{
+    final function copyright()
+    {
+        echo "This class was written by Joe Smith";
+    }
+}
+?>
+
+-------------------------------
+PHP Arrays
+
+Numerically indexed Arrays
+ <?php
+ $paper[] = "Copier";
+ $paper[] = "Inkjet";
+ $paper[] = "Laser";
+ $paper[] = "Photo"; // you don't even need to explicitly specify the index when adding new items, although you can
+
+ print_r($paper);
+ ?>
+
+Output:
+Array
+(
+     [0] => Copier
+     [1] => Inkjet
+     [2] => Laser
+     [3] => Photo
+)
+
+Associative Arrays
+Using them, you can reference the items in an array by name rather than by number.
+
+Example 6-4. Adding items to an associative array and retrieving them
+
+ <?php
+ $paper['copier'] = "Copier & Multipurpose";
+ $paper['inkjet'] = "Inkjet Printer";
+ $paper['laser'] = "Laser Printer";
+ $paper['photo'] = "Photographic Paper";
+
+ echo $paper['laser'];
+ ?>
+
+Assignment Using the array Keyword
+ <?php
+ $p1 = array("Copier", "Inkjet", "Laser", "Photo");
+
+ echo "p1 element: " . $p1[2] . "<br>";
+
+ // this is like a map
+ $p2 = array('copier' => "Copier & Multipurpose", // look at the '=>'
+             'inkjet' => "Inkjet Printer",
+             'laser' => "Laser Printer",
+             'photo' => "Photographic Paper");
+
+ echo "p2 element: " . $p2['inkjet'] . "<br>";
+ ?>
+
+The foreach...as Loop
+
+Example 6-6. Walking through a numeric array using foreach...as
+COOL
+ <?php
+ $paper = array("Copier", "Inkjet", "Laser", "Photo");
+ $j = 0;
+
+ foreach ($paper as $item)
+ {
+     echo "$j: $item<br>";
+     ++$j;
+ }
+ ?>
+
+As an alternative syntax to foreach...as, you can use the list function in conjunction with the each function, as in Example 6-8.
+Example 6-8. Walking through an associative array using each and list
+
+ <?php
+ $paper = array('copier' => "Copier & Multipurpose",
+                'inkjet' => "Inkjet Printer",
+                'laser' => "Laser Printer",
+                'photo' => "Photographic Paper");
+
+ while (list($item, $description) = each($paper))
+     echo "$item: $description<br>";
+ ?>
+
+In this example, a while loop is set up and will continue looping until the each function returns a value of FALSE. The each function acts like foreach: it returns an array containing a key and value pair from the array $paper and then moves its built-in pointer to the next pair in that array. When there are no more pairs to return, each returns FALSE.
+
+Multidimensional Array
+Creating a multidimensional associative array
+
+<?php
+$products = array(
+    'paper' => array(
+        'copier' => "Copier & Multipurpose",
+        'inkjet' => "Inkjet Printer",
+        'laser' => "Laser Printer",
+        'photo' => "Photographic Paper"),
+
+    'pens' => array(
+        'ball' => "Ball Point",
+        'hilite' => "Highlighters",
+        'marker' => "Markers"),
+
+    'misc' => array(
+        'tape' => "Sticky Tape",
+        'glue' => "Adhesives",
+        'clips' => "Paperclips") );
+
+echo "<pre>";
+foreach ($products as $section => $items)
+    foreach ($items as $key => $value)
+        echo "$section:\t$key\t($value)<br>";
+echo "</pre>";
+?>
+
+Array Functions!
+
+is_array()
+
+ echo (is_array($fred)) ? "Is an array" : "Is not an array";
+
+ Note that if $fred has not yet been assigned a value, an “Undefined variable” message will be generated.
+
+count()
+ To count all the elements in the top level of an array
+
+ echo count($fred);
+
+ Should you wish to know how many elements there are altogether in a multidimensional array, you can use a statement such as:
+
+ echo count($fred, 1);
+
+sort() / rsort()
+ 
+ sort($fred);
+ 
+ sort will act directly on the supplied array rather than returning a new array of sorted elements. Instead it returns TRUE on success and FALSE on error
+
+ main two flags:
+ sort($fred, SORT_NUMERIC);
+ sort($fred, SORT_STRING);
+
+shuffle()
+ shuffle($cards);
+
+ returns TRUE on success or FALSE on error.
+
+explode()
+ This is a very useful function with which you can take a string containing several items separated by a single character (or string of characters) and then place each of these items into an array.
+
+ <?php
+ $temp = explode(' ', "This is a sentence with seven words");
+ print_r($temp);
+ ?>
+
+ Output:
+ Array
+ (
+     [0] => This
+     [1] => is
+     [2] => a
+     [3] => sentence
+     [4] => with
+     [5] => seven
+     [6] => words
+ )
+
+
+
+extract()
+ Extract the variables sent by GET or POST method in an global variable array (either $_GET or $_POST))
+
+ so for example, if the user submits a form containing information: $name = "Tony" by the GET method, then extract($_GET) will result in the $_GET array where you can do $_GET['name'], and it will be Tony;
+
+ Be careful with this approach, though, because if any extracted variables conflict with ones that you have already defined, your existing values WILL BE OVERWRITTEN. To avoid this possibility, you can use one of the many additional parameters available to this function, like this:
+
+ extract($_GET, EXTR_PREFIX_ALL, 'fromget');
+
+ In this case, all the new variables will begin with the given prefix string followed by an underscore, so $q will become $fromget_q.
+
+ The second method is strongly recommended.
+
+
+
+compact()
+ There are also times when you want to use compact, the inverse of extract, to create an array from variables and their values.
+
+ <?php
+ $fname = "Elizabeth";
+ $sname = "Windsor";
+ $address = "Buckingham Palace";
+ $city = "London";
+ $country = "United Kingdom";
+
+ $contact = compact('fname', 'sname', 'address', 'city', 'country');
+ print_r($contact);
+ ?>
+
+ The result of running Example 6-14 is:
+
+ Array
+ (
+     [fname] => Elizabeth
+     [sname] => Windsor
+     [address] => Buckingham Palace
+     [city] => London
+     [country] => United Kingdom
+ )
+
+ Note how compact requires the variable names to be supplied in quotes and not as variables preceded with a $ symbol. This is because compact is looking for an array of variable names.
+
+reset()
+ reset an array so that next time the foreach loop will start at the beginning
+
+end()
+ move PHP's internal array pointer to the end of the array (final element)
+
+---------------------------------
+printf() precision handling
+
+e.g.
+ printf("The result is: $%.2f", 123.42 / 12);
+ // pay attention to the dollar sign! It's JUST A DOLLAR SIGN
+
+---------------------------------
+File Handling
+
+Check if a file exists: file_exists() method
+
+ if (file_exists("testfile.txt")) echo "File exists";
+
+Create a file
+
+ exmaple:
+ <?php // testfile.php
+ $fh = fopen("testfile.txt", 'w') or die("Failed to create file");
+ $text = <<<_END
+ Line 1
+ Line 2
+ Line 3
+
+ _END;
+ fwrite($fh, $text) or die("Could not write to file");
+ fclose($fh);
+ echo "File 'testfile.txt' written successfully";
+ ?>
+
+ This simple example shows the sequence that all file handling takes:
+
+    1.Always start by opening the file. This is done through a call to fopen.
+
+    2.Then you can call other functions; here we write to the file (fwrite), but you can also read from an existing file (fread or fgets) and do other things.
+
+    3.Finish by closing the file (fclose). Although the program does this for you when it ends, you should clean up yourself by closing the file when you’re finished.
+
+Table 7-5. The supported fopen modes
+
+Mode
+ 
+Action
+ 
+Description
+
+'r'
+ 
+Read from file start
+ 
+Open for reading only; place the file pointer at the beginning of the file. Return FALSE if the file doesn’t already exist.
+------------------------
+'r+'
+
+Read from file start and allow writing
+
+Open for reading and writing; place the file pointer at the beginning of the file. Return FALSE if the file doesn’t already exist.
+------------------------
+'w'
+
+Write from file start and truncate file
+
+Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file doesn’t exist, attempt to create it.
+------------------------
+'w+'
+
+Write from file start, truncate file and allow reading
+
+Open for reading and writing; place the file pointer at the beginning of the file and truncate the file to zero length. If the file doesn’t exist, attempt to create it.
+------------------------
+'a'
+
+Append to file end
+
+Open for writing only; place the file pointer at the end of the file. If the file doesn’t exist, attempt to create it.
+------------------------
+'a+'
+
+Append to file end and allow reading
+
+Open for reading and writing; place the file pointer at the end of the file. If the file doesn’t exist, attempt to create it.
+------------------------
+-------------------------------------
+Reading from Files
+
+ The easiest way to read from a text file is to grab a whole line through fgets (think of the final s as standing for “string”), as in Example 7-5.
+ Example 7-5. Reading a file with fgets
+
+ <?php
+ $fh = fopen("testfile.txt", 'r') or
+     die("File does not exist or you lack permission to open it");
+ $line = fgets($fh);
+ fclose($fh);
+ echo $line;
+ ?>
+
+ If you created the file as shown in Example 7-4, you’ll get the first line:
+
+ Line 1
+
+ Or you can retrieve multiple lines or portions of lines through the fread function.
+
+Copy file
+
+ <?php // copyfile.php
+ copy('testfile.txt', 'testfile2.txt') or die("Could not copy file");
+ echo "File successfully copied to 'testfile2.txt'";
+ ?>
+
+Rename a file
+ <?php // movefile.php
+ if (!rename('testfile2.txt', 'testfile2.new'))
+     echo "Could not rename file";
+ else echo "File successfully renamed to 'testfile2.new'";
+ ?>
+
+Delete a file
+ <?php // deletefile.php
+ if (!unlink('testfile2.new')) echo "Could not delete file";
+ else echo "File 'testfile2.new' successfully deleted";
+ ?>
+
+Updating Files
+ Often you will want to add more data to a saved file, which you can do in many ways. You can use one of the append write modes (see Table 7-5), or you can simply open a file for reading and writing with one of the other modes that supports writing, and move the file pointer to the correct place within the file that you wish to write to or read from.
+
+ file pointer is the position within a file at which the next file access will take place; It is not the same as the file handle (as stored in the variable $fh in Example 7-4), which contains details about the file being accessed.
+
+ Updating a file:
+
+ <?php // update.php
+ $fh = fopen("testfile.txt", 'r+') or die("Failed to open file");
+ $text = fgets($fh);
+ fseek($fh, 0, SEEK_END);
+ fwrite($fh, "$text") or die("Could not write to file");
+ fclose($fh);
+ echo "File 'testfile.txt' successfully updated";
+ ?>
+
+ What this program does is open testfile.txt for both reading and writing by setting the mode with 'r+', which puts the file pointer right at the start. It then uses the fgets function to read in a single line from the file (up to the first line feed). After that, the fseek function is called to move the file pointer right to the file end, at which point the line of text that was extracted from the start of the file (stored in $text) is then appended to file’s end and the file is closed. The resulting file now looks like this:
+
+ Line 1
+ Line 2
+ Line 3
+ Line 1
+
+ There are two other seek options available to the fseek function: SEEK_SET and SEEK_CUR
+ SEEK_SET: set the file pointer to the exact position given by the preceding parameter e.g. fseek($fh, 18, SEEK_SET);
+ SEEK_CUR: set the file pointer to the "current position plus specified offset" e.g. fseek($fh, 5, SEEK_CUR);
+
+Summerize:
+|fopen
+|fread
+|fwrite
+|fgets
+|fseek
+|fclose
+|flock
+|file_get_contents
+|__________
+
+Locking Files for Multiple Accesses
+
+Web programs are often called by many users at the same time. If more than one person tries to write to a file simultaneously, it can become corrupted. And if one person writes to it while another is reading from it, the file is all right but the person reading it can get odd results. The solution is to use the flock function
+
+ Updating a file with file locking
+
+ <?php
+ $fh = fopen("testfile.txt", 'r+') or die("Failed to open file");
+ $text = fgets($fh);
+
+ if (flock($fh, LOCK_EX))
+ {
+    fseek($fh, 0, SEEK_END);
+    fwrite($fh, "$text") or die("Could not write to file"); 
+    flock($fh, LOCK_UN);
+ }
+ fclose($fh);
+ echo "File 'testfile.txt' successfully updated";
+ ?>
+
+ There is a trick to file locking to preserve the best possible response time for your website visitors: perform it directly before you make a change to a file, and then unlock it immediately afterward.
+
+ The first call to flock sets an exclusive file lock on the file referred to by $fh using the LOCK_EX parameter:
+
+ flock($fh, LOCK_EX);
+
+ From this point onward, no other processes can write to (or even read from) the file until the lock is released by using the LOCK_UN parameter, like this:
+
+ flock($fh, LOCK_UN);
+
+Upload Files
+
+ Image uploader upload.php
+
+ <?php // upload.php
+ echo <<<_END
+ <html><head><title>PHP Form Upload</title></head><body>
+ <form method='post' action='upload.php' enctype='multipart/form-data'>
+ Select File: <input type='file' name='filename' size='10' />
+ <input type='submit' value='Upload' />
+ </form>
+ _END;
+
+ if ($_FILES)
+ {
+     $name = $_FILES['filename']['name'];
+     move_uploaded_file($_FILES['filename']['tmp_name'], $name);
+     echo "Uploaded image '$name'<br /><img src='$name' />";
+ }
+
+ echo "</body></html>";
+ ?>
+ //enctype='multipart/form-data' is something important
+
+ Let’s examine this program a section at a time. The first line of the multiline echo statement starts an HTML document, displays the title, and then starts the document’s body.
+
+ Next we come to the form that selects the POST method of form submission, sets the target for posted data to the program upload.php (the program itself), and tells the web browser that the data posted should be encoded using the content type of multipart/form-data.
+
+ With the form set up, the next lines display the prompt “Select File:” and then request two inputs. The first input being asked for is a file, which is done by using an input type of file and a name of filename, and the input field has a width of 10 characters.
+
+ The second requested input is just a Submit button that is given the label “Upload” (replacing the default button text of “Submit Query”). And then the form is closed.
+
+ This short program shows a common technique in web programming in which a single program is called twice: once when the user first visits a page, and again when the user presses the Submit button.
+
+ The PHP code to receive the uploaded data is fairly simple, because all uploaded files are placed into the associative system array $_FILES. Therefore a quick check to see whether $_FILES has anything in it is sufficient to determine whether the user has uploaded a file. This is done with the statement if ($_FILES).
+
+ The first time the user visits the page, before uploading a file, $_FILES is empty, so the program skips this block of code. When the user uploads a file, the program runs again and discovers an element in the $_FILES array.
+
+ Warning !!!
+
+ If you run this program and receive warning messages such as “Permission denied” for the move_uploaded_file function call, then you may not have the correct permissions set for the folder in which the program is running.
+
+Using $_FILES
+ Five things are stored in the $_FILES array when a file is uploaded, as shown by Table 7-6 (where file is the file upload field name supplied by the submitting form). The contents of the $_FILES array:
+
+  Array Element
+   
+  Contents
+
+  $_FILES['file']['name']
+   
+
+  The name of the uploaded file (e.g., smiley.jpg)
+
+  $_FILES['file']['type']
+   
+
+  The content type of the file (e.g., image/jpeg)
+
+  $_FILES['file']['size']
+   
+
+  The file’s size in bytes
+
+  $_FILES['file']['tmp_name']
+   
+
+  The name of the temporary file stored on the server 
+
+  $_FILES['file']['error']
+   
+
+  The error code resulting from the file upload
+
+Validation
+
+Hopefully it now goes without saying (although I’ll do so anyway) that form-data validation is of the utmost importance, due to the possibility of users attempting to hack into your server.
+
+In addition to maliciously formed input data, some of the things you also have to check are whether a file was actually received and, if so, whether the right type of data was sent.
+ A more secure version of upload.php
+
+ <?php // upload2.php
+ echo <<<_END
+ <html><head><title>PHP Form Upload</title></head><body>
+ <form method='post' action='upload2.php' enctype='multipart/form-data'>
+ Select a JPG, GIF, PNG or TIF File:
+ <input type='file' name='filename' size='10' />
+ <input type='submit' value='Upload' /></form>
+ _END;
+
+ if ($_FILES)
+ {
+     $name = $_FILES['filename']['name'];
+
+     switch($_FILES['filename']['type'])
+     {
+         case 'image/jpeg': $ext = 'jpg'; break;
+         case 'image/gif': $ext = 'gif'; break;
+         case 'image/png': $ext = 'png'; break;
+         case 'image/tiff': $ext = 'tif'; break;
+         default: $ext = ''; break;
+     }
+     if ($ext)
+     {
+         $n = "image.$ext";
+         move_uploaded_file($_FILES['filename']['tmp_name'], $n);
+         echo "Uploaded image '$name' as '$n':<br />"; 
+         echo "<img src='$n' />";
+     }
+     else echo "'$name' is not an accepted image file"; 
+ }
+ else echo "No image has been uploaded";
+
+ echo "</body></html>";
+ ?>
+
+ Note
+
+ Don’t worry about having to delete the temporary file that PHP creates during the upload process, because if the file has not been moved or renamed, it will be automatically removed when the program exits.
+
+ Warning
+
+ Sometimes you may encounter the media type of image/pjpeg, which indicates a progressive jpeg, but you can safely add this to your code as an alias of image/jpeg, like this:
+
+ case 'image/pjpeg':
+ case 'image/jpeg': $ext = 'jpg'; break;

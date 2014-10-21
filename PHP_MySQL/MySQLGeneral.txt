@@ -1,0 +1,709 @@
+MySQL 
+
+Database 
+
+The overall container for a collection of MySQL data. 
+Table 
+
+A subcontainer within a database that stores the actual data. 
+Row 
+
+A single record within a table, which may contain several fields. 
+Column 
+
+The name of a field within a row. 
+
+Crappy Windows Command-Line Access 
+If you installed the EasyPHP WAMP as explained in Chapter 2, you will be able to access the MySQL executable from the following directory: 
+
+cd C:\Program Files <x86>\EasyPHP...\binaries\mysql\bin\mysql -p -u root 
+
+The command to show databases: 
+
+SHOW databases; 
+
+Notice there is a semicolon 
+
+There are six different prompts that MySQL may present you with (see Table 8-2), so you will always know where you are during a multiline input. 
+Table 8-2. MySQL’s six command prompts 
+
+MySQL prompt 
+
+Meaning 
+
+mysql> 
+
+MySQL is ready and waiting for a command 
+
+-> 
+
+
+Waiting for the next line of a command 
+
+'> 
+
+
+Waiting for the next line of a string started with a single quote 
+
+"> 
+
+
+Waiting for the next line of a string started with a double quote 
+
+`> 
+
+
+Waiting for the next line of a string started with a back tick 
+
+/*> 
+
+
+Waiting for the next line of a comment started with /* 
+------------------------------- 
+
+Cancel Commands: 
+
+meaningless gibberish to mysql \c 
+
+When you type that line in, MySQL will ignore everything you typed and issue a new prompt. 
+
+MySQL Commands: 
+case-Insensitive 
+
+Create a database: 
+
+CREATE DATABASE name; 
+
+after created a database, you want to use it: 
+
+USE name; 
+
+Create Users 
+
+To create a user, issue the GRANT command, which takes the following form (don’t type this in—it’s not an actual working command): 
+
+GRANT PRIVILEGES ON database.object TO 'username@hostname' 
+IDENTIFIED BY 'password'; 
+
+This should be pretty straightforward, with the possible exception of the database.object part. What this refers to is the database itself and the objects it contains, such as tables 
+
+E.g. 
+
+GRANT ALL ON books.* TO 'kaiyu'@'localhost' IDENTIFIED BY '123abc'; 
+
+What this does is allow the user kaiyu@localhost full access to the publications database using the password mypasswd. You can test whether this step has worked by entering quit to exit and then rerunning MySQL the way you did before, but instead of entering -u root -p, type -u kaiyu -p, or whatever the username is that you created. 
+
+Create a table 
+
+first, USE books; 
+
+Then, type:	
+CREATE TABLE classics ( 
+author VARCHAR(128), 
+title VARCHAR(128), 
+price CHAR(4)) ENGINE MyISAM; 
+
+the ENGINE MyISAM tells MySQL the type of database engine to use for this table. 
+
+To check whether your new table has been created, type: 
+
+DESCRIBE classics; 
+
+Output: 
+mysql> DESCRIBE classics; 
++--------+--------------+------+-----+---------+-------+ 
+| Field | Type | Null | Key | Default | Extra | 
++--------+--------------+------+-----+---------+-------+ 
+| author | varchar(128) | YES | | NULL | | 
+| title | varchar(128) | YES | | NULL | | 
+| price | char(4) | YES | | NULL | | 
++--------+--------------+------+-----+---------+-------+ 
+
+What these columns mean: 
+Field 
+
+The name of each field or column within a table. 
+Type 
+
+The type of data being stored in the field. 
+Null 
+
+Whether a field is allowed to contain a value of NULL. 
+Key 
+
+MySQL supports keys or indexes, which are quick ways to look up and search for data. The Key heading shows what type of key (if any) has been applied. 
+Default 
+
+The default value that will be assigned to the field if no value is specified when a new row is created. 
+Extra 
+
+Additional information, such as whether a field is set to auto-increment. 
+
+Data Types 
+
+Data type Bytes used	 Examples 
+
+CHAR(n)	 Exactly n (<= 255)	 CHAR(5) “Hello” uses 5 Bytes 
+CHAR(57) “New York” uses 57 bytes 
+
+VARCHAR(n)	 Up to n (<= 65535)	 VARCHAR(100) “Greets” uses 6 bytes 
+VARCHAR(7) “Morning” uses 7 bytes 
+
+
+The BINARY data type 
+
+The BINARY data type is used for storing strings of full bytes that do not have an associated character set. For example, you might use the BINARY data type to store a GIF image (see Table 8-7). 
+
+Data type Bytes used	 Examples 
+
+BINARY(n) Exactly n (<= 255)	 As CHAR but contains binary data 
+or BYTE(n) 
+
+VARBINARY(n)	Up to n (<= 65535)	 As VARCHAR but contains 
+binary data 
+
+TEXT 
+(Treated as a string with a character set) 
+The differences between TEXT and VARCHAR are small: 
+
+Prior to version 5.0.3, MySQL would remove leading and trailing spaces from VARCHAR fields. 
+
+TEXT fields cannot have default values. 
+
+MySQL indexes only the first n characters of a TEXT column (you specify n when you create the index). 
+
+BLOB (Binary Large OBject) 
+Treated as binary data—no character set 
+BLOBs cannot have default values 
+
+BLOB(n), Bytes used Up to n (<= 65535) 
+
+Numeric data types: 
+
+INT signed: (−2147483648 to 2147483647)	Unsigned: (0 to 4294967295); 
+FLOAT	signed: −3.402823466E+38 to 3.402823466E+38 
+DOUBLE or REAL signed: −1.7976931348623157E+308 to 
+1.7976931348623157E+308 
+
+To specify whether a data type is signed or unsigned, use the UNSIGNED qualifier. The following example creates a table called tablename with a field in it called fieldname of the data type UNSIGNED INTEGER: 
+
+CREATE TABLE tablename (fieldname INT UNSIGNED); 
+
+When creating a numeric field, you can also pass an optional number as a parameter, like this: 
+
+CREATE TABLE tablename (fieldname INT(4)); 
+
+But you must remember that, unlike BINARY and CHAR data types, this parameter does not indicate the number of bytes of storage to use. It may seem counterintuitive, but what the number actually represents is the display width of the data in the field when it is retrieved. It is commonly used with the ZEROFILL qualifier like this: 
+
+CREATE TABLE tablename (fieldname INT(4) ZEROFILL); 
+
+What this does is cause any numbers with a width of less than four characters to be padded with one or more zeros, sufficient to make the display width of the field four characters long. When a field is already of the specified width or greater no padding takes place. 
+
+DATE & TIME 
+Data Type Time/date format 
+
+DATETIME	 '0000-00-00 00:00:00' 
+DATE '0000-00-00' 
+TIMESTAMP	 '0000-00-00 00:00:00' 
+TIME '00:00:00' 
+YEAR 0000 (Only years 0000 and 1901–2155) 
+
+DATETIME and TIMESTAMP use the same format. The difference is, TIMESTAMP has a narrow range (1970 to 2037), but it can be set by the MySQL automatically 
+
+If you don’t specify the value when adding a row, the current time is automatically inserted. You can also have MySQL update a TIMESTAMP column each time you change a row. 
+
+AUTO_INCREMENT 
+
+Causes MySQL to set a unique value for this column in every row, as described earlier. We don’t really have control over the value that this column will take in each row, but we don’t care: all we care about is that we are guaranteed a unique value. 
+
+Adding the auto-incrementing id column at table creation 
+
+CREATE TABLE classics ( 
+author VARCHAR(128), 
+title VARCHAR(128), 
+type VARCHAR(16), 
+year CHAR(4), 
+id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY) ENGINE MyISAM; 
+
+You can also add a column after you create a TABLE 
+
+ALTER TABLE classics ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY; 
+
+It has the following characteristics 
+INT UNSIGNED 
+
+Makes the column take an integer large enough for you to store more than 4 billion records in the table. 
+NOT NULL 
+
+Ensures that every column has a value. Many programmers use NULL in a field to indicate that the field doesn’t have any value. But that would allow duplicates, which would violate the whole reason for this column’s existence. So we disallow NULL values. 
+AUTO_INCREMENT 
+
+Causes MySQL to set a unique value for this column in every row, as described earlier. We don’t really have control over the value that this column will take in each row, but we don’t care: all we care about is that we are guaranteed a unique value. 
+KEY 
+
+An auto-increment column is useful as a key, because you will tend to search for rows based on this column. This will be explained in the section Indexes. 
+
+Adding data to a table 
+
+INSERT INTO classics (author, title, type, year) 
+VALUES('Mark Twain', 'The Adventure of Tome Sawyer', 'Fiction', '1876'); 
+
+Rename a table 
+ALTER TABLE classics RENAME pre1900 
+
+Change data type of a column 
+ALTER TABLE classics MODIFY year SMALLINT; 
+
+Renaming a column 
+
+Looking again at Figure 8-5, you may decide that having a column named type can be confusing, because that is the name used by MySQL to identify data types. Again, no problem—let’s change its name to category, like this: 
+
+ALTER TABLE classics CHANGE type category VARCHAR(16); 
+
+Note the addition of VARCHAR(16) on the end of this command. That’s because the CHANGE keyword requires the data type to be specified, even if you don’t intend to change it, and VARCHAR(16) was the data type specified when that column was initially created as type. 
+
+Removing a column 
+
+Actually, upon reflection, maybe the page count column pages isn’t actually all that useful for this particular database, so here’s how to remove that column using the DROP keyword: 
+
+ALTER TABLE classics DROP pages; 
+
+Remember that DROP is irreversible and you should always use it with caution 
+
+Select data from column(s): 
+
+If you want All: 
+
+SELECT * FROM database; 
+
+Add conditions: 
+
+SELECT * FROM database WHERE some_column = some_value 
+// you can use multiple conditions by specifying AND, OR relationships among them; 
+
+Select specific column in some Order 
+
+SELECT col_name, col_name2,... FROM database ORDER BY col_name 
+
+Update data: 
+UPDATE table_name 
+SET column1=value1,column2=value2,... 
+WHERE some_column=some_value; 
+
+Delete a table 
+
+DROP TABLE classics; 
+
+Delete a row 
+
+DELETE FROM table_name WHERE some_column = some_value 
+
+Indexes 
+The way to achieve fast searches is to add an index, either when creating a table or at any time afterward. But the decision is not so simple. For example, there are different index types, such as INDEX, PRIMARY KEY, and FULLTEXT. Also you must decide which columns require an index, a judgment that requires you to predict whether you will be searching any of the data in that column. Indexes can also get complicated, because you can combine multiple columns in one index. And even when you’ve decided that, you still have the option of reducing index size by limiting the amount of each column to be indexed. 
+
+Create an Index 
+ALTER TABLE classics ADD INDEX(author(20)); 
+ALTER TABLE classics ADD INDEX(title(20)); 
+ALTER TABLE classics ADD INDEX(category(4)); 
+ALTER TABLE classics ADD INDEX(year); 
+DESCRIBE classics; 
+
+The first two commands create indexes on both the author and title columns, limiting each index to only the first 20 characters. For instance, when MySQL indexes the following title: 
+
+The Adventures of Tom Sawyer 
+
+It will actually store in the index only the first 20 characters: 
+
+The Adventures of To 
+
+This is done to minimize the size of the index, and to optimize database access speed. I chose 20 because it’s likely to be sufficient to ensure uniqueness for most strings in these columns. 
+
+These two commands are equivalent 
+
+ALTER TABLE classics ADD INDEX(author(20)); 
+CREATE INDEX author ON classics (author(20)); 
+
+Creating the table classics with indexes 
+
+CREATE TABLE classics ( 
+author VARCHAR(128), 
+title VARCHAR(128), 
+category VARCHAR(16), 
+year SMALLINT, 
+INDEX(author(20)), 
+INDEX(title(20)), 
+INDEX(category(4)), 
+INDEX(year)) ENGINE MyISAM; 
+
+------------------------------ 
+Mastering MySQL 
+
+Primary Keys: 
+It is very important and useful to have relational databases, among which data are linked with each other; 
+e.g. we may have three tables for author, book and customer and have them linked with each other in some way. 
+
+Don’t choose a key that could possibly have the same value for different objects. The ISBN is a rare case for which an industry has provided a primary key that you can rely on to be unique for each product. Most of the time, you’ll create an arbitrary key for this purpose, using AUTO_INCREMENT. 
+
+Normalization 
+
+The process of separating your data into tables and creating primary keys is called normalization. Its main goal is to make sure each piece of information appears in the database only once 
+
+Duplicated data make things very inefficient 
+
+Luckily, E. F. Codd, the inventor of the relational model, analyzed the concept of normalization and split it into three separate schemas called First, Second, and Third Normal Form. If you modify a database to satisfy each of these forms in order, you will ensure that your database is optimally balanced for fast access, and minimum memory and disk space usage. 
+
+**First Normal Form 
+For a database to satisfy the First Normal Form, it must fulfill three requirements: 
+
+1.There should be no repeating columns containing the same kind of data. 
+2.All columns should contain a single value. 
+3.There should be a primary key to uniquely identify each row. 
+
+e.g. No repeated kind of data (Should be no 'Author1' and 'Author2') 
+
+Note 
+
+Keys (also called indexes) have several purposes in MySQL. The fundamental reason for defining a key is to make searches faster. You’ve seen examples in Chapter 8 in which keys are used in WHERE clauses for searching. But a key can also be useful to uniquely identify an item. Thus, a unique key is often used as a primary key in one table, and as a foreign key to link rows in that table to rows in another table. 
+
+**Second Normal Form 
+In order to achieve Second Normal Form, your tables must already be in First Normal Form. 
+
+Second Normal Form is achieved by identifying columns whose data repeats in different places and then removing them to their own tables. (Note the Connection among different tables) 
+
+**Third Normal Form 
+Once you have a database that complies to both the First and Second Normal Forms, it is in pretty good shape and you might not have to modify it any further. However, if you wish to be very strict with your database, you can ensure that it adheres to the Third Normal Form, which requires data that is not directly dependent on the primary key but that is dependent on another value in the table should also be moved into separate tables, according to the dependence. 
+
+For example, in Table 9-6, the Customers table, it could be argued that the State, City, and Zip code keys are not directly related to each customer, because many other people will have the same details in their addresses, too. However, they are directly related to each other, in that the street Address relies on the City, and the City relies on the State. 
+
+Therefore, to satisfy Third Normal Form for Table 9-6, you would need to split it into Tables 9-8, 9-9, 9-10, and 9-11. 
+
+**When not to use normalization? 
+you should never fully normalize your tables on sites that will cause MySQL to thrash. 
+
+Normalization requires spreading data across multiple tables, and this means making multiple calls to MySQL for each query. On a very popular site, if you have normalized tables, your database access will slow down considerably once you get above a few dozen concurrent users, because they will be creating hundreds of database accesses between them. 
+
+In face Multiple updates can be computerized, though. MySQL provides a feature called triggers that make automatic changes to the database in response to changes you make. 
+
+Relationships 
+**One-to-One 
+
+**One-to-Many 
+One-to-many (or many-to-one) relationships occur when one row in one table is linked to many rows in another table 
+
+**Many-to-Many 
+In a many-to-many relationship, many rows in one table are linked to many rows in another table. To create this relationship, add a third table containing the same key column from each of the other tables. This third table contains nothing else, as its sole purpose is to link up the other tables. 
+
+Transactions 
+
+When making money transfers between bank accounts, it is vital that the order of the transaction is correct and each step is successful. In MySQL things cannot be undone but with this Transaction feature you can choose not to execute the command if it is not correct; 
+
+In order to be able to use MySQL’s transaction facility, you have to be using MySQL’s InnoDB storage engine. This is easy to do, as it’s simply another parameter that you use when creating a table. 
+
+CREATE TABLE accounts ( 
+number INT, balance FLOAT, PRIMARY KEY(number) 
+) ENGINE InnoDB; 
+
+DESCRIBE accounts; 
+
+The final line of this example displays the contents of the new table so you can ensure that it was correctly created. The output from it should look like this: 
+
++---------+---------+------+-----+---------+-------+ 
+| Field | Type | Null | Key | Default | Extra | 
++---------+---------+------+-----+---------+-------+ 
+| number | int(11) | NO | PRI | 0 | | 
+| balance | float | YES | | NULL | | 
++---------+---------+------+-----+---------+-------+ 
+2 rows in set (0.00 sec) 
+
+
+Using BEGIN 
+
+Transactions in MySQL start with either a BEGIN or a START TRANSACTION statement. 
+
+BEGIN; 
+UPDATE accounts SET balance=balance+25.11 WHERE number=12345; 
+COMMIT; 
+SELECT * FROM accounts; 
+
+Using COMMIT 
+
+When you are satisfied that a series of queries in a transaction has successfully completed, issue a COMMIT command to commit all the changes to the database. Until a COMMIT is received, all the changes you make are considered to be merely temporary by MySQL. This feature gives you the opportunity to cancel a transaction by not sending a COMMIT but by issuing a ROLLBACK command instead. 
+
+Using ROLLBACK 
+
+example: 
+
+BEGIN; 
+UPDATE accounts SET balance=balance-250 WHERE number=12345; 
+UPDATE accounts SET balance=balance+250 WHERE number=67890; 
+SELECT * FROM accounts; 
+
+Once you have entered these lines, you should see the following result: 
+
++--------+---------+ 
+| number | balance | 
++--------+---------+ 
+| 12345 | 800.61 | 
+| 67890 | 390 | 
++--------+---------+ 
+2 rows in set (0.00 sec) 
+
+// Hey I feel like things are not right 
+
+ROLLBACK; 
+SELECT * FROM accounts; 
++--------+---------+ 
+| number | balance | 
++--------+---------+ 
+| 12345 | 1050.61 | 
+| 67890 | 140 | 
++--------+---------+ 
+2 rows in set (0.00 sec) 
+
+Using EXPLAIN 
+
+MySQL comes with a powerful tool for investigating how the queries you issue to it are interpreted. Using EXPLAIN, you can get a snapshot of any query to find out whether you could issue it in a better or more efficient way. Example 9-6 shows how to use it with the accounts table you created earlier. 
+
+Example: 
+
+EXPLAIN SELECT * FROM accounts WHERE number='12345'; 
+
+The results of this EXPLAIN command should look like the following: 
+
+(expand window if not wide enough) 
++--+-----------+--------+-----+-------------+-------+-------+-----+----+-----+ 
+|id|select_type|table |type |possible_keys|key |key_len|ref |rows|Extra| 
++--+-----------+--------+-----+-------------+-------+-------+-----+----+-----+ 
+| 1|SIMPLE |accounts|const|PRIMARY |PRIMARY|4      |const| 1| | 
++--+-----------+--------+-----+-------------+-------+-------+-----+----+-----+ 
+1 row in set (0.00 sec) 
+
+The information that MySQL is giving you here is as follows: 
+
+select_type 
+The selection type is SIMPLE. If you were joining tables together, this would show the join type. 
+
+table 
+The current table being queried is accounts. 
+
+type 
+The query type is const. From worst to best, the possible values can be: ALL, index, range, ref, eq_ref, const, system, and NULL. 
+
+possible_keys 
+
+There is a possible PRIMARY key, which means that accessing should be fast. 
+key 
+The key actually used is PRIMARY. This is good. 
+
+key_len 
+
+The key length is 4. This is the number of bytes of the index that MySQL will use. 
+ref 
+The ref column displays which columns or constants are used with the key. In this case, a constant key is being used. 
+
+rows 
+The number of rows that need to be searched by this query is 1. This is good. 
+
+Whenever you have a query that seems to be taking longer than you think it should to execute, try using EXPLAIN to see where you can optimize it. You will discover which keys, if any, are being used, their lengths, and so on, and will be able to adjust your query or the design of your table(s) accordingly. 
+
+Backing Up and Restoring 
+
+Using mysqldump 
+
+With mysqldump, you can dump a database or collection of databases into one or more files containing all the instructions necessary to recreate all your tables and repopulate them with your data. It can also generate files in CSV (Comma-Separated Values) and other delimited text formats, or even in XML format. Its main drawback is that you must make sure that no one writes to a table while you’re backing it up. 
+
+There are various ways to do this, but the easiest is to shut down the MySQL server before mysqldump and start up the server again after mysqldump finishes. 
+
+Or you can lock the tables you are backing up before running mysqldump. To lock tables for reading (as we want to read the data), from the MySQL command line issue the command: 
+
+LOCK TABLES tablename1 READ, tablename2 READ, ...; 
+
+Then, to release the lock(s), enter: 
+
+UNLOCK TABLES; 
+
+By default, the output from mysqldump is simply printed out, but you can capture it in a file through the > redirect symbol. 
+
+The basic format of the mysqldump command is: 
+
+mysqldump -u user -ppassword database 
+------------------------------------------------- 
+My cmd log: 
+
+mysql> lock tables bank_accounts read; 
+Query OK, 0 rows affected (0.00 sec) 
+
+mysql> mysqldump -u kaiyu -p 
+-> ; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use n 
+ear 'mysqldump -u kaiyu -p' at line 1 
+mysql> mysqldump -u root -p 
+-> ; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use n 
+ear 'mysqldump -u root -p' at line 1 
+mysql> quit 
+Bye 
+
+C:\Program Files (x86)\EasyPHP-DevServer-14.1VC11\binaries\mysql\bin>mysqldump -u kaiyu -p 
+Usage: mysqldump [OPTIONS] database [tables] 
+OR mysqldump [OPTIONS] --databases [OPTIONS] DB1 [DB2 DB3...] 
+OR mysqldump [OPTIONS] --all-databases [OPTIONS] 
+For more options, use mysqldump --help 
+
+C:\Program Files (x86)\EasyPHP-DevServer-14.1VC11\binaries\mysql\bin>mysqldump -u kaiyu -p zkypractice 
+Enter password: ****** 
+-- MySQL dump 10.13 Distrib 5.6.15, for Win32 (x86) 
+-- 
+-- Host: localhost Database: zkypractice 
+-- ------------------------------------------------------ 
+-- Server version 5.6.15-log 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */; 
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */; 
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */; 
+/*!40101 SET NAMES utf8 */; 
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */; 
+/*!40103 SET TIME_ZONE='+00:00' */; 
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */; 
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */; 
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */; 
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */; 
+
+-- 
+-- Table structure for table `bank_accounts` 
+-- 
+
+DROP TABLE IF EXISTS `bank_accounts`; 
+/*!40101 SET @saved_cs_client = @@character_set_client */; 
+/*!40101 SET character_set_client = utf8 */; 
+CREATE TABLE `bank_accounts` ( 
+`holder` varchar(45) DEFAULT NULL, 
+`account_number` bigint(20) unsigned NOT NULL DEFAULT '0', 
+`balance` double unsigned DEFAULT NULL, 
+`open_date` date DEFAULT NULL, 
+PRIMARY KEY (`account_number`) 
+) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+/*!40101 SET character_set_client = @saved_cs_client */; 
+
+-- 
+-- Dumping data for table `bank_accounts` 
+-- 
+
+LOCK TABLES `bank_accounts` WRITE; 
+/*!40000 ALTER TABLE `bank_accounts` DISABLE KEYS */; 
+INSERT INTO `bank_accounts` VALUES ('Bill Gates',2341505,72309402492,'1984-09-05'),('Zedong',3314523,2149344,'1980-04-03'),('Steve Jobs',1851923,89123 
+482,'1976-03-04'),('Kaiyu Zheng',1529023,31459323,'2015-12-11'); 
+/*!40000 ALTER TABLE `bank_accounts` ENABLE KEYS */; 
+UNLOCK TABLES; 
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */; 
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */; 
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */; 
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */; 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */; 
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */; 
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */; 
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */; 
+
+-- Dump completed on 2014-07-06 12:24:49 
+
+C:\Program Files (x86)\EasyPHP-DevServer-14.1VC11\binaries\mysql\bin> 
+------------------------------------------------------------ 
+
+Creating a Backup File 
+
+Now that you have mysqldump working, and have verified it outputs correctly to the screen, you can send the backup data directly to a file using the > redirect symbol. 
+
+mysqldump -u user -ppassword database > database.sql 
+
+$$Note 
+The command in Example 9-8 stores the backup file into the current directory. If you need it to be saved elsewhere, you should insert a file path before the filename. You must also ensure that the directory you are backing up to has the right permissions set to allow the file to be written. 
+
+The smart backup code(in the .sql file) can be used to restore a database from a backup, even if it currently exists, because it will first drop any tables that need to be recreated, thus avoiding potential MySQL errors. 
+
+To back up only a single table from a database (such as the classics table from the publications database), you should first lock the table from within the MySQL command line, by issuing a command such as the following: 
+
+LOCK TABLES publications.classics READ 
+
+This ensures that MySQL remains running for read purposes, but writes cannot be made. Then, while keeping the MySQL command line open, use another terminal window to issue the following command from the operating system command line: 
+
+mysqldump -u user -ppassword publications classics > classics.sql 
+
+Example	Dumping just the classics table from publications 
+
+$ mysql -u user -ppassword 
+mysql> LOCK TABLES classics READ; 
+mysql> QUIT 
+$ mysqldump -u user -ppassword publications classics > classics.sql 
+$ mysql -u user -ppassword 
+mysql> UNLOCK TABLES; 
+mysql> QUIT 
+
+Restoring from a Backup File 
+
+To perform a restore from a file, call the mysql executable, passing it the file to restore from using the < symbol. 
+
+mysql -u user -ppassword < all_databases.sql 
+
+To restore a single database, use the -D option followed by the name of the database, as in Example 9-12, where the publications database is being restored from the backup made in Example 9-8. 
+Example 9-12. Restoring the publications database 
+
+mysql -u user -ppassword -D publications < publications.sql 
+
+To restore a single table to a database, use a command such as that in Example 9-13, where just the classics table, backed up in Example 9-9, is being restored to the publications database. 
+Example 9-13. Restoring the classics table to the publications database 
+
+mysql -u user -ppassword -D publications < classics.sql 
+
+Dumping Data in CSV Format 
+
+As previously mentioned, the mysqldump program is very flexible and supports various types of output, such as the CSV format. Example 9-14 shows how you can dump the data from the classics and customers tables in the publications database to the files classics.txt and customers.txt in the folder c:/web. By default, on an EasyPHP 3.0 installation, the user should be root and no password is used. 
+
+Example 9-14. Dumping data to CSV format files 
+
+mysqldump -u user -ppassword --no-create-info --tab=c:/web 
+--fields-terminated-by=',' publications 
+
+This command is quite long and is shown here wrapped over two lines, but you must type it all in as a single line, ensuring there is a space between web and --fields. The result is the following: 
+
+Mark Twain (Samuel Langhorne Clemens)','The Adventures 
+of Tom Sawyer','Classic Fiction','1876','9781598184891 
+Jane Austen','Pride and Prejudice','Classic Fiction','1811','9780582506206 
+Charles Darwin','The Origin of Species','Non-Fiction','1856','9780517123201 
+Charles Dickens','The Old Curiosity Shop','Classic Fiction','1841','9780099533474 
+William Shakespeare','Romeo and Juliet','Play','1594','9780192814968 
+
+Mary Smith','9780582506206 
+Jack Wilson','9780517123201 
+
+&The golden rule to backing up is to do so as often as you find practical. & 
+
+---------------------------------------- 
+
+Other Techniques: 
+
+What if you want to have a column that store strings with really really big length? VARCHAR seems not to be a good solution; 
+
+Now, it's time to checkout TEXT and LONGTEXT 
+
+TINYTEXT - 255 bytes 
+TEXT - 65535 bytes 
+MEDIUMTEXT - 16,777,215 bytes (2^24 - 1) 
+LONGTEXT - 4G bytes (2^32 – 1) 
+
+TINYBLOB - 255 bytes 
+BLOB - 65535 bytes 
+MEDIUMBLOB - 16,777,215 bytes (2^24 - 1) 
+LONGBLOB - 4G bytes (2^32 – 1) 
+
+Date and time type: 
+
+When creating a table you can do this: 
+
+CREATE TABLE Orders 
+( 
+OrderId int NOT NULL, 
+ProductName varchar(50) NOT NULL, 
+OrderDate datetime NOT NULL DEFAULT NOW(), // !!! You don't need to worry, time will be automatically recorded! 
+PRIMARY KEY (OrderId) 
+)

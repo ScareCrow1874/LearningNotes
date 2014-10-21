@@ -1,0 +1,23 @@
+Create a button with text:
+var btn = document.createElement("BUTTON");
+var t = document.createTextNode("CLICK ME");
+
+A method from my Conway's game of life
+
+Grid.prototype.create = function(index) {
+ var grid = this; //trick
+ var newnode = document.createElement("div");
+ newnode.setAttribute("class", "grid");
+ newnode.setAttribute("id", "grid" + index);
+ newnode.style.width = this.width-2 + "px";
+ newnode.style.height = this.height-2 + "px";
+ newnode.style.border="1px solid #99CCFF";
+ document.getElementById("whole").appendChild(newnode);
+
+ newnode.addEventListener("click", function() {
+  grid.live = !grid.live;
+  grid.update(index);
+ }, false);
+
+ this.update(index);
+};

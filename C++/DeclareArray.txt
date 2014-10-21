@@ -1,0 +1,16 @@
+Declare Array in C++ header:
+
+ c++ array declaration in a header: From Stackoverflow:
+ No this is not possible. Array declarations in headers must have constant sized value. Otherwise it's impossible for constructs like "sizeof" to function properly. You'll need to declare the array as a pointer type and use new[] in the constructor. Example.
+
+ class Test {
+     int *a;
+ public:
+     Test(int size) {
+        a = new int[size];
+     }
+     ~Test() { delete [] a; }
+ private:
+     Test(const Test& other);
+     Test& operator=(const Test& other);
+ };

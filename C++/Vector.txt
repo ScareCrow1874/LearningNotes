@@ -1,0 +1,36 @@
+std::vector: 
+Similar to ArrayList 
+#include <vector> 
+std::vector<double> bar; 
+vector of object's pointers: vector<obj*>	
+Add elements: 
+bar.push_back(23.4); 
+Size: 
+bar.size(); 
+access element: 
+bar[index]; // no bounds check 
+bounds-checked access: 
+bar.at(2) = 5; 
+if the index is out of bound, an exception will be thrown. 
+sort: 
+include <algorithm> 
+sort(myvector.begin(), myvector.end()); 
+
+Iterator: (how to use) 
+1.//initialize an iterator pointing at first element: 
+std::vector<double>::iterator iter = bar.begin(); 
+
+2.//obtain special "one past the end" iterator 
+std::vector<double>::iterator barEnd = bar.end(); 
+
+3.//dereference iterator to get value; 
+for (; iter != barEnd; ++iter) { 
+std::cout << *iter << std::endl;	
+} 
+
+To initialize or like initializing arrays: 
+in C++11, just do 
+vector<int> vec = {2, 4, 5, 6}; 
+in previous versions, just do 
+static const int arr[] = {2, 4, 5, 6}; 
+vector<int> vec(arr, arr + sizeof(arr) / sizeof(arr[0])); 

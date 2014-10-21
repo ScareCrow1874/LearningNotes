@@ -1,0 +1,57 @@
+The only file that needs to be included to use the Myo C++ SDK is myo.hpp. 
+
+
+Classes that inherit from myo::DeviceListener can be used to receive events from Myo devices. DeviceListener  provides several virtual functions for handling different kinds of events. If you do not override an event, the default behavior is to do nothing.
+
+
+There are several virtual functions from DeviceListener that you can override:
+onUnpaire()
+onOrientationData()
+onPose()
+onArmRecognized()
+onArmLost()
+
+----------
+Have some fields such as:
+onArm -- if the Myo is on arm
+whichArm -- which arm
+roll, pitch, yaw -- three degrees of freedom
+currentPose -- keep track of current pose
+
+----------
+Some objects:
+myo::Myo - the Myo device
+myo::Hub - a place where myo connects
+myo::Arm - which arm
+myo::Pose - Current pose
+
+------------
+Flow:
+
+// Catch exception that might occur, such as not connected?
+try {
+
+    1. Create Hub Object
+    myo::Hub hub ("xxxxxx (application)");
+    2. Wait for Myo
+    myo::Myo* myo = hub.waitForMyo(n); // n is the time in milliseconds for waiting
+    // using pointer here is because it can be null -- for detection
+    if (!myo) {throw std::runtime_error("XXXX)}
+    std::cout << "connected!" << std::endl;
+    3. Construct a DeviceLisenter object (This does not require any parameter)
+    4. Add Listener: hub.addLisenter(&theDeviceListenerObj);
+    5. Enter infinite-loop
+        while(1)
+        {
+            We wish to update the display (or execute the code) 20 times per 1000 millisec (1 sec)
+            hub.run(1000/20);
+            ....
+        }
+
+// If a standard exception occurred, we print out its message and exit.
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << "Press enter to continue.";
+        std::cin.ignore();
+        return 1;
+    }

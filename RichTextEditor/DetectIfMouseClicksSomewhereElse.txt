@@ -1,0 +1,10 @@
+This is very useful. You can use the window.addEventListener() function to add an event listener to the mouseup event.
+
+Example:
+
+window.addEventListener('mouseup', function(event) {
+    var editor = document.getElementById("editor");
+    if (event.target != editor && event.target.parentNode != editor) {
+         editor.setAttribute("contenteditable", false);
+    }
+});

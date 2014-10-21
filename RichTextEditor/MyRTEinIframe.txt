@@ -1,0 +1,171 @@
+HTML
+<html> 
+    <head> 
+        <title>Smart Note Rich Text Editor</title> 
+        <link rel="stylesheet" href="index.css"></link> 
+<script type="text/javascript" src="richtext.js"></script>
+<script type="text/javascript" src="usual.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="../jquery-animate-colors.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<script>
+$(document).ready(function() {
+$('.fancy').hover(
+function() {
+$(this).stop().animate({backgroundColor:"#FF9933", color:"#FF0066"}, 100); 
+},
+function() {
+$(this).stop().animate({backgroundColor:"#00CCFF", color:"#000"}, 100);
+});
+});
+</script>
+<script>
+function submitForm() {
+var theForm = document.getElementById("richTextForm");
+theForm.elements["textContent"].value = window.frames["richText"].document.body.innerHTML; // hard code
+theForm.submit();
+}
+</script>
+</style> 
+</head> 
+<body onload="initFrame()"> 
+<div id = "whole_content">
+<div id="links">
+<ul>
+<li><a href="../home.php">Back Home</a></li>
+<li><a href="http://www.zkytony.com">Zkytony</a></li>
+<li><a href="notes.php">View Notes</a></li>
+</ul>
+</div>
+<form id="richTextForm"action="submit.php" method="post" onsubmit="submitForm()">
+<p>Note Title: <input type="text" name="title" id="title"></p>
+<p>Content:</p>
+<div id="selections">
+<input class="fancy"type="button" name="bold" id="bold" onclick="boldText()" value="B">
+<input class="fancy"type="button" name="underline" id="underline" onclick="underlineText()" value="U">
+<input class="fancy"type="button" name="italic" id="italic" onclick="italicText()" value="I">
+<input class="fancy"type="button" name="size" id="size" onclick="resizeText()" value="Tt">
+<input class="fancy"type="button" name="color" id="color" onclick="colorText()" value="C">
+<input class="fancy"type="button" name="backColor" id="backColor" onclick="backColorText()" value="BC">
+<input class="fancy"type="button" name="image" id="image" onclick="insertImage()" value="Img">
+</div>
+                              <p><textarea style="display:none" name="textContent" id="textContent"></textarea></p> 
+                             <iframe id="richText" name="richText" width="650" height="500"></iframe> 
+<div id="submit_div">
+<input class="fancy" type="button" name="submitButton" id="submitButton" onclick="submitForm()" value="Submit">
+</div>
+</form>
+</div>
+</body> 
+</html>
+
+JavaScript:
+function initFrame() {
+ // you can directly access an iframe by using its name
+ richText.document.designMode='On';
+}
+
+function underlineText() {
+ richText.document.execCommand('underline', false, null);
+}
+
+function boldText() {
+ richText.document.execCommand('bold', false, null);
+}
+
+function italicText() {
+ richText.document.execCommand('italic', false, null);
+}
+
+function resizeText() {
+ size = prompt("Enter a number between 1 - 7", "");
+ if (size < 1 || size > 7) {
+  alert("Error size! " + size);
+ } else {
+  richText.document.execCommand('fontSize', false, size);
+ }
+}
+
+function colorText() {
+ color = prompt("Enter the Hex Code for a color, or you can type the basic color names: ", "");
+ richText.document.execCommand('foreColor', false, color);
+}
+
+function backColorText() {
+ color = prompt("Enter the Hex Code for a color, or you can type the basic color names: ", "");
+ richText.document.execCommand('backColor', false, color);
+}
+
+function insertImage() {
+ imgSrc = prompt('Image url: ', '');
+ if (imgSrc != null) {
+  richText.document.execCommand('insertImage', false, imgSrc);
+ }
+}
+
+CSS
+* {
+ padding: 0px;
+ margin: 0px;
+}
+
+#whole_content {
+ max-width: 900px;
+ min-width:700px;
+ margin:auto;
+}
+
+#richTextForm {
+ position:relative;
+ padding:20px;
+ margin-left:10%;
+ z-index:3;
+}
+
+#richTextForm p {
+ font-size:16px;
+ font-family: 'Open Sans', sans-serif;
+}
+
+.fancy {
+ padding:2px;
+ background: #00CCFF;
+ color:black;
+ font-family: 'Open Sans', sans-serif;
+}
+
+#title {
+ width:50%;
+ height:45px;
+ font-size:25px;
+ margin-left:7px;
+}
+
+#submit_div {
+ width:650px	;
+}
+
+#submitButton {
+ width:100%;
+ padding:2px;
+ background: #00CCFF;
+ color:black;
+ font-family: 'Open Sans', sans-serif;
+}
+
+#links {
+ position:absolute;
+ z-index:1;
+ background:	#99FF99;
+ width:100px;
+ top:100px;
+}
+
+#links a {
+ text-decoration: none;
+ padding:10px;
+}
+
+#links a:hover {
+ color:white;
+}

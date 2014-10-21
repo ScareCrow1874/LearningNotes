@@ -1,0 +1,25 @@
+Struct 
+
+In C++ the only difference between a class and a struct is that members and base classes are by default private in classes, while in structs they default to public. So structures can have constructors, and the syntax is the same as for classes. 
+
+e.g. 
+
+struct Vertex { 
+float x, y, z; 
+
+// it can have a constructor 
+Vertex(float x, float y, float z) { 
+this->x = x; 
+this->y = y; 
+this->z = z; 
+} 
+} 
+
+When you use it 
+int main() { 
+.... 
+Vertex point_a(0.5, 0.5, 0.5); 
+
+// if you don't have the constructor, you can 
+Vertex point_a = {0.5, 0.5, 0.5}; 
+}

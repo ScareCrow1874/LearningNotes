@@ -1,0 +1,17 @@
+function loadXMLDoc(filename) {
+ if (window.XMLHttpRequest) {
+  xhttp=new XMLHttpRequest();
+ } else {
+  xttp=new ActiveXOjbect("Microsoft.XMLHTTP");
+ }
+ xhttp.open("GET", filename, false);
+ xhttp.send(); //get the xml document
+ return xhttp.responseXML;
+}
+
+
+window.onerror = function(msg, url, line) {
+ alert("Error! Message: " + msg);
+ alert("url: " + url);
+ alert("Line number: " + line);
+}

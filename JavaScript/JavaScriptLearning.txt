@@ -1,0 +1,178 @@
+This is composed of a lot of examples
+其实他是这样，在script里面没有function的部分就直接运行，有function的部分只有call了那个function才会运行
+
+<script language="text/javascript">
+document.write("Hello world"); // print stuff to the document
+
+// confirm dialog
+var con = confirm("Do you want to continue?");
+if (con) {
+alert("YEA");	
+} else {
+alert("BYE");
+}
+
+// prompt dialog:
+var name = prompt("Enter your name: ", "your name here");
+alert("Your name is: " + name);
+
+// redirect!
+var redi = confirm("Do you want to go to zkytony.com?");
+if (redi) {
+window.location="http://www.zkytony.com";
+}
+
+// print web page
+<!--just use 'window.print()' inside the form->
+
+// catch throw finally
+<!--the syntax
+try {
+...
+throw("...");
+} catch (e) { // catch what is thrown
+...
+} finally {
+// always execute
+}
+
+// the one way to know if an error occurs in the javascript code:
+window.onerror = function() {
+alert("An error occured!");
+}
+
+// better error checker, with line number and message
+window.onerror = function (msg, url, line) {
+alert("Message : " + msg );
+alert("url : " +
+url );
+alert("Line number : " + line );
+}
+
+// variables can hold objects!
+var jedi = {
+name: "Yoda",
+age: 899,
+talk: function() {
+alert("another...Sky...walk");
+}
+}
+
+function changeStuf() {
+var stf=document.getElementById("stf");
+stf.innerHTML=jedi.name;
+stf.style.width="250px";
+}
+
+// document.getElementById("id")
+// document.getElementByTagName("tag name like a, ul, li...")
+// document.getElementByClassName("#class")
+
+// event listener:
+var handleClick = function (event) {
+// do something!
+};
+var button = document.querySelector('#big-button');
+button.addEventListener('click', handleClick);
+
+// XML HTTP Request
+var req = new XMLHttpRequest();
+req.onload=function(event){...};
+req.open('get','some-file.txt',true);
+req.send();
+
+//JSON:
+//JSON is used to transfer information between the browser and the server
+var jsonString = JSON.stringify({
+make: "McLaren",
+model: "MP4-12C",
+miles: 5023
+});
+//JSON.stringify converts an object into a JSON string
+//In this example, jsonString becomes {"make": "McLaren", "model": "MP4-12C", "miles": 5023 }.
+
+//convert back:
+var car = JSON.parse(jsonString);
+
+//jQuery
+//selecting is simple
+$('.class').click(function() {
+...	
+});
+
+//even cooler
+#('.note').css('background','red').height(100);
+
+
+//key events
+//there are three events: keydown, keypress, keyup
+//keydown event is fired when you press down a key on the keyboard
+//keypress event is fired only when you press down on a key that displays a character (letter/number...)
+//So...when press and release a key like 'y', keydown and keypress events are fired in this order.
+//We need eventlisteners to listen to these events
+window.addEventListener("keydown", keydownfunc, false);
+window.addEventListener("keypress", keypressfunc, false);
+window.addEventListener("keyup", keyupfunc, false);
+
+function keydownfunc(e) {
+//gets called when the keydown events are overheard	
+}
+
+//example, with keyCode
+function checkKeyPressed(e) {
+if (e.keyCode == "65") {
+alert("You pressed a!");
+}
+}
+
+//detect multiple key pressed
+window.addEventListener("keydown", keysPressed, false);
+window.addEventListener("keyup", keysReleased, false);
+
+var keys = [];
+
+function keysPressed(e) {
+// store an entry for every key pressed
+keys[e.keyCode] = true;
+
+// Ctrl + Shift + 5
+if (keys[17] && keys[16] && keys[53]) {
+// do something
+}
+
+// Ctrl + f
+if (keys[17] && keys[70]) {
+// do something
+
+// prevent default browser behavior
+e.preventDefault();
+}
+}
+
+function keysReleased(e) {
+// mark keys that were released
+keys[e.keyCode] = false;
+}
+
+//The JavaScript in the head element starts to run immediately. This freezes the loading of the rest of the page while the JavaScript executes. The element with the id attribute of hour1 hasn't entered the DOM yet so when your script reaches that point it looks to the DOM for the element but can't find it because the page hasn't fully loaded yet and returns null.
+
+//One solution would be to put your script tag just before the closing body tag so that the page has loaded before the script starts to do its thing. 
+The above comment deals with the situation that getElementById returns null	
+
+</script>
+<body>
+<!--just use 'window.print()' inside the form-->
+<form>
+<input type="button" value="Print" onclick="window.print()" />
+</form>
+
+<!--It is also okay for 'onerror'-->
+<img src="img.jpg" onerror="alert('Error occurs loading the image')"/>
+</body>
+
+
+
+
+
+
+

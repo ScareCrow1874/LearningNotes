@@ -1,0 +1,33 @@
+通过 ftp://可以访问一个服务器(ftp服务器）。一台计算机可以通过运apache程序来变为一个服务器
+
+Windows可以共享文件夹，Win8需要在配置里选“share”才可以共享，但win7直接不需要同意，共享文件夹就会可以被访问。在cmd输入：
+
+net use + \\IP Address/folder z:\\ password /user:username
+
+默认ftp listen port是21，web listen port 是80
+Socket = IP + Port
+
+可以使用代理脚本，使得访问某些网站用代理服务器而其他不用。建一个文件（js），包含一个function：
+function FindProxyForURL(url, host)
+{
+    if (shExpMatch(host, "*.facebook.com") {
+        return "PROXY 127.0.0.1:8087"; // 127.0.0.1 -> Localhost IP; 8087 is the Listen Address
+    } else if ...
+    ... else
+    {
+        return "DIRECT";
+    }
+}
+
+映射：电脑 --- 路由器 --- 光猫 --- 互联网
+         （内网）|   （外网）
+映射是指给定一个指定内网IP或外网IP，给出一个相应的外/内网IP，用处在于，外网用户可以通过知道内网的人的IP映射，即可访问内网的网站
+如何将一台电脑变成wifi热点？
+在cmd中输入如下指令：
+
+netsh
+wlan
+show ? （可以是host或者hostnetwork）
+set host mode = allow ssid=name key= （wifi的名字和密码）
+start host
+stop host

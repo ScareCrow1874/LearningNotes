@@ -1,0 +1,53 @@
+Getting the text the user has selected is relatively simple. There's no benefit to be gained by involving jQuery since you need nothing other than the window and document objects.
+function getSelectionText() {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
+The second part (else if) is for IE version <= 8
+
+
+function getIFrameSelectedText()
+{
+    // You must! get the window! because it is different window for the iframe
+	var richText = document.getElementById("richText");
+	var win = richText.contentWindow;
+	var doc = win.document;
+
+	if (win.getSelection) {
+	return win.getSelection().toString();
+	} else if (doc.selection && doc.selection.createRange) {
+	return doc.selection.createRange().text;
+	}
+}
+Replace selected content
+function replaceSelectedText(replacementText) {
+    var sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(document.createTextNode(replacementText));
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.text = replacementText;
+    }
+}
+
+The range object
+The Range object supports properties and methods for several activities.
+With a Range object:
+	
+you can retrieve and modify any part of the document
+
+	
+you can get the placement and several other geometrical properties of a contiguous part of the document
+
+	
+you can get and modify the selected content of the document

@@ -1,0 +1,111 @@
+Start with an example:
+
+Suppose you want to keep track of students information and classes information, probably you will have two tables, one for 'students', one for 'classes':
+
+Student ID  Student Name Operating System
+S001 Rom King OS X
+S002 Michael Pond Windows
+S003
+Canby Russell
+Linux
+Class ID
+Class Name
+instructor
+C001	
+Intro to CS
+Stuart Reges
+C002
+Web Programming
+Martty Stepp
+C003
+Database design
+Kusher Shriber
+One thing to notice is that Student ID and Class ID are unique for two tables, so they are called the "primary keys". They are the thing that will never duplicate. With this primary key, it is very easy to construct some relationships between the two tables, like this:
+
+Student ID
+Class ID
+S001
+C001
+S001
+C002
+S002
+C002
+S002
+C003
+S003
+C003
+In this fashion, you can simply tell which student is taking which classes. And if you want to know more information for that student, just use their ID as the 'foreign key' to access the Student table. This is really convenient. One more example. if you want to  make a summary of the students' performance in different classes, you can have a table like this:
+Enrollment ID
+Student ID
+Class ID
+Grade
+E001
+S001
+C001
+95
+E002
+S001
+C002
+68
+E003
+S002
+C002
+59
+E004
+S003
+C003
+69
+Now it should be relatively clear what a relational table is. By Kaiyu
+
+-----
+Let's try how to implement this with MySQL
+
+Note: The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+
+CREATE TABLE Students(
+    student_id VARCHAR(32),
+    name VARCHAR(128) NOT NULL,
+    os VARCHAR(128),
+    PRIMARY KEY(student_id)
+) ENGINE MyISAM;
+
+CREATE TABLE Classes (
+    class_id VARCHAR(32),
+    name VARCHAR(128) UNIQUE NOT NULL,
+    instructor VARCHAR(128),
+    PRIMARY KEY(class_id)
+) ENGINE MyISAM;
+
+The following SQL creates a FOREIGN KEY on the "student_id" column and "class_id" column when the "Enrollments" table is created:
+
+CREATE TABLE Enrollments (
+    enrollment_id VARCHAR(32),
+    student_id VARCHAR(32),
+    class_id VARCHAR(32),
+    grade int,
+    PRIMARY KEY (enrollment_id),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (class_id) REFERENCES Classes(class_id)
+) ENGINE MyISAM
+
+To allow naming of a FOREIGN KEY constraint, and for defining a FOREIGN KEY constraint on multiple columns, use the following SQL syntax:
+
+CREATE TABLE Enrollments (
+    enrollment_id VARCHAR(32),
+    student_id VARCHAR(32),
+    class_id VARCHAR(32),
+    grade int,
+    PRIMARY KEY (enrollment_id),
+    CONSTRAINT fk_students FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    CONSTRAINT fk_classes FOREIGN KEY (class_id) REFERENCES Classes(class_id)
+) ENGINE MyISAM
+
+To DROP a FOREIGN KEY Constraint
+
+To drop a FOREIGN KEY constraint, use the following SQL:
+MySQL:
+ALTER TABLE Enrollments
+DROP FOREIGN KEY fk_students 
+
+Why FOREIGN keyword
+With Foreign keys enforces, I could not delete a record from Users or Movies. If I didn't have foreign keys, I could delete those records. Then if I did a SELECT ... JOIN on Favorites it would break.

