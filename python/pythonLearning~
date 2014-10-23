@@ -1,0 +1,26 @@
+run a python file: python <FILENAME>
+
+Math operations (similar to other languages)
++, -, *,
+/ is just integer part
+% is the mod
+
+A variable doesn't need to have a type when declaring it, e.g.
+cars = 100 # a car variable
+
+Print out variables:
+- preferred way example: 
+  car = 100
+  truck = 200
+  print "text {1},{0}".format(car, truck)
+
+- older way:
+  print "text %s" %car
+
+KEEP CONSISTENT
+
+More Printing:
+- formatter = "%r %r %r %r"
+  
+  print formatter % (1, 2, 3, 4) // This is just printing 1, 2, 3, 4
+

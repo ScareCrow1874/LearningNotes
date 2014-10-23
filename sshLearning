@@ -5,3 +5,6 @@ SSH: Secure Shell
 SSH, which is an acronym for Secure SHell, was designed and created to provide the best security when accessing another computer remotely.
 
 First. You need to know the Shell Account of Somebody's linux machine
+
+ssh url -l username:
+login as username

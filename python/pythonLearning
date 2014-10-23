@@ -1,0 +1,113 @@
+run a python file: python <FILENAME>
+
+Math operations (similar to other languages)
++, -, *,
+/ is just integer part
+% is the mod
+
+A variable doesn't need to have a type when declaring it, e.g.
+cars = 100 # a car variable
+
+Print out variables:
+- preferred way example: 
+  car = 100
+  truck = 200
+  print "text {1},{0}".format(car, truck)
+
+- older way:
+  print "text %s, %s" %(car, truck)
+
+- %r is raw, %s is string type
+
+KEEP CONSISTENT
+
+More Printing:
+- formatter = "%r %r %r %r"
+  
+  print formatter % (1, 2, 3, 4) // This is just printing 1, 2, 3, 4
+
+- print variables:
+  print "Here is a car", car
+
+// print multiple lines
+
+  print """
+  There's something going on here.
+  With the three double-quotes.
+  We'll be able to type as much as we like.
+  Even 4 lines if we want, or 5, or 6.
+  """
+- Some escape characters:
+  \\ \'  \"  \b  \n
+
+example
+  bob = "Bob"
+  cid = "Cid"
+  age = "14"
+  year = 1995
+
+  print "My age is %r" %age
+  print "My age is %s" %age
+  print "The yer is %d " %year
+  print "people: %s, %s" %(bob, cid)
+  print "I like",bob, "yea" #You do not print spaces around the variable?
+
+OUTPUT:
+My age is '14'
+My age is 14
+The yer is 1995 
+people: Bob, Cid
+I like Bob yea
+---
+Take input from user:
+e.g. age = raw_input("What is your age?")
+
+Take input from command-line argument (unpack)
+- e.g.
+  from sys import argv #Sys is a module
+
+  script, first, second, third = argv
+  print "The script is called:", script
+  print "Your first variable is:", first
+  print "Your second variable is:", second
+  print "Your third variable is:", third
+
+  $python ex1.py Kaiyu Zheng HAHA
+  OUTPUT:
+  The script is called: ex1.py
+  Your first variable is: Kaiyu
+  Your second variable is: Zheng
+  Your third variable is: HAHA
+
+  If you do not specify the correct number of arguments, error occurs
+
+PRINTING IS OVER
+------------------------------
+FILES
+
+Read files;
+- open file: open(FILENAME)
+  e.g.
+  txt = open("hi.txt")
+  print txt.read()
+  // To read a file’s contents, call f.read(size), which reads some quantity of data and returns it as a string. size is an optional numeric argument. 
+  
+- read and write:
+  
+    close() -- Closes the file. Like File->Save.. in your editor.
+    read() -- Reads the contents of the file. You can assign the result to a variable.
+    readline() -- Reads just one line of a text file.
+    truncate() -- Empties the file. Watch out if you care about the file.
+    write('stuff') -- Writes "stuff" to the file.
+
+  e.g.
+  txt = open("filename", "w")
+  "w" open the file in write mode (truncating the file if it already exists); 
+  "r" for writing (default)
+  "a" for appending
+
+  "r+","w+","a+" open the file for updating (both read and write); append 'b' to the mode to open the file in binary mode (if the system can differentiate between bin files and text files)
+  
+  from os.path import exists
+  // use another handy function -- exists
+  exists(FILENAME) returns true if the file already exists
