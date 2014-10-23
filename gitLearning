@@ -255,3 +255,14 @@ create a new remote repository:
 push commits to the remote
 	git push origin master
 
+------------------------------
+Learned with Craig:
+
+git diff: shows the difference between modified files(not committed) and previous files
+git show: shows the changes of a particular file or in a whole commit
+git blame FILE: See the commit related to each line
+git rm FILE: remove the file and stage the change
+git reset --hard: reset to the previous state
+git stash: put away current changes (stash them on a stack) so that you can work on the previous version (if somebody else modified on the previous version and you need to check, you can stash your changes away)
+    stash pop: pop the changes back
+git commit -a: commit and add at the same time
