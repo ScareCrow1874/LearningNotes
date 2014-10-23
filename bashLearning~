@@ -45,9 +45,9 @@ Filesystem:
 	6) rm -r oldDir : delete a directory;
 
 Network File System (NFS):
-	- Allows a computer to access files over a net work as easily as if they were on its local disks;
+	- Allows a computer to access files over a net work as easily 		  as if they were on its local disks;
 	- File permission are determined by userID
-	- Therefore user ID's must be the same on the NFS server and the clients
+	- Therefore user ID's must be the same on the NFS server and 		  the clients
 	- Server decides which client machines are allowed to connect
 
 Andrew File System (AFS) :
@@ -56,29 +56,29 @@ Andrew File System (AFS) :
 	- Not part of standard filesystem tools in Linux, need to have
 	  client software and [Kernel modules] installed;
 	  [I have already installed]
-	- To get access to AFS (is to access "cell"), authenticated by password using >klog command
+	- To get access to AFS (is to access "cell"), authenticated by 		  password using >klog command
 	- Access SLAC cell go to /afs/slac.stanford.edu
 
 Cool Commands:
 	Command line program to download items from the web:
 	- wget:
 	    1) wget URL : retrieve a single file
-	    2) wget URL -O local_name : give the file a different [local name]
-	    3) wget -i file : download a list of URLs from a text file containing a list of URLs
+	    2) wget URL -O local_name : give the file a different 		       				[local name]
+	    3) wget -i file : download a list of URLs from a text file 		                      containing a list of URLs
 	
 	Compression utility that
 	> reduce file size
 	> Multiple levels of compression (slower?) 
 	- gzip:
-	    1) gzip myplot.eps : compress file 'myplot.eps', and produce a compressed file 'myplot.eps.gz'
+	    1) gzip myplot.eps : compress file 'myplot.eps', and 		      			 produce a compressed file 					 'myplot.eps.gz'
 	    2) gunzip myplot.eps.gz : uncompress the file
 	    3) gzip -# myplot.eps : change level of compression (# 1-9)
 	
 	Archive utility that
-	> allows multiple files and even large directory structures to be archived into a single file   
+	> allows multiple files and even large directory structures to 		  be archived into a single file   
 	- tar:
 	    1) tar -cf archive.tar mydir : 
-		archive the 'mydir' directory and produce a file called 'archive.tar'
+		archive the 'mydir' directory and produce a file 			called 'archive.tar'
 	    2) tar -zcf archive.tar.gz mydir :
 		Interaction with gzip, to create compressed archives
 		Sometimes compressed archives have extension .tgz
@@ -102,10 +102,10 @@ Commands for text file:
 	    > 'q' to quit;
 	- cat:
 	    > quickly viewing a short file (Cannot search)
-	    > typically used to pipe the content of a file to another command for processing
+	    > typically used to pipe the content of a file to another 		      command for processing
 	- head/tail:
 	    > prints the first/last n lines of files;
-	      e.g. head -n 3 xxx.dat : print first 3 lines of file xxx.dat
+	      e.g. head -n 3 xxx.dat : print first 3 lines of file 					       xxx.dat
 	    > For tail: more available options like:
 	      e.g. tail -f -s 5 xxx.txt :
 		1) -f : output append data as file grows
@@ -115,11 +115,11 @@ Commands for text file:
 	- grep:
 	    > used to search and print patterns (match/not) in files
 	    > can be used to filter files directly by part of file name
-	      e.g. grep "e-" particles_a.dat : find all electrion entries
+	      e.g. grep "e-" particles_a.dat : find all electrion 						       entries
 	      e.g. grep -v "e-" particles_a.dat : find not match
 	      e.g. grep e[+-] particles_a.dat : find e+ and e-
 	- diff:
-	    > used to compare files line by line and present any difference found
+	    > used to compare files line by line and present any 		      difference found
 	      e.g. diff -q fileA fileB : quickly check if they differ
 	      e.g. diff -y --suppress-common-lines \ fileA fileB :
 		   Able to see differing lines in fileA and fileB
@@ -127,19 +127,19 @@ Commands for text file:
 	- cut:
 	    > removes sections from each line of a file and output the
 	      removed sections as required
-	      e.g. cut -d, --delimiter=DELIM : use DELIM to separate output fields;  
-	      e.g. cut -f, --fields=LIST : use LIST as a comma-separated list of output fields
-	      e.g. cut --output-delimiter=DELIM : use DELIM to separate output fields;
+	      e.g. cut -d, --delimiter=DELIM : use DELIM to separate 			   output fields;  
+	      e.g. cut -f, --fields=LIST : use LIST as a comma- 		   separated list of output fields
+	      e.g. cut --output-delimiter=DELIM : use DELIM to  		   separate output fields;
 
 Chaining Commands:	
 	- General:"
 	    > Linux enables this chaining through I/O redirection
 	    > e.g. Redirect output of a command to a file:
 	      	   grep "e-" particles_a.dat > elec.dat;
-	    > e.g. Finds all lines with e- and prints only their first field:
+	    > e.g. Finds all lines with e- and prints only their first 		           field:
 	           grep "e-" particles_a.dat | cut -f 1
 	- xargs:
-	    > Allows you to use the output of one command as the command line argument for another
+	    > Allows you to use the output of one command as the 		      command line argument for another
 	    > e.g. ls *.dat | grep particles | xargs diff -q
 	- sed:
 	- awk:
@@ -158,13 +158,13 @@ cd - 	???
 pwd 	to see what the directory you are in
 mkdir (n) make directory
 rmdir (n) remove directory (No ask), only works when it is empty;
-rm -R (n) Remove everything in the directory, as well as the directory itself
+rm -R (n) Remove everything in the directory, as well as the 		directory itself
 nano basic text file/editor exists in each directory
 
 Ex1
     list directories in ascending order of their size:
 	du -sm * : get a list with size of each directory in a folder
-	du -sm * | sort -nr : sort what's got in reverse order -r and numeric -n / string -s
+	du -sm * | sort -nr : sort what's got in reverse order -r and 				      numeric -n / string -s
 	du -sm * | sort -nr | head -15 return top 15 largest items
 	(du stands for Disk Usage)
 	OR:

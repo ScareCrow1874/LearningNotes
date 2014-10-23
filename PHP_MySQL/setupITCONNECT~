@@ -1,0 +1,8 @@
+1. Where is the 'default location'
+ - I assumed it is the location in the parenthesis (home/qaz2wsx3/.ssh/id_rsa
+ - I backed up the original id_rsa
+2. Where to clone?
+ - I clone it to /var/www because the contents in this repository needs to work on a server; Yet this still says permission denied(publickey) (I added the SSH key to the Bitbucket and used sudo). 
+   The reason is that I have the ssh keys in the home directory, but not in /root/.ssh
+ - so I chose to clone it to ~/uwit. It succeeded
+3. no info on .htpasswd

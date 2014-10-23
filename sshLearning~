@@ -5,3 +5,16 @@ SSH: Secure Shell
 SSH, which is an acronym for Secure SHell, was designed and created to provide the best security when accessing another computer remotely.
 
 First. You need to know the Shell Account of Somebody's linux machine
+
+ssh url -l username:
+login as username
+
+ssh-keygen
+Generate a ssh key. Note this key has its passphrase
+
+ssh-keygen -t dsa
+generate key with encryption method DSA
+
+Copy a file from one machine to another (local-remote or remote-remote)
+
+

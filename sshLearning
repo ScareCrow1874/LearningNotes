@@ -8,3 +8,17 @@ First. You need to know the Shell Account of Somebody's linux machine
 
 ssh url -l username:
 login as username
+
+ssh-keygen
+Generate a ssh key. Note this key has its passphrase
+
+ssh-keygen -t dsa
+generate key with encryption method DSA
+
+Copy a file from one machine to another (local-remote or remote-remote)
+
+scp (-r) /path/to/file /path/to/destination
+
+if the path is remote, do host:path
+e.g. qaz2wsx3@wefwef:path/destination
+
