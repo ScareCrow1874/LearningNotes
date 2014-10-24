@@ -44,4 +44,149 @@ M-g g	Jump to specified line
 Searching for text:
 
 C-s	Incremental search forward
-C-r	Incremental search backward
+C-r	Incremental search backwar
+----------
+Region
+
+Mark serves another purpose: mark and point together delineate the region.
+
+C-x h	Make region contain the entire buffer ("Select all")
+M-h	Make region contain the current paragraph
+
+Narrowing restricts the view (and editing) of a buffer to a certain region. This is handy when you're only working with a small part of a buffer (e.g. a chapter in a book). Then commands like incremental search, or beginning-of-buffer or end-of-buffer don't lead you out of the region of interest, and commands like search and replacement don't affect the entire file.
+
+C-x n n	Narrow buffer to the current region
+C-x n w	Restore ("widen") bufferd
+--------
+Killing ("cutting") text
+
+As with text movement, Emacs provides commands for deleting text in various amounts.
+
+C-k kills the portion of the current line after point (or deletes the newline following point if point is at the end of line). The prefix argument for C-k can be used to kill multiple lines:
+C-k	Kill line
+C-u 10 C-k	Kill 10 lines
+
+The following commands operate on the region, and are the closest analogs to "cut" and "copy" in Emacs:
+C-w	Kill region ("cut")
+M-w	Save region to kill ring without deleting ("copy")
+
+These commands are also handy:
+M-d	Kill next word
+M-k	Kill to end of sentence
+
+All of the above commands kill the text being deleted, which means that Emacs removes the text and squirrels it away for later retrieval ("yanking"). Most commands which delete significant amounts of text kill it rather than simply removing it, so that you can use those commands either to "delete" text or to "cut" it for later use.
+---------
+Yanking ("pasting") text
+
+After a piece of text has been killed, it goes to a place called the kill ring which is analagous to the "clipboard": you can yank an item to restore it from the kill ring with C-y. Unlike the clipboard, however, the kill ring is capable of holding many different items. If the item you want to yank is not placed when you type C-y, type M-y (repeatedly, if necessary) to cycle through previously killed items.
+C-y	Yanks last killed text
+M-y	Replace yanked text with previously killed text
+
+Recall that most commands which delete a large amount of text in fact kill it (i.e. place it in the kill ring) so you can restore it later. Emacs makes it very difficult to lose a lot of text permanently: in editors with only a single clipboard, one can easily accidentally delete a large chunk of text or clobber the contents of the clipboard (by cutting two items in succession). But in Emacs, in either of those cases, the lost text can easily be retrieved from the kill ring.
+---------
+Undo is available via three different keys:
+C-/	Undo
+C-_	Undo
+C-x u	Undo
+---------
+Incremental Search
+These commands help you to issue previously issued queries:
+C-s C-s	Search for most recently searched item
+C-s M-p	Previous item in search history
+C-s M-n	Next item in search history
+C-h k C-s	Guide to more commands available in incremental search
+----------
+Search and replacement
+M-%	Query replace
+
+The query replace command prompts you for a search string and a replacement. Then, for each match in the buffer, you can choose whether or not to replace the search string. Here are some of the options available at each prompt:
+
+    Type y to replace the current match.
+    Type n to skip to the next match without replacing.
+    Type q to exit without doing any more replacements.
+    Type . to replace this match, then exit.
+    Type ! to replace all remaining matches with no more questions.
+
+See (info "(emacs)Query Replace") for more information about these (and other) options. You can also type ? anytime inside a search-and-replace operation to see a guide.
+-----------
+More useful features
+Integration with common tools
+
+Emacs is notable for its integration with many common tools. Not only can you invoke them from within the editor, Emacs usually helps you use their output more effectively. Here are some examples:
+
+M-x shell
+
+    Starts a shell in the buffer named *shell*, switching to it if it already exists. Use C-u M-x shell to use a buffer with a different name.
+
+M-x compile
+
+    Invokes make (with targets and options of your choice) and displays output in a new buffer. Emacs identifies error lines containing filenames and line numbers, and you can click on them to jump directly to the corresponding buffer and line.
+
+M-x gdb
+
+    Invokes gdb in a new buffer. You can use the gdb command line as usual in that buffer. However, Emacs lets you set breakpoints directly from your source buffers and shows execution by marking the active line in your source buffers. Emacs can also display breakpoints, the stack, and locals, simultaneously and each in their own window.
+
+M-x grep
+
+    Invokes grep and prints results in a new buffer. Like M-x compile, when you click on a match Emacs opens the correct file and takes you to the matching line.
+
+M-x man
+
+    Displays man pages.
+
+Here are some more assorted tools:
+M-x calculator	A simple calculator.
+M-x calendar	A calendar.
+M-x phases-of-moon	Shows upcoming quarters of the moon.
+Invoking shell commands
+
+If you need to execute a simple shell command, these commands can save you the trouble of switching to an xterm or starting a new Emacs shell buffer:
+
+M-x shell-command or M-!
+
+    Executes a command and displays the output in a new buffer.
+M-x shell-command-on-region or M-|
+
+    Executes a command, piping in the current region as input; displays the output in a new buffer.
+
+For either command, a C-u prefix will insert the output in your current buffer rather than using a temporary buffer.
+-------
+Being unproductive with Emacs
+
+Emacs even comes with diversions:
+M-x tetris	Tetris
+M-x hanoi	Towers of Hanoi game
+M-x doctor	Emacs psychotherapist
+-----------
+Amusement
+
+The animate package makes text dance (e.g., M-x animate-birthday-present).
+
+M-x blackbox, M-x mpuz and M-x 5x5 are puzzles. blackbox challenges you to determine the location of objects inside a box by tomography. mpuz displays a multiplication puzzle with letters standing for digits in a code that you must guess—to guess a value, type a letter and then the digit you think it stands for. The aim of 5x5 is to fill in all the squares.
+
+M-x bubbles is a game in which the object is to remove as many bubbles as you can in the smallest number of moves.
+
+M-x decipher helps you to cryptanalyze a buffer which is encrypted in a simple monoalphabetic substitution cipher.
+
+M-x dissociated-press scrambles the text in the current Emacs buffer, word by word or character by character, writing its output to a buffer named *Dissociation*. A positive argument tells it to operate character by character, and specifies the number of overlap characters. A negative argument tells it to operate word by word, and specifies the number of overlap words. Dissociated Press produces results fairly like those of a Markov chain, but is however, an independent, ignoriginal invention; it techniquitously copies several consecutive characters from the sample text between random jumps, unlike a Markov chain which would jump randomly after each word or character. Keep dissociwords out of your documentation, if you want it to be well userenced and properbose.
+
+M-x dunnet runs an text-based adventure game.
+
+If you want a little more personal involvement, try M-x gomoku, which plays the game Go Moku with you.
+
+If you are a little bit bored, you can try M-x hanoi. If you are considerably bored, give it a numeric argument. If you are very, very bored, try an argument of 9. Sit back and watch.
+
+M-x life runs Conway's “Life” cellular automaton.
+
+M-x landmark runs a relatively non-participatory game in which a robot attempts to maneuver towards a tree at the center of the window based on unique olfactory cues from each of the four directions.
+
+M-x morse-region converts the text in the region to Morse code; M-x unmorse-region converts it back. M-x nato-region converts the text in the region to NATO phonetic alphabet; M-x denato-region converts it back.
+
+M-x pong, M-x snake and M-x tetris are implementations of the well-known Pong, Snake and Tetris games.
+
+M-x solitaire plays a game of solitaire in which you jump pegs across other pegs.
+
+The command M-x zone plays games with the display when Emacs is idle.
+
+Finally, if you find yourself frustrated, try describing your problems to the famous psychotherapist Eliza. Just do M-x doctor. End each input by typing <RET> twice. 
+
