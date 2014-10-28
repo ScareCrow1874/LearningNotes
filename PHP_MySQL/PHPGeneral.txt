@@ -2081,7 +2081,7 @@ Using $_FILES
 
   The error code resulting from the file upload
 
-Validation
+Validationcd 
 
 Hopefully it now goes without saying (although I’ll do so anyway) that form-data validation is of the utmost importance, due to the possibility of users attempting to hack into your server.
 

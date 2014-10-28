@@ -1,0 +1,24 @@
+Debugging in PHP
+----------------
+1. var_dump()
+
+Dumps(show) information about a variable
+example:|||
+$message = "hey"
+var_dump($message);
+
+OUTPUT:
+string(3) "hey"
+
+What I often come across are little helper functions, like this one for instance:
+1
+2
+3
+4
+5
+	
+function dump($value) {
+    echo ‘<pre>';
+    var_dump($value);
+    echo ‘</pre>';
+}

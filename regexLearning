@@ -1,0 +1,73 @@
+Everything is characters
+
+THE 123s:
+
+\d can be used in place of any digits. 
+e.g. To match digits from 'asdkb1234sdfas', the regex should be \d\d\d\d
+
+\w represent any alphanumeric
+
+THE Dot:
+
+Similarly, there is the concept of a wildcard, which is represented by the . (dot) metacharacter, and can match any single character (letter, digit, whitespace, everything). so in order to specifically match a period, you need to escape the dot by using a slash \. accordingly.
+
+Matching specific characters:
+There is a method for matching specific characters using regular expressions, by defining them inside square brackets. For example, the pattern [abc] will only match a single a, b, or c letter and nothing else.
+
+Excluding specific characters:
+To represent this, we use a similar expression that excludes specific characters using the square brackets and the hat. For example, the pattern [^abc] will instead match any single character except for the letters a, b, or c.
+
+Character ranges:
+there is a shorthand for matching specific range of sequential characters by using the dash. For example, the pattern [0-6] will match any digit character from zero to six, and nothing else. And likewise, [^n-p] will match any character except for letters n to p.
+ Be aware that patterns are case sensitive and a-z differs from A-Z
+
+Repitition:
+A more convenient way is to specify how many repetitions of each character we want using the curly braces. For example, "a{3}" will (only) match the a character exactly three times. Some implementations, also allow you to specify a range for this value. For example, "a{1,3}" will match the a character no more than 3 times, but no less than once. In Javascript, you can even leave out the second count and just specify a minimum value, for example "a{1,}" will match 1 or more a's.
+
+Mr.Kleene, Mr Kleene (MATCH arbitrary number of chars)
+$25
+One way to express a such a pattern would be using what is known as the Kleene Star and the Kleene Plus, which essentially represent either 0 or more or 1 or more of the character that it follows (it always follows a character or group). For example, to match the donations above, we can use the pattern \d* to match any number of digits, but a tighter regular expression would be \d+ which ensures that the user has entered at least one digit.
+
+These quantifiers can be used with any character or special metacharacters, for example a+ (one or more a's), [abc]+ (one or more of any a, b, or c character) and .* (zero or more of any character)
+
+Optionality (?)
+Another quantifier that is really common when matching and extracting text is the ? (question mark) metacharacter which denotes optionality. This metacharacter allows you to match either zero or one of the preceding character or group. For example, the pattern ab?c will match either the strings "abc" or "ac" because the b is considered optional.
+
+Similar to the dot metacharacter, you will have to escape the question mark using a slash \? to match a plain question mark character.
+
+Whitespaces
+The most common forms of whitespace you will use with regular expressions is defined as the space _, the tab \t, the new line \n and the carriage return \r
+
+The most common forms of whitespace you will use with regular expressions is defined as the space _, the tab \t, the new line \n and the carriage return \r (useful in Windows environments), and these special characters match each of their respective whitespaces. In addition, a whitespace special character \s will match any of the specific whitespaces above and is extremely useful when dealing with imperfect input text.
+
+Starting and Ending
+So far, we've been writing regular expressions that partially match pieces across all the text. Sometimes this isn't desirable, imagine for example we wanted to match the word "success" in a log file. We certainly don't want that pattern to match a line that says "Error: unsuccessful operation."! That is why it is often best practice to write as specific regular expressions as possible to ensure that we don't get false positives when matching against real world text.
+
+One way to tighten our patterns is to define a pattern that describes both the start and the end of the line using the special ^ (hat) and $ (dollar sign) metacharacters. In the example above, we can use the pattern ^successful$ to match exactly a line that contains only the word successful, but not the line "Error: unsuccessful operation."
+
+Matching(capture) groups
+Imagine that we have a command line tool that copies each file in a directory up to a server only if it doesn't exist there already, and prints each filename as a result. Now if I want to do another task on each of those filenames, then I will not only need a regular expression that will match the filename, but also some way to extract that information. How do we do this?
+
+Well, in regular expressions we can accomplish this by grouping characters and capturing them using the special ( and ) (parenthesis) metacharacters. You can place any pattern inside the parenthesis to capture that part of the pattern. In our example above, the pattern ^(IMG\d+\.png)$ would capture the full filename from start to finish. If we had only wanted to capture the filename but not the extension, we could use ^(IMG\d+)\.png$ instead. See how it works? 
+
+e.g. ^([\w]+).pdf$ does the job. It captures the text of each line up to the file extension, and ensures that we match lines that only end with '.pdf'
+your task 	text			capture			result
+capture text 	file_a_record_file.pdf 	file_a_record_file 	✓
+capture text 	file_yesterday.pdf 	file_yesterday 		✓
+skip text 	testfile_fake.pdf.tmp 				✓
+
+For example, if I knew that a phone number may or may not contain an area code, instead of writing a pattern of the form \d?\d?\d?, I can instead write it using groups (\d{3})?. Depending on your regular expression implementation, you can also use non-capturing groups which will allow you to match the group but not have it show up in the results.
+
+Conditions
+As I mentioned before, it's always good to be precise, and that applies to coding, talking, and even regular expressions. For example, I wouldn't write a grocery list for someone to Buy more .* because I would have no idea what I could get back. Instead I would write Buy more milk or Buy more bread and in regular expressions, we can actually define these conditionals explicitly.
+
+Specifically when using groups, you can use the | (logical OR, aka. the pipe) to denote different possible sets of characters. In the above example, I can write the pattern "Buy more (milk|bread|juice)" to match only the strings Buy more milk, Buy more bread, or Buy more juice. Like normal groups, you use any of the techniques we've learned so far in defining the different possibilities. 
+
+Other Special Characters:
+This lesson will cover some extra metacharacters, as well as the results of captured groups.
+
+We have already learned how to capture digits using \d and whitespace using \s, but you can also capture what is known as an alphanumeric character using \w. An alphanumeric character is a character that matches [a-zA-Z0-9_] which is any letter or digit including the underscore. In addition, there is a special metacharacter \b which matches the boundary between a word and a non-word character. It's most useful in capturing words for example using \w+\b, and even works with unicode.
+
+Regular expressions also provides a way of specifying the opposite of each of these characters by using their upper case letters, for example, \D represents any non-digit character, \S any non-whitespace character, and \W any non-alphanumeric character (such as punctuation for example). Depending on how you compose your regular expression, it may be easier to use one or the other.
+
+One concept that we will not explore in great detail in these lessons is referencing, mostly because it varies depending on the implementation. However, many systems allow you to reference your captured groups by using \0 (usually the full matched text), \1 (group 1), \2 (group 2), etc. This is useful for example when you are in a text editor and doing a search and replace using regular expressions to swap two numbers, you can search for "(\d+)-(\d+)" and replace it with "\2-\1" put the second captured number first, and the first captured number second.

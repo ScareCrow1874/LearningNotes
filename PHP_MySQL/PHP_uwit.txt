@@ -1,0 +1,43 @@
+Debugging in PHP
+----------------
+1. var_dump()
+
+Dumps(show) information about a variable
+example:|||
+$message = "hey"
+var_dump($message);
+
+OUTPUT:
+string(3) "hey"
+
+What I often come across are little helper functions, like this one for instance:
+function dump($value) {
+    echo ‘<pre>';
+    var_dump($value);
+    echo ‘</pre>';
+}
+---------------
+Configure Xdebug
+
+    Open your terminal and type
+
+ sudo gedit /etc/php5/mods-available/xdebug.ini 
+
+    if the file is empty try this location
+
+ sudo gedit /etc/php5/conf.d/xdebug.ini 
+
+    That command should open the text editor with the Xdebug configuration file
+    At the end of the file content append the following text
+
+xdebug.remote_enable=on // enable Xdebug. 
+xdebug.remote_handler=dbgp
+xdebug.remote_host=localhost
+xdebug.remote_port=9000
+
+    Save changes and close the editor
+    In you terminal type
+
+sudo service apache2 restart
+
+Note: You can set a different port number if you need to.
