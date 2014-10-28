@@ -1,0 +1,222 @@
+Linux - learning
+
+Unix-like computer OS
+
+Linux comes consisting of
+	- The Linux kernel
+	- GNU software (e.g. utilities, editor, compilers)
+	- GUI
+	- Software management system (rpm, deb etc.)
+
+
+Multi-user system
+
+Terminal Login: Ctrl + Alt + F1
+		Ctrl + Alt + F2
+
+Filesystem:
+	- Everything is mounted under a single "root" directory -/
+	- "/home" represents "My Documents" in Windows
+	- "/usr" most programs are installed in;
+	- "/etc" system configurartion files' dir
+    Filesystem Command:
+	1) pwd : where you are;
+	2) cd ::
+	    1> cd or cd -/ : navigate to home directory
+	    2> cd target : target directory is within current directory
+	    3> cd .. : go back to parent dir
+	    4> cd path/to/target : target to arbitary location
+	    5> cd ~username/ : go to another user's home directory
+	    6> cd - : go to the previous working directory;
+	3) ls : list files and directories
+	4) find basedir -name '*string*' : find the file(I am not sure)
+	5) locate string : search files using Linux's database
+    Directory/File Manipulation:
+	1) mkdir dirname : make a new directory, with name dirname;
+	2) rmdir dirname : remove an empty dir;
+	3) rm file : delete file;
+	4) mv oldFileName newFileName : rename a file
+	5) cp file1 file2 : copy file1 to file2 (Overwrite file2)
+	6) rm -r oldDir : delete a directory;
+
+Network File System (NFS):
+	- Allows a computer to access files over a net work as easily as if they were on its local disks;
+	- File permission are determined by userID
+	- Therefore user ID's must be the same on the NFS server and the clients
+	- Server decides which client machines are allowed to connect
+
+Andrew File System (AFS) :
+	- Distributed file system (the former two are also)
+	- Advantages over NFS in security and scalability
+	- Not part of standard filesystem tools in Linux, need to have
+	  client software and [Kernel modules] installed;
+	  [I have already installed]
+	- To get access to AFS (is to access "cell"), authenticated by password using >klog command
+	- Access SLAC cell go to /afs/slac.stanford.edu
+
+Cool Commands:
+	Command line program to download items from the web:
+	- wget:
+	    1) wget URL : retrieve a single file
+	    2) wget URL -O local_name : give the file a different [local name]
+	    3) wget -i file : download a list of URLs from a text file containing a list of URLs
+	
+	Compression utility that
+	> reduce file size
+	> Multiple levels of compression (slower?) 
+	- gzip:
+	    1) gzip myplot.eps : compress file 'myplot.eps', and produce a compressed file 'myplot.eps.gz'
+	    2) gunzip myplot.eps.gz : uncompress the file
+	    3) gzip -# myplot.eps : change level of compression (# 1-9)
+	
+	Archive utility that
+	> allows multiple files and even large directory structures to be archived into a single file   
+	- tar:
+	    1) tar -cf archive.tar mydir : 
+		archive the 'mydir' directory and produce a file called 'archive.tar'
+	    2) tar -zcf archive.tar.gz mydir :
+		Interaction with gzip, to create compressed archives
+		Sometimes compressed archives have extension .tgz
+	    3) tar -tf archive.tar :
+		list the contents of an archive
+	    4) tar -xf archive.tar :
+		extract an entire archive
+	    5) tar -xf archive.tar filename :
+		extract a specific file from an archive
+		6) for i in *.tar.gz; do tar xvzf $i -C path/to/output/directory; done:
+		extract many directories
+
+Commands for text file:
+	(Viewing files)
+	- less:
+	    > improved version of earlier program called 'more'
+	    > allows searching
+	    > Up and Down keys scroll file line by line
+	    > "Ctrl + f" - forward page
+	    > "Ctrl + b" - backward page
+	    > Typing '/' allows you to type a searching string;
+	    > Typing '?' does the same but search is backward;
+	    > 'q' to quit;
+	- cat:
+	    > quickly viewing a short file (Cannot search)
+	    > typically used to pipe the content of a file to another command for processing
+	- head/tail:
+	    > prints the first/last n lines of files;
+	      e.g. head -n 3 xxx.dat : print first 3 lines of file xxx.dat
+	    > For tail: more available options like:
+	      e.g. tail -f -s 5 xxx.txt :
+		1) -f : output append data as file grows
+		2) -s S : sleep for S sec between iterations
+
+	(Others)
+	- grep:
+	    > used to search and print patterns (match/not) in files
+	    > can be used to filter files directly by part of file name
+	      e.g. grep "e-" particles_a.dat : find all electrionentries
+	      e.g. grep -v "e-" particles_a.dat : find not match
+	      e.g. grep e[+-] particles_a.dat : find e+ and e-
+	- diff:
+	    > used to compare files line by line and present any difference found
+	      e.g. diff -q fileA fileB : quickly check if they differ
+	      e.g. diff -y --suppress-common-lines \ fileA fileB :
+		   Able to see differing lines in fileA and fileB
+	      e.g. diff - u fileA fileB : output a unified diff ??
+	- cut:
+	    > removes sections from each line of a file and output the
+	      removed sections as required
+	      e.g. cut -d, --delimiter=DELIM : use DELIM to separate output fields;  
+	      e.g. cut -f, --fields=LIST : use LIST as a comma-separated list of output fields
+	      e.g. cut --output-delimiter=DELIM : use DELIM to separate output fields;
+
+Chaining Commands:	
+	- General:"
+	    > Linux enables this chaining through I/O redirection
+	    > e.g. Redirect output of a command to a file:
+	      	   grep "e-" particles_a.dat > elec.dat;
+	    > e.g. Finds all lines with e- and prints only their first field:
+	           grep "e-" particles_a.dat | cut -f 1
+	- xargs:
+	    > Allows you to use the output of one command as the command line argument for another
+	    > e.g. ls *.dat | grep particles | xargs diff -q
+	- sed:
+	- awk:
+	    > a programming language
+	    > e.g. swap order of output fields, like cut did:
+	      awk '{print $2,$1}' particles_a.dat
+
+(n) for name
+
+TUTORIAL 1:
+ls 	list files and directories
+ls -a 	List All
+cd + 	directory : open directory;
+cd / 	go back to root;
+cd - 	???
+pwd 	to see what the directory you are in
+mkdir (n) make directory
+rmdir (n) remove directory (No ask), only works when it is empty;
+rm -R (n) Remove everything in the directory, as well as the directory itself
+nano basic text file/editor exists in each directory
+
+Ex1
+    list directories in ascending order of their size:
+	du -sm * : get a list with size of each directory in a folder
+	du -sm * | sort -nr : sort what's got in reverse order -r and numeric -n / string -s
+	du -sm * | sort -nr | head -15 return top 15 largest items
+	(du stands for Disk Usage)
+	OR:
+	ls -s
+    Other du commands:
+	du -h [path] --> provide human readable format of disk usage
+	ls -lSr
+
+Chaining Commands:
+	';' separate commands to execute them sequentially;
+	'&' run several commands all at once (put this at the end of the command line)
+	'|' the 'pipe', used to make the output of the former command as the input of the latter command. e.g. ls | less
+
+---
+Remember, the terminal shell on this Ubuntu is called BASH;
+
+For loop in Bash:
+
+It makes life so easy. Here is an example:
+
+for i in */
+do
+   echo $i;
+done
+
+What is this doing? It is looping over all the directories in the current location;
+Certainly the 'echo $i' can be changed to any bash command (the linux command). For example,
+
+for t in *.tar
+do
+   tar -xf $t;
+done
+
+One more complicated example I did is that I want to run the .sh file in a number of directories, so I did this:
+
+for d in */
+do
+   cd $d;
+   bash *.sh;
+   cd ..;
+done
+
+Notice how simple it is, and the way to use it is just thinking about each directory. So you need to do a complete enter-and-exit.
+
+------------------------------
+Manage processes
+
+top - easiest way to find out what processes are running
+
+ps - list processes
+ps aux - list processes more thoroughly
+ps axjf - list processes in tree view
+pgrep process_nameL - a way to get the PID of a process
+
+kill PID_of_target_process - attempt to kill a process
+     If the program does not exit, then do this:
+kill -KILL PID_of_target_process
+
