@@ -190,3 +190,40 @@ The command M-x zone plays games with the display when Emacs is idle.
 
 Finally, if you find yourself frustrated, try describing your problems to the famous psychotherapist Eliza. Just do M-x doctor. End each input by typing <RET> twice. 
 
+---------
+Multiple Window
+
+C-x o
+    Select another window (other-window). That is o, not zero. 
+C-M-v
+    Scroll the next window (scroll-other-window). 
+M-x compare-windows
+    Find next place where the text in the selected window does not match the text in the next window. 
+
+
+C-x 0
+    Get rid of the selected window (delete-window). That is a zero. 
+C-x 1
+    Get rid of all windows except the selected one (delete-other-windows). 
+C-x ^
+    Make selected window taller (enlarge-window). 
+C-x }
+    Make selected window wider (enlarge-window-horizontally). 
+
+This is just once. So do C-u C-x }
+
+Two-Column Editing
+
+Two-column mode lets you conveniently edit two side-by-side columns of text. It uses two side-by-side windows, each showing its own buffer. There are three ways to enter two-column mode:
+
+<F2> 2 or C-x 6 2
+    Enter two-column mode with the current buffer on the left, and on the right, a buffer whose name is based on the current buffer's name (2C-two-columns). If the right-hand buffer doesn't already exist, it starts out empty; the current buffer's contents are not changed.
+
+    This command is appropriate when the current buffer is empty or contains just one column and you want to add another column.
+<F2> s or C-x 6 s
+    Split the current buffer, which contains two-column text, into two buffers, and display them side by side (2C-split). The current buffer becomes the left-hand buffer, but the text in the right-hand column is moved into the right-hand buffer. The current column specifies the split point. Splitting starts with the current line and continues to the end of the buffer.
+
+    This command is appropriate when you have a buffer that already contains two-column text, and you wish to separate the columns temporarily.
+<F2> b buffer <RET>
+C-x 6 b buffer <RET>
+    Enter two-column mode using the current buffer as the left-hand buffer, and using buffer buffer as the right-hand buffer (2C-associate-buffer). 
