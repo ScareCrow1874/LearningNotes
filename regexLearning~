@@ -1,0 +1,13 @@
+Everything is characters
+
+THE 123s:
+
+\d can be used in place of any digits. 
+e.g. To match digits from 'asdkb1234sdfas', the regex should be \d\d\d\d
+
+THE Dot:
+
+Similarly, there is the concept of a wildcard, which is represented by the . (dot) metacharacter, and can match any single character (letter, digit, whitespace, everything). so in order to specifically match a period, you need to escape the dot by using a slash \. accordingly.
+
+Matching specific characters:
+There is a method for matching specific characters using regular expressions, by defining them inside square brackets. For example, the pattern [abc] will only match a single a, b, or c letter and nothing else.
