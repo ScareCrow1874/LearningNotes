@@ -266,3 +266,15 @@ git reset --hard: reset to the previous state
 git stash: put away current changes (stash them on a stack) so that you can work on the previous version (if somebody else modified on the previous version and you need to check, you can stash your changes away)
     stash pop: pop the changes back
 git commit -a: commit and add at the same time
+
+------------------------------
+Practical:
+
+add a remote branch:
+git remote add [options] <name> <url>
+
+see the current remote branch:
+git remote -v
+
+set remote url
+git remote set-url <name> <url>

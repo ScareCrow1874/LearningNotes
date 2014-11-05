@@ -2,59 +2,30 @@ Start with an example:
 
 Suppose you want to keep track of students information and classes information, probably you will have two tables, one for 'students', one for 'classes':
 
-Student ID  Student Name Operating System
-S001 Rom King OS X
-S002 Michael Pond Windows
-S003
-Canby Russell
-Linux
-Class ID
-Class Name
-instructor
-C001	
-Intro to CS
-Stuart Reges
-C002
-Web Programming
-Martty Stepp
-C003
-Database design
-Kusher Shriber
+StudentID     Student     Name        Operating System
+S001          Rom         King        OS X
+S002          Michael     Pond        Windows
+S003          Canby       Russell     Linux
+
+Class ID      Class Name         instructor
+C001	      Intro to CS        Stuart Reges
+C002          Web Programming    Martty Stepp
+C003          Database design    Kusher Shriber
 One thing to notice is that Student ID and Class ID are unique for two tables, so they are called the "primary keys". They are the thing that will never duplicate. With this primary key, it is very easy to construct some relationships between the two tables, like this:
 
-Student ID
-Class ID
-S001
-C001
-S001
-C002
-S002
-C002
-S002
-C003
-S003
-C003
+// use select..join to do something like this
+StudentID   ClassID
+S001   `    C001
+S001        C002
+S002        C002
+S002        C003
+S003        C003
 In this fashion, you can simply tell which student is taking which classes. And if you want to know more information for that student, just use their ID as the 'foreign key' to access the Student table. This is really convenient. One more example. if you want to  make a summary of the students' performance in different classes, you can have a table like this:
-Enrollment ID
-Student ID
-Class ID
-Grade
-E001
-S001
-C001
-95
-E002
-S001
-C002
-68
-E003
-S002
-C002
-59
-E004
-S003
-C003
-69
+EnrollmentID    StudentID       ClassID    Grade
+E001            S001            C001       95
+E002            S001            C002       68
+E003            S002            C002       59
+E004            S003            C003       69
 Now it should be relatively clear what a relational table is. By Kaiyu
 
 -----

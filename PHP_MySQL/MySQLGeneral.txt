@@ -707,3 +707,14 @@ ProductName varchar(50) NOT NULL,
 OrderDate datetime NOT NULL DEFAULT NOW(), // !!! You don't need to worry, time will be automatically recorded! 
 PRIMARY KEY (OrderId) 
 )
+
+--------
+Quotes and such
+
+because the server reads x as a value as it is wrap with single quote. backtick escapes a reserved keyword used within the query, usually it is used to wrap around columnNames and tableNames.
+
+in your query,
+
+SELECT `id` FROM `table` WHERE 'x' = '$y'
+
+x there is not a column but a string value.

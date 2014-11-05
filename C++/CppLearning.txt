@@ -264,6 +264,30 @@ Static variable:
 
 Static variables are those variables that all objects of the class share. If one object changes the value of a static variable, other objects will also access the changed variable. 
 
+Static member function:
+- Limitations
+
+    Can't call any other class functions that are not static.
+    Can't access non static class data members.
+    Can instantiate an object via new class() when constructor is private/protected. E.g. a factory function.
+
+Example declare in cpp file:
+header.hxx:
+
+class CFoo
+{
+public: 
+    static bool IsThisThingOn();
+};
+
+class.cxx:
+
+#include "header.hxx"
+bool CFoo::IsThisThingOn() // note: no static keyword here
+{
+    return true;
+}
+------------------------------
 Exception: 
 Handle Error; 
 

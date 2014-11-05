@@ -375,4 +375,88 @@ return mysql_real_escape_string($string);
 } 
 ?> 
 
+------------------------------
+Check if a table already exists. My code;
 
+<?php
+$db_hostname='localhost';
+$db_database='zkytony_base';
+$db_username='zkytony_DBUser1';
+$db_password='(IO)&YU*';
+
+$con=mysqli_connect($db_hostname, $db_username, $db_password, $db_database);
+
+if (!$con) die ("Unable to connect to MySQL: " . mysqli_error($con));
+
+$title=mysqli_entities_fix_string($con, $_POST['title']);
+$note_content=mysqli_entities_fix_string($con, $_POST['textContent']);
+
+$tablename = 'my_notes';
+
+$checktable = mysqli_query($con, "SHOW TABLES LIKE '$tablename';");
+$exists = mysqli_num_rows($checktable) > 0;
+
+if (!$exists) 
+{
+	$query_string="CREATE TABLE my_notes (
+				   id INT AUTO_INCREMENT, 
+				   title VARCHAR(128),
+				   content MEDIUMTEXT NOT NULL,
+				   category VARCHAR(16),
+				   time DATE NOT NULL,
+				   PRIMARY KEY(id),
+				   INDEX(title(20)),
+				   INDEX(content(30)),
+				   INDEX(category(4)),
+				   INDEX(time)) ENGINE MyISAM;";
+
+	if (!mysqli_query($con, $query_string)) {
+		die ("Unable to create table! " . mysqli_error($con));
+	}
+}
+
+// table exists
+$insert_query="INSERT INTO $tablename (title, content, category, time)
+			   VALUES ('$title', '$note_content', 'unclassified', 'NOW()');";
+
+if (!mysqli_query($con, $insert_query)) {
+	die ("Unable to insert Note " . mysqli_error($con));
+} else {
+echo <<< _END
+<p>Note successfully submitted!</p>
+<a href="../home.php">Back to Home</a>
+<a href="index.html">Write another note</a>
+_END;
+}
+?>
+
+How to send form action to the page itself:
+ <?
+$fileName = $_SERVER['PHP_SELF'];
+print("<form action=\"$fileName\"></form>");
+?>
+
+Or
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>"></form> 
+
+Or
+<form action="" method="post"></form>
+
+e.g.
+
+
+1>Change the value of the action attribute of form tag as "action?submitfunc"
+
+2>and check through get value
+
+As follows :
+
+if(isset($_GET['action'])=='submitfunc') {
+    submitfunc();
+}else
+//show form
+?>
+<body>
+    <form action="?action=submitfunc" method="post">
+
+------------------------------

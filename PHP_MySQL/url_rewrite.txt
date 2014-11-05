@@ -1,0 +1,37 @@
+
+
+You can essentially do this 2 ways:
+The .htaccess route with mod_rewrite
+
+Add a file called .htaccess in your root folder, and add something like this:
+
+RewriteEngine on
+RewriteRule ^/Some-text-goes-here/([0-9]+)$ /picture.php?id=$1
+
+This will tell Apache to enable mod_rewrite for this folder, and if it gets asked a URL matching the regular expression it rewrites it internally to what you want, without the end user seeing it. Easy, but inflexible, so if you need more power:
+The PHP route
+
+Put the following in your .htaccess instead:
+
+FallbackResource index.php
+
+This will tell it to run your index.php for all files it cannot normally find in your site. In there you can then for example:
+
+$path = ltrim($_SERVER['REQUEST_URI'], '/');    // Trim leading slash(es)
+$elements = explode('/', $path);                // Split path on slashes
+if(count($elements) == 0)                       // No path elements means home
+    ShowHomepage();
+else switch(array_shift($elements))             // Pop off first item and switch
+{
+    case 'Some-text-goes-here':
+        ShowPicture($elements); // passes rest of parameters to internal function
+        break;
+    case 'more':
+        ...
+    default:
+        header('HTTP/1.1 404 Not Found');
+        Show404Error();
+}
+
+This is how big sites and CMS-systems do it, because it allows far more flexibility in parsing URLs, config and database dependent URLs etc. For sporadic usage the hardcoded rewrite rules in .htaccess will do fine though.
+
