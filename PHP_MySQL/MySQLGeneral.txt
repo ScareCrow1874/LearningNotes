@@ -718,3 +718,81 @@ in your query,
 SELECT `id` FROM `table` WHERE 'x' = '$y'
 
 x there is not a column but a string value.
+------------------------------
+Select row that contains:
+
+SELECT * FROM mytable
+WHERE column1 LIKE '%word1%'
+   OR column1 LIKE '%word2%'
+-----------------------------
+Run SQL commands in file:
+
+$ mysql -u user -p databasename < command.sql
+
+Create a sql function:
+
+1) What is DELIMETER // USED FOR
+In SQL you close each statement with a delimiter, which is by default a semicolon (;). In a trigger you need to write multiple statements, each ending in a semicolon. To tell MySQL that those semicolons are not the end of your trigger statement, you temporarily change the delimiter from ; to //, so MySQL will know that the trigger statement only ends when it econunters a //.
+
+Example:
+
+DELIMITER $$
+CREATE FUNCTION hello_world()
+  RETURNS TEXT
+  LANGUAGE SQL
+BEGIN
+  RETURN 'Hello World';
+END;
+$$
+DELIMITER ;
+
+Execute this function as follows:
+
+mysql> SELECT hello_world();
++---------------+
+| hello_world() |
++---------------+
+| Hello World   |
++---------------+
+1 row in set (0.00 sec)
+---
+Function with a parameter
+
+DELIMITER $$
+CREATE FUNCTION hello_world(addressee TEXT)
+  RETURNS TEXT
+  LANGUAGE SQL -- This element is optional and will be omitted from subsequent examples
+BEGIN
+  RETURN CONCAT('Hello ', addressee);
+END;
+$$
+DELIMITER ;
+
+addressee is the name of the paramter; TEXT is its type
+---
+MySQL function with a loop
+
+DROP FUNCTION IF EXISTS looptest;
+DELIMITER $$
+CREATE FUNCTION looptest()
+  RETURNS INT READS SQL DATA
+BEGIN
+  DECLARE v_total INT;
+
+  SET v_total = 0;
+
+  count_loop: LOOP
+    SET v_total = v_total + 1;
+
+    IF v_total = 10 THEN
+      LEAVE count_loop;
+    END IF;
+    
+  END LOOP;
+
+  RETURN v_total;
+END;
+$$
+DELIMITER ;
+
+count_loop is the name of the loop
