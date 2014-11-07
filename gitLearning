@@ -278,3 +278,13 @@ git remote -v
 
 set remote url
 git remote set-url <name> <url>
+------------------------------
+How to list all branches that contains a specific commit?
+
+ git branch --contains <commit>
+
+Only list (local) branches which contain the specified commit.
+
+ git branch -r --contains <commit>
+
+Lists remote tracking branches as well (as mentioned in user3941992's answer below) that is "local branches that have a direct relationship to a remote branch".
