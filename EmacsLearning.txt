@@ -227,3 +227,14 @@ Two-column mode lets you conveniently edit two side-by-side columns of text. It 
 <F2> b buffer <RET>
 C-x 6 b buffer <RET>
     Enter two-column mode using the current buffer as the left-hand buffer, and using buffer buffer as the right-hand buffer (2C-associate-buffer). 
+
+---
+Search over several files
+You can try M-x rgrep.
+
+It will ask for:
+
+    the directory where you want to search recursively
+    a file pattern for the files you want to include in the search
+    the pattern you want to search
+
