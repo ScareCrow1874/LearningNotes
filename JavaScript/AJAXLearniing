@@ -1,0 +1,149 @@
+What is AJAX?
+
+AJAX is not a new programming language.
+AJAX is a technique for creating fast and dynamic web pages.
+
+AJAX = Asynchronous JavaScript and XML.
+
+XMLHttpRequest Object
+The XMLHttpRequest object is used to exchange data with a server
+behind the scenes. This means that it is possible to update parts of a
+web page, without reloading the whole page.
+
+----------
+Create a XMLHttpRequest Object:
+
+var xmlhttp = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Safari, and Opera
+
+// Old versions of Internet Explorer (IE5 and IE6) uses an ActiveX Object:
+var xmlhttp =new ActiveXObject("Microsoft.XMLHTTP");
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {  // code for IE7+, Firefox, Chrome, Opera, Safari
+     xmlhttp=new XMLHttpRequest();
+  }
+else
+  {  // code for IE6, IE5
+     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+----------
+Send a Request:
+
+xmlhttp.open(METHOD, URL, ASYNC);
+xmlhttp.send();
+
+*Method: Get or Post.
+       
+GET is simpler and faster than POST, and can be used in most cases.
+
+However, always use POST requests when:
+
+   -  A cached file is not an option (update a file or database on the server)
+   -  Sending a large amount of data to the server (POST has no size limitations)
+   -  Sending user input (which can contain unknown characters), POST is
+    more robust and secure than GET
+*URL: the address of a file on the server
+The file can be any kind of file, like .txt and .xml, or server 
+scripting files like .asp and .php (which can perform actions on
+the server before sending the response back).
+
+With AJAX, the JavaScript does not have to wait for the server response, but can instead:
+
+    - execute other scripts while waiting for server response
+    - deal with the response when the response ready
+
+*ASYNC: whether or not use asynchronous js (boolean)
+
+ASYNC = true: Yea, execute other script while wating for the response
+    You need to specify a function to execute when the response is
+    ready in the onreadystatechange event:
+
+  e.g. 
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","ajax_info.txt",true);
+xmlhttp.send();
+
+ASYNC = false: Nop, dont execute other script untill a response is
+               received
+----------
+Response:
+
+To get the response from a server, use the responseText or responseXML
+property of the XMLHttpRequest object.
+
+responseText 	get the response data as a string
+responseXML 	get the response data as XML data
+
+Use responseText:
+    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+
+If the response from the server is XML, and you want to parse it as an
+XML object, use the responseXML property:
+    xmlDoc=xmlhttp.responseXML;
+    txt="";
+    x=xmlDoc.getElementsByTagName("ARTIST");
+(See quiz.js)
+
+----------
+Events:
+
+onreadystatechange event:
+
+When a request to a server is sent, we want to perform some actions based on the response.
+The onreadystatechange event is triggered every time the readyState changes.
+The readyState property holds the status of the XMLHttpRequest.
+
+Three important properties of the XMLHttpRequest object:
+onreadystatechange 	Stores a function (or the name of a function)
+                        to be called automatically each time the
+                        readyState property changes
+
+   
+readyState              Holds the status of the XMLHttpRequest. Changes from 0
+                        to 4:
+   
+                        0: request not initialized
+                        1: server connection established
+                        2: request received
+                        3: processing request
+                        4: request finished and response is ready
+
+status 	                200: "OK"
+                        404: Page not found
+
+
+When readyState is 4 and status is 200, the response is ready:
+xmlhttp.onreadystatechange = function()
+{
+    if (xmlhttp.readyStage = 4 && xmlhttp.status = 200)
+    {
+        document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    }
+}
+
+AJAX with PHP:
+You can play with the url. For example:
+xmlhttp.open("GET", "getresponse.php?q="+str, true); 
+                    // str is a variable in JS
+
+in the php file, you can get the value of the str (argument on URL) by
+using the $_REQUEST['q'] array
+
+If you want the response to be a XML, just build it in the php!
+
+
+
+
+
+
+
+
+

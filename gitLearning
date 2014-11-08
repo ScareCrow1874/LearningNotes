@@ -30,7 +30,7 @@ checkout: to prepare for working on a particular branch
 Git commands:
 
 git commit: Record changes to the repository in the current branch
-    -- amand
+    -- amend
     -a
     -am
     -m
@@ -199,6 +199,7 @@ git push <remote><place>
     git push origin <source>:<destination>
 
     This is commonly referred to as a colon refspec. It's just a fancy name for a location that git can figure out.
+	You do this when you don't want to push current commit (where HEAD is at) to a remote branch (specified by destination), instead you want to push some previous commit (which is the source)
 
 -------
 
