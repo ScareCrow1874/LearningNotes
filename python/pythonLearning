@@ -42,6 +42,18 @@ More Printing:
 - Some escape characters:
   \\ \'  \"  \b  \n
 
+Want to print in line?
+Instead of
+    print item
+you do
+    print item,
+
+But this will give you trailing white space for each item. If you don't want them, you have to do this:
+
+import sys
+sys.stdout.write("xxx")
+
+
 example
   bob = "Bob"
   cid = "Cid"
@@ -127,6 +139,11 @@ Read files;
   exists(FILENAME) returns true if the file already exists
 
   You should immediately notice that we import another handy command named exists. This returns True if a file exists, based on its name in a string as an argument. It returns False if not. We'll be using this function in the second half of this book to do lots of things, but right now you should see how you can import it.
+
+Read files line by line Pythonicly:
+with open(...) as f:
+    for line in f:
+        <do something with line>
 
 ------------------------------
 Functions, variables
@@ -258,3 +275,21 @@ tup1 = ();
 To write a tuple containing a single value you have to include a comma, even though there is only one value:
 
 tup1 = (50,);
+------------------------------
+
+PDB: the Python Debugger:
+
+>>> import pdb
+>>> import mymodule
+>>> pdb.run('mymodule.test()')
+> <string>(0)?()
+(Pdb) continue
+> <string>(1)?()
+(Pdb) continue
+NameError: 'spam'
+> <string>(1)?()
+(Pdb)
+
+Or you can run the debugger to debug a script by
+
+python -m pdb myscript.py arg1 arg2 ...
