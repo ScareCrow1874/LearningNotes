@@ -1,3 +1,0 @@
-car = 100
-truck = 200
-print "text %s" %car
