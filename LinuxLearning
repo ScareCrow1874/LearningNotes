@@ -276,3 +276,4 @@ Above will exclude searching all the files ending with .o extension. Just like e
       grep --exclude-dir={dir1,dir2,*.dst} -rnw 'directory' -e "pattern"
 
 This works for me very well, to achieve almost the same purpose like yours.
+---------------------------

@@ -796,3 +796,12 @@ $$
 DELIMITER ;
 
 count_loop is the name of the loop
+------------------------------
+MySQL procedure
+
+DELIMETER $$
+CREATE PROCEDURE simple (OUT param1 INT)
+BEGIN
+	
+END
+$$

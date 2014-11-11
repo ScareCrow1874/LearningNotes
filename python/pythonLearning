@@ -1,5 +1,7 @@
 run a python file: python <FILENAME>
 
+DEBUG python file? Use print!
+
 Math operations (similar to other languages)
 +, -, *,
 / is just integer part
@@ -106,8 +108,153 @@ Read files;
   "r" for writing (default)
   "a" for appending
 
-  "r+","w+","a+" open the file for updating (both read and write); append 'b' to the mode to open the file in binary mode (if the system can differentiate between bin files and text files)
-  
+  r	Opens a file for reading only. The file pointer is placed at the beginning of th	e file. This is the default mode.
+  rb	Opens a file for reading only in binary format. The file pointer is placed at th	e beginning of the file. This is the default mode.
+  r+	Opens a file for both reading and writing. The file pointer will be at the begin	ning of the file.
+  rb+	Opens a file for both reading and writing in binary format. The file pointer wil	l be at the beginning of the file.
+  w	Opens a file for writing only. Overwrites the file if the file exists. If the fi	le does not exist, creates a new file for writing.
+  wb	Opens a file for writing only in binary format. Overwrites the file if the file 	exists. If the file does not exist, creates a new file for writing.
+  w+	Opens a file for both writing and reading. Overwrites the existing file if the f	ile exists. If the file does not exist, creates a new file for reading and writi        ng.
+  wb+	Opens a file for both writing and reading in binary format. Overwrites the exist	ing file if the file exists. If the file does not exist, creates a new file for 	reading and writing.
+  a	Opens a file for appending. The file pointer is at the end of the file if the fi	le exists. That is, the file is in the append mode. If the file does not exist, 	it creates a new file for writing.
+  ab	Opens a file for appending in binary format. The file pointer is at the end of t	he file if the file exists. That is, the file is in the append mode. If the file	 does not exist, it creates a new file for writing.
+  a+	Opens a file for both appending and reading. The file pointer is at the end of t	he file if the file exists. The file opens in the append mode. If the file does 	 not exist, it creates a new file for reading and writing.
+  ab+	Opens a file for both appending and reading in binary format. The file pointer i	s at the end of the file if the file exists. The file opens in the append mode. 	 If the file does not exist, it creates a new file for reading and writing.
+
+ <><><><><><
   from os.path import exists
   // use another handy function -- exists
   exists(FILENAME) returns true if the file already exists
+
+  You should immediately notice that we import another handy command named exists. This returns True if a file exists, based on its name in a string as an argument. It returns False if not. We'll be using this function in the second half of this book to do lots of things, but right now you should see how you can import it.
+
+------------------------------
+Functions, variables
+
+def func_name(arg):
+    # stuff
+    return stuff
+
+------------------------------
+If and else:
+
+people = 30
+cars = 40
+
+if cars > people:
+    print "We should take the cars."
+elif cars < people:
+    print "We should not take the cars."
+else:
+    print "We can't decide."
+------------------------------
+For loop & lists
+
+the_count = [1, 2, 3, 4, 5]
+
+# this first kind of for-loop goes through a list
+for number in the_count:
+    print "This is count %d" % number
+
+change = [1, 'pennies', 2, 'dimes', 3, 'quarters']
+# also we can go through mixed lists too
+# notice we have to use %r since we don't know what's in it
+for i in change:
+    print "I got %r" % i
+
+# we can also build lists, first start with an empty one
+elements = []
+
+# then use the range function to do 0 to 5 counts
+for i in range(0, 6):
+    print "Adding %d to the list." % i
+    # append is a function that lists understand
+    elements.append(i)
+
+------------------------------
+While loop:
+i = 0
+numbers = []
+
+while i < 6:
+    print "At the top i is %d" % i
+    numbers.append(i)
+
+    i = i + 1
+    print "Numbers now: ", numbers
+    print "At the bottom i is %d" % i
+------------------------------
+Lists
+------------------------------
+Dictionaries
+
+>>> stuff = {'name': 'Zed', 'age': 39, 'height': 6 * 12 + 2}
+>>> print stuff['name']
+Zed
+>>> print stuff['age']
+39
+>>> print stuff['height']
+74
+>>> stuff['city'] = "San Francisco"
+>>> print stuff['city']
+San Francisco
+
+Dictionaries are another example of a data structure, and like lists they are one of the most commonly used data structures in programming. A dictionary is used to map or associate things you want to store to keys you need to get them. Again, programmers don't use a term like "dictionary" for something that doesn't work like an actual dictionary full of words, so let's use that as our real world example.
+------------------------------
+Modules, Classes, and Objects:
+
+MODULES
+Imagine I have a module that I decide to name mystuff.py and I put a function in it called apple. Here's the module mystuff.py:
+
+# this goes in mystuff.py
+def apple():
+    print "I AM APPLES!"
+
+Once I have this code, I can use the module MyStuff with import and then access the apple function:
+
+import mystuff
+mystuff.apple()
+
+CLASS
+class MyStuff(object):
+
+    def __init__(self): # constructor
+        self.tangerine = "And now a thousand years between"
+
+    def apple(self):
+        print "I AM CLASSY APPLES!"
+
+OBJECT
+thing = MyStuff()
+thing.apple()
+print thing.tangerine
+
+INHERITENCE
+class DerivedClassName(BaseClassName):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+
+Python supports a limited form of multiple inheritance as well. A class definition with multiple base classes looks like this:
+
+class DerivedClassName(Base1, Base2, Base3):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+
+------------------------------
+Tuple:
+
+A tuple is a sequence of immutable Python objects. Tuples are sequences, just like lists. The only difference is that tuples can't be changed
+
+The empty tuple is written as two parentheses containing nothing:
+
+tup1 = ();
+
+To write a tuple containing a single value you have to include a comma, even though there is only one value:
+
+tup1 = (50,);
