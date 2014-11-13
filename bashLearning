@@ -327,3 +327,39 @@ The main difference is as follows :
 gksudo : is used to run graphical (GUI) applications as root
 sudo : is used to run command line applications as root
 
+------------------------------
+Cron:
+
+Crontab Commands
+
+export EDITOR=vi ;to specify a editor to open crontab file.
+
+crontab -e    Edit your crontab file, or create one if it doesn’t already exist.
+crontab -l    Display your crontab file.
+crontab -r    Remove your crontab file.
+crontab -v    Display the last time you edited your crontab file. (This option is only available on a few systems.)
+
+Syntax for Crontab file
+ # * * * * *  command to execute
+ # │ │ │ │ │
+ # │ │ │ │ │
+ # │ │ │ │ └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+ # │ │ │ └────────── month (1 - 12)
+ # │ │ └─────────────── day of month (1 - 31)
+ # │ └──────────────────── hour (0 - 23)
+ # └───────────────────────── min (0 - 59)
+
+Examples
+
+The following specifies that the Apache error log clears at one minute past midnight (00:01) of every day of the month, or every day of the week, assuming that the default shell for the cron user is Bourne shell compliant:
+
+1 0 * * *  printf > /var/log/apache/error_log
+
+The following line runs the user Perl script test.pl every two hours, at midnight, 02:00, 04:00, 06:00, 08:00 and so on:
+
+0 */2 * * *  /home/username/test.pl
+
+This example runs a shell program called export_dump.sh at 20:00 every day.
+
+00 20 * * * /home/oracle/scripts/export_dump.sh
+
