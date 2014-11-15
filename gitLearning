@@ -290,6 +290,36 @@ Only list (local) branches which contain the specified commit.
 
 Lists remote tracking branches as well (as mentioned in user3941992's answer below) that is "local branches that have a direct relationship to a remote branch".
 ------------------------------
+
 When files are modified but not staged (not added), and you want to revert some single file to the original state, you can do:
 
 git checkout FILENAME
+-------
+Fancier:
+
+Get the commit where HEAD is pointing to:
+    
+ git rev-parse HEAD
+
+Get the log for all change of HEAD's locations
+ 
+ git reflog
+
+This will show a bunch of things, such as
+ 
+ fe65032 HEAD@{0}: reset: moving to fe65032
+ 788c6db HEAD@{1}: checkout: moving from fe65032d3aec16f02ac5fe5138eac6bd96eda03b to withajax
+ fe65032 HEAD@{2}: checkout: moving from withajax to fe65032
+
+To reset the HEAD to any of these locations, do, for example:
+
+ git reset HEAD@{1}
+
+This will let you move the HEAD everywhere
+
+Reset the commit that a branch is pointing to
+ 
+ git reset --hard COMMIT_ID
+
+Certainly, you need to checkout that branch first
+ 

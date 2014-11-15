@@ -138,12 +138,66 @@ in the php file, you can get the value of the str (argument on URL) by
 using the $_REQUEST['q'] array
 
 If you want the response to be a XML, just build it in the php!
+----------
+With JQuery:
 
+Use $.ajax to call a server context (or URL, or whatever) to invoke a particular 'action'. What you want is something like:
 
+$.ajax({ url: '/my/site',
+         data: {action: 'test'},
+         type: 'post',
+         success: function(output) {
+                      alert(output);
+                  }
+});
 
+On the server side, the action POST parameter should be read and the corresponding value should point to the method to invoke, e.g.:
 
+if(isset($_POST['action']) && !empty($_POST['action'])) {
+    $action = $_POST['action'];
+    switch($action) {
+        case 'test' : test();break;
+        case 'blah' : blah();break;
+        // ...etc...
+    }
+}
+----------
+With JSON
 
+Use JSON to transfer data types (arrays and objects) between client and server.
 
+In PHP:
 
+    json_encode
+    json_decode
 
+In JavaScript:
+
+    JSON.stringify
+    JSON.parse
+
+PHP:
+
+echo json_encode($id_numbers);
+e.g. 
+<?php
+$arr = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+echo json_encode($arr);
+?>
+
+JavaScript:
+
+id_numbers = JSON.parse(msg);
+
+As Wolfgang mentioned, you can give a fourth parameter to jQuery to automatically decode JSON for you.
+
+id_numbers = new Array();
+$.ajax({
+    url:"Example.php",
+    type:"POST",
+    success:function(msg){
+        id_numbers = msg;
+    },
+    dataType:"json"
+});
 
