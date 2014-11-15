@@ -289,3 +289,7 @@ Only list (local) branches which contain the specified commit.
  git branch -r --contains <commit>
 
 Lists remote tracking branches as well (as mentioned in user3941992's answer below) that is "local branches that have a direct relationship to a remote branch".
+------------------------------
+When files are modified but not staged (not added), and you want to revert some single file to the original state, you can do:
+
+git checkout FILENAME
