@@ -1,0 +1,212 @@
+- Use virtualenv
+
+  virtualenv MyEnv
+  source ./MyEnv/bin/activate
+
+  Then, on the terminal, it will show:
+  (MyEnv)$
+
+  To deactivate virtualenv:
+  (MyEnv)$ deactivate
+
+- Install Django
+
+  pip install django
+
+- Start a Django Project
+
+  django-admin.py startproject mysite
+
+  What is created:
+  mysite/
+    manage.py
+    mysite/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+
+  These files are:
+
+   - The outer mysite/ root directory is just a container for your project. 
+     Its name doesn’t matter to Django; you can rename it to anything you like.
+   -  manage.py: A command-line utility that lets you interact with this Django project in various ways. 
+   -  The inner mysite/ directory is the actual Python package for your project. Its name is the Python package name you’ll need to use to import anything inside it (e.g. mysite.urls).
+   -  mysite/__init__.py: An empty file that tells Python that this directory should be considered a Python package.
+   -  mysite/settings.py: Settings/configuration for this Django project.
+   -  mysite/urls.py: The URL declarations for this Django project; a “table of contents” of your Django-powered site.
+   -  mysite/wsgi.py: An entry-point for WSGI-compatible web servers to serve your project.
+
+- Setup Database with MySQL Engine
+
+  > emacs mysite/settings.py
+
+  change the following keys in the DATABASES 'default' item to match your database connection settings:
+
+    ENGINE – Either 'django.db.backends.sqlite3', 'django.db.backends.postgresql_psycopg2', 'django.db.backends.mysql', or 'django.db.backends.oracle'. Other backends are also available.
+    NAME – The name of your database.
+
+  For mysql, you need to add:
+  
+    'USER' : 'username',
+    'PASSWORD' : 'password',
+    'HOST' : 'localhost',
+    'PORT' : 'default port you dont need to specify'
+
+
+- Set time zone
+
+  set TIME_ZONE to your time zone, while you are editing manage.py file
+
+- INSTALLED_APPS setting
+
+  By default, INSTALLED_APPS contains the following apps, all of which come with Django:
+
+    django.contrib.admin – The admin site.
+    django.contrib.auth – An authentication system.
+    django.contrib.contenttypes – A framework for content types.
+    django.contrib.sessions – A session framework.
+    django.contrib.messages – A messaging framework.
+    django.contrib.staticfiles – A framework for managing static files.
+
+  Some of these applications makes use of at least one database table, though, so we need to create the tables in the database before we can use them. To do that, run the following command:
+
+    $ python manage.py migrate
+
+  Now go to your database and "SHOW TABLES", you should see the tables
+
+- The development server
+
+  Let’s verify your Django project works. Change into the outer mysite directory, if you haven’t already, and run the following commands:
+
+    $ python manage.py runserver
+
+  You’ll see the following output on the command line:
+
+    Performing system checks...
+
+    0 errors found
+    November 25, 2014 - 15:50:53
+    Django version 1.7, using settings 'mysite.settings'
+    Starting development server at http://127.0.0.1:8000/
+    Quit the server with CONTROL-C.
+
+  Now the environment of your project is setup.
+
+- Start App (Creat models)
+
+  to create an app:
+   
+    $ python manage.py startapp polls
+
+  That’ll create a directory polls, which is laid out like this:
+
+  polls/
+    __init__.py
+    admin.py
+    migrations/
+        __init__.py
+    models.py
+    tests.py
+    views.py
+
+------------------------------
+Run the Django server
+
+python manage.py runserver 0:8000 and go to the url path/to/site:8000
+
+If you see 'Error: that port is already in use, use the following network commands
+
+Commands related to ports:
+netstat command to find open ports
+
+# netstat --listen
+To display open ports and established TCP connections, enter:
+$ netstat -vatn
+To display only open UDP ports try the following command:
+$ netstat -vaun
+If you want to see FQDN (full dns hostname), try removing the -n flag:
+$ netstat -vat
+lsof Command Examples
+
+To display the list of open ports, enter:
+# lsof -i
+To display all open files, use:
+# lsof
+To display all open IPv4 network files in use by the process whose PID is 9255, use:
+# lsof -i 4 -a -p 9255
+
+$ lsof | grep 8000
+python    11908 qaz2wsx3    4u     IPv4          124668806      0t0       TCP *:8000 (LISTEN)
+
+here, 11908 is the PID
+
+------------------------------
+Package your app
+
+1. create a directory called 'django-myApp', where xxx is the name of the app
+2. Move your app, containted in its folder myApp, to the directory django-myApp
+3. Create a file django-myApp/README.rst
+4. Create a file django-myApp/LISENCE
+5. Create a file django-myApp/setup.py with contents:
+	import os
+	from setuptools import setup
+
+	with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
+	    README = readme.read()
+
+	# allow setup.py to be run from any path
+	os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+	setup(
+	    name='django-myApp',
+	    version='0.1',
+	    packages=['myApp'],
+	    include_package_data=True,
+	    license='BSD License',  # example license
+	    description='A simple Django app THAT XXXXXXX.',
+	    long_description=README,
+	    url='http://www.example.com/',
+	    author='Your Name',
+	    author_email='yourname@example.com',
+	    classifiers=[
+		'Environment :: Web Environment',
+		'Framework :: Django',
+		'Intended Audience :: Developers',
+		'License :: OSI Approved :: BSD License', # example license
+		'Operating System :: OS Independent',
+		'Programming Language :: Python',
+		# Replace these appropriately if you are stuck on Python 2.
+		'Programming Language :: Python :: 3',
+		'Programming Language :: Python :: 3.2',
+		'Programming Language :: Python :: 3.3',
+		'Topic :: Internet :: WWW/HTTP',
+		'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+	    ],
+	)
+
+6, Create django-myApp/MANIFEST.in with the lines:
+	include LICENSE
+	include README.rst
+	recursive-include myApp/static *
+	recursive-include myApp/templates *
+
+7. Include the line (recommended, but optional). Include detailed documentation with your app.
+	recursive-include docs *
+
+8, Try building your package with python setup.py sdist (run from inside django-myApp). This creates a directory called dist and builds your new package, django-myApp-0.1.tar.gz.
+
+------------------------------
+Install your app:
+
+
+$ pip install --user django-myApp/dist/django-myApp-0.1.tar.gz
+
+With luck, your Django project should now work correctly again. Run the server again to confirm this.
+
+To uninstall the package, use pip:
+
+$ pip uninstall django-myApp
+
+
+
