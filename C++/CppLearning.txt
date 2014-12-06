@@ -198,6 +198,56 @@ class Daughter: public Mother // 'class Derived: public Base'
 inherited stuff 
 } 
 
+Example:
+------------------------------
+// constructors and derived classes
+#include <iostream>
+using namespace std;
+
+class Mother {
+  public:
+    Mother ()
+      { cout << "Mother: no parameters\n"; }
+    Mother (int a)
+      { cout << "Mother: int parameter\n"; }
+};
+
+class Daughter : public Mother {
+  public:
+    Daughter (int a)
+      { cout << "Daughter: int parameter\n\n"; }
+};
+
+class Son : public Mother {
+  public:
+    Son (int a) : Mother (a)
+      { cout << "Son: int parameter\n\n"; }
+};
+
+int main () {
+  Daughter kelly(0);
+  Son bud(0);
+  
+  return 0;
+}
+
+RESULT:	
+
+Mother: no parameters
+Daughter: int parameter
+
+Mother: int parameter
+Son: int parameter
+**********
+NOTE:
+Daughter (int a)          // nothing specified: call default constructor
+Son (int a) : Mother (a)  // constructor specified: call this specific constructor 
+
+	
+
+------------------------------
+
+
 Protected Member: 
 The derived class inherits everything from public and protected, but no private 
 
