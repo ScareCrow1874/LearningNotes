@@ -238,3 +238,20 @@ It will ask for:
     a file pattern for the files you want to include in the search
     the pattern you want to search
 
+---
+Replace over several files:
+
+    M-x find-name-dired: you will be prompted for a root directory and a filename pattern.
+    Press t to "toggle mark" for all files found.
+    Press Q for "Query-Replace in Files...": you will be prompted for query/substitution regexps.
+    Proceed as with query-replace-regexp: SPACE to replace and move to next match, n to skip a match, etc.
+
+    GNU
+    
+    Assemble a list of files you want to operate on with either find-dired, find-name-dired or find-grep-dired.
+    Mark all files in the resulting Dired buffer using t.
+    Use Q to start a query-replace-regexp session on the marked files.
+    To accept all replacements in each file, hit !. 
+
+    C-x s ! to save all the files at once
+
