@@ -1,0 +1,36 @@
+.replaceWith(): Replace HTML content
+
+The .replaceWith() method removes content from the DOM and inserts new content in its place with a single call. Consider this DOM structure:
+
+<div class="container">
+<div class="inner first">Hello</div>
+<div class="inner second">And</div>
+<div class="inner third">Goodbye</div>
+</div>
+
+The second inner <div> could be replaced with the specified HTML:
+
+$( "div.second" ).replaceWith( "<h2>New heading</h2>" );
+
+This results in the structure:
+
+<div class="container">
+<div class="inner first">Hello</div>
+<h2>New heading</h2>
+<div class="inner third">Goodbye</div>
+</div>
+
+All inner <div> elements could be targeted at once:
+
+$( "div.inner" ).replaceWith( "<h2>New heading</h2>" );
+
+This causes all of them to be replaced:
+
+<div class="container">
+<h2>New heading</h2>
+<h2>New heading</h2>
+<h2>New heading</h2>
+</div>
+
+-----------
+.children(): Get children of an element
