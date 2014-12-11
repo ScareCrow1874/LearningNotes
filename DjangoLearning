@@ -73,6 +73,10 @@
 
     $ python manage.py migrate
 
+  IF you see an error that says 'Error loading MySQLdb module: No module named MySQLdb', you need to install Mysql-python by:
+
+    $ pip install MySQL-python
+
   Now go to your database and "SHOW TABLES", you should see the tables
 
 - The development server
