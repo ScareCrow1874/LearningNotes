@@ -277,3 +277,23 @@ Above will exclude searching all the files ending with .o extension. Just like e
 
 This works for me very well, to achieve almost the same purpose like yours.
 ---------------------------
+
+Commands related to ports:
+netstat command to find open ports
+
+# netstat --listen
+To display open ports and established TCP connections, enter:
+$ netstat -vatn
+To display only open UDP ports try the following command:
+$ netstat -vaun
+If you want to see FQDN (full dns hostname), try removing the -n flag:
+$ netstat -vat
+lsof Command Examples
+
+To display the list of open ports, enter:
+# lsof -i
+To display all open files, use:
+# lsof
+To display all open IPv4 network files in use by the process whose PID is 9255, use:
+# lsof -i 4 -a -p 9255
+
