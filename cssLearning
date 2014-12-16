@@ -1,0 +1,12 @@
+The difference between `.class1.class2` and `.class1 .class2`:
+
+Example:
+.test .heading { font-weight: bold; }
+Would apply to the <p> element here:
+<span class="test"><p class="heading">Something</p></span>
+
+The lack of space means that the element must have both classes for the rule to apply.
+
+.heading.major { color: blue; }
+Would apply to the <p> element here:
+<p class="heading major">Major heading</p>
