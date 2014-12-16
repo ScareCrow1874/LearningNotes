@@ -323,3 +323,11 @@ Reset the commit that a branch is pointing to
 
 Certainly, you need to checkout that branch first
  
+------------------------------
+Compare the difference between two commits:
+
+git diff COMMIT1 COMMIT2
+
+If you only want to see what files changed:
+
+git diff --name-only COMMIT1 COMMIT2
