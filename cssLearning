@@ -71,3 +71,20 @@ JQuery:
             $(this).removeClass('flip');
         }
     });
+
+
+------------------------------
+
+@media
+
+This is used when you want to have different style for different 'media', which is just the medium that your web page will be displayed on. Usually the browser will report what media it is on.
+
+The ones I use most often:
+
+/* including styles with max width <= 768px --> smaller devices */
+@media screen and (max-width:768px) {
+}
+
+/* including styles with min width >= 768px --> larger devices*/
+@media screen and (min-width:768px) {
+}
